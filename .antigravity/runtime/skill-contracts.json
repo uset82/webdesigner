@@ -1,0 +1,104 @@
+{
+  "version": "1.0",
+  "skills": [
+    {
+      "skillId": "framework-selector",
+      "stage": "plan",
+      "inputSchemaRef": ".antigravity/runtime/schemas/task-intent.schema.json",
+      "outputSchemaRef": ".antigravity/runtime/schemas/stack-selection.schema.json",
+      "emittedArtifacts": ["stack-selection", "decision-log"],
+      "preconditions": ["TaskIntent is valid"],
+      "postconditions": ["StackSelection is valid", "Decision log is appended to ArtifactManifest"]
+    },
+    {
+      "skillId": "stitch-design",
+      "stage": "design",
+      "inputSchemaRef": ".antigravity/runtime/schemas/task-intent.schema.json",
+      "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "emittedArtifacts": ["design-brief", "design-tokens", "component-inventory", "mood-board", "content-plan", "motion-plan", "stitch-html", "stitch-image"],
+      "preconditions": ["TaskIntent exists", "StackSelection exists"],
+      "postconditions": ["Portable design artifacts exist", "Frontend tasks include visual direction and narrative guidance when applicable", "Fallback artifacts exist when Stitch is unavailable"]
+    },
+    {
+      "skillId": "project-scaffolder",
+      "stage": "build",
+      "inputSchemaRef": ".antigravity/runtime/schemas/stack-selection.schema.json",
+      "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "emittedArtifacts": ["workspace-layout", "scaffold-log"],
+      "preconditions": ["StackSelection is valid"],
+      "postconditions": ["Generated workspace exists", "Scaffold log is recorded"]
+    },
+    {
+      "skillId": "code-generator",
+      "stage": "build",
+      "inputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "emittedArtifacts": ["implementation-log", "file-map", "ui-verification-log"],
+      "preconditions": ["Generated workspace exists", "Design artifacts exist"],
+      "postconditions": ["Implementation log exists", "File map is recorded", "Rendered frontend work is verified when applicable"]
+    },
+    {
+      "skillId": "security-audit",
+      "stage": "security",
+      "inputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "emittedArtifacts": ["security-threat-model", "validated-finding", "security-patch", "remediation-note"],
+      "preconditions": ["Generated workspace exists", "Implementation log exists"],
+      "postconditions": ["Threat model exists", "Validated findings are recorded"]
+    },
+    {
+      "skillId": "deploy-advisor",
+      "stage": "deploy",
+      "inputSchemaRef": ".antigravity/runtime/schemas/stack-selection.schema.json",
+      "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "emittedArtifacts": ["deploy-config", "deploy-instructions"],
+      "preconditions": ["StackSelection is valid", "Generated workspace path exists"],
+      "postconditions": ["Deploy config exists", "Instructions are recorded"]
+    },
+    {
+      "skillId": "figma-use",
+      "stage": "design",
+      "inputSchemaRef": ".antigravity/runtime/schemas/task-intent.schema.json",
+      "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "emittedArtifacts": ["figma-use-log"],
+      "preconditions": ["Figma MCP server is connected"],
+      "postconditions": ["Plugin API execution was tracked and node IDs returned"]
+    },
+    {
+      "skillId": "figma-generate-design",
+      "stage": "design",
+      "inputSchemaRef": ".antigravity/runtime/schemas/task-intent.schema.json",
+      "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "emittedArtifacts": ["figma-design-brief", "figma-design-tokens", "figma-component-inventory"],
+      "preconditions": ["Figma MCP server is connected", "Target Figma file exists"],
+      "postconditions": ["Page, screen, or layout generated in Figma reusing the design system"]
+    },
+    {
+      "skillId": "figma-generate-library",
+      "stage": "design",
+      "inputSchemaRef": ".antigravity/runtime/schemas/task-intent.schema.json",
+      "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "emittedArtifacts": ["figma-library-structure", "figma-variable-summary"],
+      "preconditions": ["Figma MCP server is connected", "Target Figma file exists"],
+      "postconditions": ["Component library or variable tokens created in Figma matching code"]
+    },
+    {
+      "skillId": "figma-use-figjam",
+      "stage": "design",
+      "inputSchemaRef": ".antigravity/runtime/schemas/task-intent.schema.json",
+      "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "emittedArtifacts": ["figma-figjam-log"],
+      "preconditions": ["Figma MCP server is connected"],
+      "postconditions": ["FigJam board created or updated"]
+    },
+    {
+      "skillId": "figma-use-slides",
+      "stage": "design",
+      "inputSchemaRef": ".antigravity/runtime/schemas/task-intent.schema.json",
+      "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "emittedArtifacts": ["figma-slides-log"],
+      "preconditions": ["Figma MCP server is connected"],
+      "postconditions": ["Figma Slides deck created or updated"]
+    }
+  ]
+}

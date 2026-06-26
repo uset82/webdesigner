@@ -1,0 +1,19 @@
+{
+  "name": "webdesigner",
+  "version": "1.0.0",
+  "description": "Active Web & App Design Orchestrator Core and styling dials engine.",
+  "author": {
+    "name": "Carlos Carpio"
+  },
+  "mcpServers": "./.mcp.json",
+  "skills": "./.antigravity/skills/",
+  "interface": {
+    "displayName": "WebDesigner Core",
+    "shortDescription": "Web & App Design Orchestration",
+    "longDescription": "Active control plane coordinating planning, design vibes, code building, security threat models, and deployments.",
+    "developerName": "Carlos Carpio",
+    "category": "Productivity",
+    "capabilities": ["Read", "Write"],
+    "brandColor": "#10A37F"
+  }
+}

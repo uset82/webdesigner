@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ArtifactManifest",
+  "type": "object",
+  "required": ["version", "manifestId", "taskId", "host", "latestStage", "artifacts", "handoffNotes"],
+  "properties": {
+    "version": { "const": "1.0" },
+    "manifestId": { "type": "string" },
+    "taskId": { "type": "string" },
+    "host": {
+      "type": "string",
+      "enum": ["antigravity", "external"]
+    },
+    "latestStage": {
+        "type": "string",
+        "enum": ["plan", "design", "build", "security", "review", "deploy"]
+      },
+    "stackSelectionId": { "type": "string" },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["artifactId", "stage", "artifactType", "producer", "summary"],
+        "properties": {
+          "artifactId": { "type": "string" },
+          "stage": {
+            "type": "string",
+            "enum": ["plan", "design", "build", "security", "review", "deploy"]
+          },
+          "artifactType": { "type": "string" },
+          "producer": {
+            "type": "object",
+            "required": ["providerId", "modelKey", "skillId"],
+            "properties": {
+              "providerId": { "type": "string" },
+              "modelKey": { "type": "string" },
+              "skillId": { "type": "string" }
+            },
+            "additionalProperties": false
+          },
+          "path": { "type": "string" },
+          "summary": { "type": "string" },
+          "dependsOn": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "handoffNotes": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

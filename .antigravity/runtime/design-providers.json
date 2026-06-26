@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "defaultProvider": "stitch",
+  "providers": [
+    {
+      "id": "stitch",
+      "displayName": "Google Stitch",
+      "sdkPackage": "@google/stitch-sdk",
+      "authEnv": ["STITCH_API_KEY"],
+      "capabilities": ["screen-generation", "html-export", "image-export", "variation-generation", "design-system-export"],
+      "fallbackProvider": "outline"
+    },
+    {
+      "id": "outline",
+      "displayName": "Outline Fallback",
+      "sdkPackage": null,
+      "authEnv": [],
+      "capabilities": ["design-brief", "design-tokens", "component-inventory", "mood-board", "content-plan", "motion-plan"],
+      "fallbackProvider": null
+    }
+  ]
+}

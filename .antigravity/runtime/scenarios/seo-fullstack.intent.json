@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "taskId": "seo-fullstack-demo",
+  "title": "SEO-first marketing and dashboard app",
+  "prompt": "Build an SEO-friendly product website with authenticated dashboard pages and server-rendered content.",
+  "requestedStages": ["plan", "design", "build", "security", "review", "deploy"],
+  "constraints": {
+    "experienceType": "seo-fullstack-web",
+    "requiresSEO": true,
+    "requiresVision": true,
+    "latencyPreference": "balanced",
+    "budgetPreference": "balanced",
+    "designProvider": "stitch"
+  },
+  "context": {
+    "host": "antigravity",
+    "sourceDocs": ["mainidea.md", "agents.md", "rules.md"]
+  }
+}

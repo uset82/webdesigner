@@ -1,0 +1,45 @@
+{
+  "version": "1.0",
+  "policyId": "capability-first-v1",
+  "defaults": {
+    "userOverrideWinsWhenValid": true,
+    "requireToolAccessMatch": true,
+    "preferStageContinuity": true,
+    "defaultBudgetPreference": "balanced",
+    "defaultLatencyPreference": "balanced"
+  },
+  "weights": {
+    "capabilityMatch": 5,
+    "toolAccess": 5,
+    "userPreference": 3,
+    "continuity": 2,
+    "latency": 2,
+    "cost": 2
+  },
+  "stagePolicies": {
+    "plan": {
+      "requiredCapabilities": ["reasoning", "toolUse"],
+      "preferredModelKeys": ["gemini-3.1-pro", "claude-opus-4.6", "gpt-5.4"]
+    },
+    "design": {
+      "requiredCapabilities": ["toolUse"],
+      "preferredModelKeys": ["gemini-3.1-pro", "nano-banana-pro", "gpt-5.4"]
+    },
+    "build": {
+      "requiredCapabilities": ["coding", "toolUse"],
+      "preferredModelKeys": ["gpt-5.4", "qoder-default", "gpt-5.3"]
+    },
+    "security": {
+      "requiredCapabilities": ["securityAnalysis", "toolUse"],
+      "preferredModelKeys": ["codex-security", "claude-opus-4.6", "gpt-5.4"]
+    },
+    "review": {
+      "requiredCapabilities": ["reasoning"],
+      "preferredModelKeys": ["claude-opus-4.6", "gpt-5.4", "gemini-3.1-pro"]
+    },
+    "deploy": {
+      "requiredCapabilities": ["toolUse"],
+      "preferredModelKeys": ["gpt-5.4", "gemini-3.1-pro", "qoder-default"]
+    }
+  }
+}

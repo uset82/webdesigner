@@ -1,0 +1,138 @@
+{
+  "version": "1.0",
+  "experienceTypes": [
+    {
+      "id": "seo-fullstack-web",
+      "description": "SEO-sensitive or SSR-heavy web applications"
+    },
+    {
+      "id": "spa-web",
+      "description": "Client-heavy web applications without SSR as a hard requirement"
+    },
+    {
+      "id": "cross-platform-mobile",
+      "description": "Single codebase mobile delivery for iOS and Android"
+    },
+    {
+      "id": "api-backend",
+      "description": "Backend-only or service-oriented generation"
+    }
+  ],
+  "frontendRuntimes": [
+    {
+      "id": "nextjs",
+      "supportedExperienceTypes": ["seo-fullstack-web"]
+    },
+    {
+      "id": "react-vite",
+      "supportedExperienceTypes": ["spa-web"]
+    },
+    {
+      "id": "flutter",
+      "supportedExperienceTypes": ["cross-platform-mobile"]
+    },
+    {
+      "id": "none",
+      "supportedExperienceTypes": ["api-backend"]
+    }
+  ],
+  "backendRuntimes": [
+    {
+      "id": "nextjs-route-handlers",
+      "supportedFrontends": ["nextjs"]
+    },
+    {
+      "id": "node-express",
+      "supportedFrontends": ["react-vite", "flutter", "none"]
+    },
+    {
+      "id": "none",
+      "supportedFrontends": ["nextjs", "react-vite", "flutter", "none"]
+    }
+  ],
+  "dataLayers": [
+    { "id": "none", "classification": "base" },
+    { "id": "prisma", "classification": "integration" },
+    { "id": "mongodb", "classification": "integration" },
+    { "id": "mysql", "classification": "integration" }
+  ],
+  "deploymentTargets": [
+    {
+      "id": "vercel",
+      "supportedFrontends": ["nextjs", "react-vite"]
+    },
+    {
+      "id": "netlify",
+      "supportedFrontends": ["react-vite"]
+    },
+    {
+      "id": "cloud-run",
+      "supportedBackends": ["node-express"]
+    },
+    {
+      "id": "docker",
+      "supportedBackends": ["node-express"]
+    },
+    {
+      "id": "mobile-store",
+      "supportedFrontends": ["flutter"]
+    }
+  ],
+  "designProviders": [
+    { "id": "stitch", "default": true },
+    { "id": "outline", "default": false }
+  ],
+  "integrations": [
+    { "id": "google-maps", "classification": "integration" }
+  ],
+  "recommendedPaths": [
+    {
+      "id": "seo-fullstack-web-v1",
+      "selection": {
+        "experienceType": "seo-fullstack-web",
+        "frontendRuntime": "nextjs",
+        "backendRuntime": "nextjs-route-handlers",
+        "dataLayer": "none",
+        "deploymentTarget": "vercel",
+        "designProvider": "stitch",
+        "integrations": []
+      }
+    },
+    {
+      "id": "spa-web-v1",
+      "selection": {
+        "experienceType": "spa-web",
+        "frontendRuntime": "react-vite",
+        "backendRuntime": "node-express",
+        "dataLayer": "none",
+        "deploymentTarget": "netlify",
+        "designProvider": "stitch",
+        "integrations": []
+      }
+    },
+    {
+      "id": "cross-platform-mobile-v1",
+      "selection": {
+        "experienceType": "cross-platform-mobile",
+        "frontendRuntime": "flutter",
+        "backendRuntime": "node-express",
+        "dataLayer": "none",
+        "deploymentTarget": "mobile-store",
+        "designProvider": "stitch",
+        "integrations": []
+      }
+    },
+    {
+      "id": "api-backend-v1",
+      "selection": {
+        "experienceType": "api-backend",
+        "frontendRuntime": "none",
+        "backendRuntime": "node-express",
+        "dataLayer": "none",
+        "deploymentTarget": "cloud-run",
+        "designProvider": "outline",
+        "integrations": []
+      }
+    }
+  ]
+}
