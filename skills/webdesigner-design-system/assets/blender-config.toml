@@ -1,0 +1,34 @@
+[mcp_servers.blender]
+command = "uvx"
+args = ["--python", "3.11", "blender-mcp==1.6.4"]
+enabled = true
+required = false
+startup_timeout_sec = 20
+tool_timeout_sec = 120
+enabled_tools = [
+  "get_scene_info",
+  "get_object_info",
+  "get_viewport_screenshot",
+  "execute_blender_code",
+]
+default_tools_approval_mode = "prompt"
+
+[mcp_servers.blender.env]
+BLENDER_HOST = "localhost"
+BLENDER_PORT = "9876"
+DISABLE_TELEMETRY = "true"
+BLENDER_MCP_DISABLE_TELEMETRY = "true"
+MCP_DISABLE_TELEMETRY = "true"
+UV_PYTHON_PREFERENCE = "only-managed"
+
+[mcp_servers.blender.tools.get_scene_info]
+approval_mode = "auto"
+
+[mcp_servers.blender.tools.get_object_info]
+approval_mode = "auto"
+
+[mcp_servers.blender.tools.get_viewport_screenshot]
+approval_mode = "auto"
+
+[mcp_servers.blender.tools.execute_blender_code]
+approval_mode = "prompt"

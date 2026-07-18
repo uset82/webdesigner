@@ -1,0 +1,129 @@
+/*
+ * Nightglass design tokens
+ * Stable public interface: --ng-*
+ * Theme: dark only
+ */
+
+:root,
+[data-theme="nightglass"] {
+  color-scheme: dark;
+
+  /* Color — canvas and surfaces */
+  --ng-color-canvas: #090b0e;
+  --ng-color-surface-1: #101318;
+  --ng-color-surface-2: #171b21;
+  --ng-color-surface-3: #20252d;
+  --ng-color-surface-hover: #242a33;
+  --ng-color-overlay: rgba(2, 5, 7, 0.76);
+
+  /* Color — structure and content */
+  --ng-color-border: #2a3039;
+  --ng-color-border-strong: #3a424f;
+  --ng-color-text: #f4f7fb;
+  --ng-color-text-secondary: #c6cdd7;
+  --ng-color-text-muted: #9aa3af;
+  --ng-color-text-faint: #68717d;
+
+  /* Color — action and state */
+  --ng-color-accent: #7ee7d7;
+  --ng-color-accent-hover: #9af0e2;
+  --ng-color-accent-pressed: #64cbbd;
+  --ng-color-on-accent: #07100f;
+  --ng-color-focus: #a6fff1;
+  --ng-color-success: #67d391;
+  --ng-color-warning: #f4c76b;
+  --ng-color-danger: #f07178;
+  --ng-color-info: #70a5ff;
+
+  /* Typography — families and weights */
+  --ng-font-sans: "Inter Variable", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --ng-font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --ng-weight-regular: 400;
+  --ng-weight-medium: 500;
+  --ng-weight-semibold: 600;
+
+  /* Typography — scale */
+  --ng-text-xs: 0.75rem;
+  --ng-text-sm: 0.875rem;
+  --ng-text-base: 1rem;
+  --ng-text-lg: 1.125rem;
+  --ng-text-xl: 1.25rem;
+  --ng-text-2xl: 1.5rem;
+  --ng-text-3xl: 2rem;
+  --ng-text-4xl: clamp(2.5rem, 5vw, 4rem);
+  --ng-text-display: clamp(3rem, 7vw, 4.5rem);
+  --ng-leading-tight: 1;
+  --ng-leading-snug: 1.2;
+  --ng-leading-normal: 1.5;
+  --ng-leading-relaxed: 1.65;
+  --ng-tracking-tight: -0.022em;
+  --ng-tracking-normal: 0;
+  --ng-tracking-wide: 0.08em;
+
+  /* Spacing — 4px base */
+  --ng-space-0: 0;
+  --ng-space-1: 0.25rem;
+  --ng-space-2: 0.5rem;
+  --ng-space-3: 0.75rem;
+  --ng-space-4: 1rem;
+  --ng-space-5: 1.25rem;
+  --ng-space-6: 1.5rem;
+  --ng-space-8: 2rem;
+  --ng-space-10: 2.5rem;
+  --ng-space-12: 3rem;
+  --ng-space-16: 4rem;
+  --ng-space-20: 5rem;
+  --ng-space-24: 6rem;
+  --ng-space-32: 8rem;
+
+  /* Layout */
+  --ng-page-max: 75rem;
+  --ng-reading-max: 42rem;
+  --ng-copy-max: 34rem;
+  --ng-header-height: 4rem;
+  --ng-control-height: 2.75rem;
+  --ng-sidebar-width: 16rem;
+  --ng-inspector-width: 22rem;
+  --ng-breakpoint-sm: 40rem;
+  --ng-breakpoint-md: 48rem;
+  --ng-breakpoint-lg: 64rem;
+  --ng-breakpoint-xl: 80rem;
+
+  /* Shape */
+  --ng-radius-sm: 0.25rem;
+  --ng-radius-md: 0.5rem;
+  --ng-radius-lg: 0.75rem;
+  --ng-radius-full: 9999px;
+
+  /* Elevation */
+  --ng-shadow-hairline: inset 0 0 0 1px var(--ng-color-border);
+  --ng-shadow-surface: 0 12px 30px rgba(0, 0, 0, 0.24);
+  --ng-shadow-floating: 0 24px 64px rgba(0, 0, 0, 0.42);
+  --ng-shadow-focus: 0 0 0 3px rgba(166, 255, 241, 0.45);
+
+  /* Motion */
+  --ng-duration-fast: 160ms;
+  --ng-duration-base: 220ms;
+  --ng-duration-reveal: 520ms;
+  --ng-duration-slow: 650ms;
+  --ng-ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ng-ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+  --ng-motion-distance: 1rem;
+
+  /* Layering */
+  --ng-z-header: 40;
+  --ng-z-overlay: 50;
+  --ng-z-modal: 60;
+  --ng-z-toast: 70;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root,
+  [data-theme="nightglass"] {
+    --ng-duration-fast: 1ms;
+    --ng-duration-base: 1ms;
+    --ng-duration-reveal: 1ms;
+    --ng-duration-slow: 1ms;
+    --ng-motion-distance: 0px;
+  }
+}
