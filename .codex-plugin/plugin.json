@@ -1,19 +1,28 @@
 {
   "name": "webdesigner",
-  "version": "1.0.0",
-  "description": "Active Web & App Design Orchestrator Core and styling dials engine.",
+  "version": "1.1.0",
+  "description": "Modern web and app design orchestration with Nightglass UI, conditional Three.js, Mint, and Blender workflows.",
   "author": {
-    "name": "Carlos Carpio"
+    "name": "Carlos Carpio",
+    "url": "https://github.com/uset82"
   },
+  "homepage": "https://github.com/uset82/webdesigner#readme",
+  "repository": "https://github.com/uset82/webdesigner",
+  "keywords": ["design-system", "frontend", "threejs", "blender", "codex"],
   "mcpServers": "./.mcp.json",
-  "skills": "./.antigravity/skills/",
+  "skills": "./skills/",
   "interface": {
     "displayName": "WebDesigner Core",
-    "shortDescription": "Web & App Design Orchestration",
-    "longDescription": "Active control plane coordinating planning, design vibes, code building, security threat models, and deployments.",
+    "shortDescription": "Modern web, app, and optional 3D design workflows",
+    "longDescription": "Coordinate planning, Nightglass design, implementation, review, security, deployment, and explicitly requested Three.js or Blender work.",
     "developerName": "Carlos Carpio",
     "category": "Productivity",
     "capabilities": ["Read", "Write"],
-    "brandColor": "#10A37F"
+    "defaultPrompt": [
+      "Design and build a polished product interface.",
+      "Create a modern responsive landing page.",
+      "Review this interface against Nightglass."
+    ],
+    "brandColor": "#7EE7D7"
   }
 }

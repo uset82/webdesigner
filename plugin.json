@@ -1,9 +1,10 @@
 {
   "name": "webdesigner",
-  "version": "1.0.0",
-  "description": "Active Web & App Design Orchestrator Core and styling dials engine.",
+  "version": "1.1.0",
+  "description": "Modern web and app design orchestration with Nightglass UI and conditional 3D workflows.",
   "author": {
     "name": "Carlos Carpio"
   },
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./.mcp.json",
+  "skills": "./skills/"
 }

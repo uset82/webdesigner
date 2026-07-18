@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "webdesigner": {
+      "command": "node",
+      "args": ["./dist/mcp/server.js"],
+      "cwd": "."
+    }
+  }
+}

@@ -5,7 +5,8 @@ WebDesigner uses stable workflow roles, but model assignment is dynamic. Agents 
 ## Core Rule
 - Roles are **not** hard-bound to Gemini, Claude, Codex, Qoder, or any single provider.
 - Each role declares required capabilities. Runtime selection happens through `.antigravity/runtime/provider-registry.json` and `.antigravity/runtime/routing-policy.json`.
-- For visually led frontend work, agents must also follow the constraints in `openaidesign.md` and may attach the installed `frontend-skill` as an overlay on the stage contract.
+- For visually led frontend work, agents must use the bundled `webdesigner-design-system` skill and its Nightglass references. Existing product conventions and explicit user briefs take precedence.
+- Mint and Blender are conditional 3D routes. Ordinary UI and decorative-depth requests activate neither capability.
 
 ## 1. Architect Agent
 **Stage ownership**: `plan`
@@ -95,3 +96,12 @@ WebDesigner uses stable workflow roles, but model assignment is dynamic. Agents 
 - Tool use
 - Infra reasoning
 - Configuration generation
+
+## Packaging and release gate
+
+- Keep `.codex-plugin/plugin.json`, `.mcp.json`, and both marketplace files consistent.
+- The public installer must remain idempotent: first run adds the marketplace; later runs upgrade it before reinstalling the plugin.
+- Keep the installed MCP runtime self-contained. Plugin installation must not require `npm install` in the user's cache.
+- Preserve the 86-token Nightglass CSS/Tailwind contract and all source-pinned Blender notices.
+- Before publishing, run `npm run build`, `npm run verify`, `npm run test:mcp`, `npm audit --audit-level=high`, and the plugin validator.
+- Test installation with an isolated `CODEX_HOME`, then start a new task for skill and MCP discovery.
