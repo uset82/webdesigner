@@ -32,6 +32,8 @@ Outputs:
 ## Builder Agent
 Owns `build`.
 
+When `StackSelection.integrations` includes `animate-ui`, apply the `animate-ui` skill inside the generated Next.js or React/Vite workspace.
+
 Outputs:
 - generated workspace
 - scaffold log

@@ -83,7 +83,13 @@
     { "id": "outline", "default": false }
   ],
   "integrations": [
-    { "id": "google-maps", "classification": "integration" }
+    { "id": "google-maps", "classification": "integration" },
+    {
+      "id": "animate-ui",
+      "classification": "component-registry",
+      "supportedFrontends": ["nextjs", "react-vite"],
+      "activationConstraint": "requiresAnimatedUI"
+    }
   ],
   "recommendedPaths": [
     {

@@ -1,0 +1,17 @@
+{
+  "version": "1.0",
+  "selectionId": "sel-animated-ui-demo",
+  "experienceType": "spa-web",
+  "frontendRuntime": "react-vite",
+  "backendRuntime": "node-express",
+  "dataLayer": "none",
+  "deploymentTarget": "netlify",
+  "designProvider": "stitch",
+  "integrations": ["animate-ui"],
+  "rationale": [
+    "Matched recommended stack for spa-web",
+    "Selected react-vite for frontend and node-express for backend.",
+    "Configured deployment to netlify.",
+    "Animated UI requested; enabled the Animate UI component registry for the build stage."
+  ]
+}

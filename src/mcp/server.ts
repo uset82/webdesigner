@@ -43,6 +43,10 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
               type: 'string',
               enum: ['seo-fullstack-web', 'spa-web', 'cross-platform-mobile', 'api-backend'],
               description: 'Optional stack experience type'
+            },
+            requiresAnimatedUI: {
+              type: 'boolean',
+              description: 'Force or disable Animate UI selection; otherwise inferred from the prompt'
             }
           },
           required: ['prompt']
@@ -124,9 +128,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         const prompt = String(args?.prompt);
         const title = String(args?.title || 'New WebDesigner Project');
         const expType = args?.experienceType ? String(args.experienceType) : undefined;
+        const requiresAnimatedUI = typeof args?.requiresAnimatedUI === 'boolean'
+          ? args.requiresAnimatedUI
+          : undefined;
 
         const taskId = `task-${Date.now().toString().slice(-6)}`;
-        const intent = orchestrator.intake(taskId, title, prompt, { experienceType: expType });
+        const intent = orchestrator.intake(taskId, title, prompt, { experienceType: expType, requiresAnimatedUI });
         const selection = orchestrator.selectStack(intent);
         const manifest = orchestrator.createManifest(intent, selection);
 

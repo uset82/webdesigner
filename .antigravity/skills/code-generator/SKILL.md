@@ -15,6 +15,7 @@ description: Converts approved design artifacts into idiomatic code inside the g
 - Respect the selected frontend and backend runtimes.
 - Use the manifest to describe file ownership and handoff points.
 - Preserve the design-system tokens, visual hierarchy, and motion intent captured by the design artifacts.
+- When `StackSelection.integrations` contains `animate-ui`, load the `animate-ui` skill and use its registry workflow for matching interface motion.
 - Prefer local, uploaded, or generated visual assets over remote hotlinks unless the user explicitly wants external image URLs.
 - When the task is a design-led frontend, keep the first viewport restrained: no hero cards by default, no cluttered overlays, and no weak brand hierarchy.
 - When browser or computer-use tooling is available, inspect the rendered UI across desktop and mobile before handoff.

@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "taskId": "animated-ui-demo",
+  "title": "Animated product interface",
+  "prompt": "Build a React product dashboard with intentional animated UI, micro-interactions, and reduced-motion support.",
+  "requestedStages": ["plan", "design", "build", "security", "review", "deploy"],
+  "constraints": {
+    "experienceType": "spa-web",
+    "requiresSEO": false,
+    "requiresVision": false,
+    "requiresImageGeneration": false,
+    "requiresAnimatedUI": true,
+    "latencyPreference": "balanced",
+    "budgetPreference": "balanced",
+    "designProvider": "stitch"
+  },
+  "context": {
+    "host": "antigravity",
+    "sourceDocs": ["AGENTS.md", "rules.md"]
+  }
+}

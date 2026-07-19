@@ -11,6 +11,7 @@
     "build": "tsc && npm run build:mcp",
     "build:mcp": "esbuild src/mcp/server.ts --bundle --platform=node --format=cjs --target=node20 --outfile=dist/mcp/server.js",
     "verify": "node scripts/verify-package.mjs",
+    "test:core": "npm run build && node --test scripts/test-orchestrator.mjs",
     "test:mcp": "node scripts/smoke-mcp.mjs",
     "start": "node dist/cli/index.js",
     "mcp": "node dist/mcp/server.js",
