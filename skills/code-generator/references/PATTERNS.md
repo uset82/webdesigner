@@ -11,6 +11,12 @@ Apply these patterns only inside the selected generated workspace.
 - Convert design artifacts into client components suitable for SPA delivery.
 - Pair with `Node/Express` when the stack requires a separate backend.
 
+## Animate UI Integration
+
+- Apply only when `StackSelection.integrations` contains `animate-ui` and the frontend is `nextjs` or `react-vite`.
+- Use the Shadcn CLI to add individual `@animate-ui/...` registry items inside the generated workspace.
+- Keep copied source local and adapt it to the active design tokens, aliases, accessibility requirements, and reduced-motion behavior.
+
 ## Flutter
 - Convert design artifacts into widget trees and theme tokens.
 - Preserve the design token vocabulary so later review artifacts can compare mobile and web outputs consistently.

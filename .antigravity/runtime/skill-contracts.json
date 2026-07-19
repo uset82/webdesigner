@@ -38,6 +38,15 @@
       "postconditions": ["Implementation log exists", "File map is recorded", "Rendered frontend work is verified when applicable"]
     },
     {
+      "skillId": "animate-ui",
+      "stage": "build",
+      "inputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "emittedArtifacts": ["animate-ui-component-map", "animation-verification-log"],
+      "preconditions": ["Generated workspace exists", "StackSelection includes animate-ui", "Frontend runtime is nextjs or react-vite"],
+      "postconditions": ["Only required registry components are installed", "Normal and reduced-motion behavior are verified", "Installed component paths are recorded"]
+    },
+    {
       "skillId": "security-audit",
       "stage": "security",
       "inputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",

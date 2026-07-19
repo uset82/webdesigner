@@ -69,6 +69,7 @@ if (entry?.source?.path !== "./") fail("Marketplace source must resolve to the r
 if (entry?.policy?.installation !== "AVAILABLE") fail("Marketplace installation policy must be AVAILABLE");
 
 const requiredSkills = [
+  "animate-ui",
   "animation-quality-gate",
   "blender-animation",
   "blender-export",

@@ -13,6 +13,7 @@ export interface TaskIntent {
     requiresSEO?: boolean;
     requiresVision?: boolean;
     requiresImageGeneration?: boolean;
+    requiresAnimatedUI?: boolean;
     preferredProviders?: string[];
     excludedProviders?: string[];
     latencyPreference?: "low" | "balanced" | "quality";
@@ -94,6 +95,14 @@ export class WebDesignerOrchestrator {
       expType = 'api-backend';
     }
 
+    const supportsReactUi = expType === 'seo-fullstack-web' || expType === 'spa-web';
+    const hasAnimationIntent = /\b(animate(?:d|s|ing)?|animation(?:s)?|motion|micro[-\s]?interaction(?:s)?|transition(?:s)?|scroll[-\s]?reveal(?:s)?|parallax|morph(?:ing)?|kinetic)\b/.test(lp);
+    const hasUiSurface = /\b(ui|user interface|interface|website|web site|landing page|portfolio|storefront|web app|dashboard|component|menu|navigation|navbar|button|dialog|modal|tab|tabs|accordion|tooltip|carousel|form|icon|text|hero|section|page)\b/.test(lp);
+    const isMediaOnlyAnimation = /\b(video|film|clip|mp4|gif|webp|remotion|animation asset|animated illustration)\b/.test(lp) && !hasUiSurface;
+    const requiresAnimatedUI = options?.requiresAnimatedUI ?? (
+      supportsReactUi && hasAnimationIntent && !isMediaOnlyAnimation
+    );
+
     const requestedStages = ['plan', 'design', 'build', 'security', 'review', 'deploy'];
 
     return {
@@ -107,6 +116,7 @@ export class WebDesignerOrchestrator {
         requiresSEO: expType === 'seo-fullstack-web',
         requiresVision: lp.includes('image') || lp.includes('screenshot') || lp.includes('figma'),
         requiresImageGeneration: lp.includes('generate image') || lp.includes('illustration'),
+        requiresAnimatedUI,
         latencyPreference: options?.latencyPreference || "balanced",
         budgetPreference: options?.budgetPreference || "balanced",
         designProvider: options?.designProvider || "stitch"
@@ -127,8 +137,10 @@ export class WebDesignerOrchestrator {
       (p: any) => p.selection.experienceType === expType
     );
 
+    let selection: StackSelection;
+
     if (pathMatch) {
-      return {
+      selection = {
         version: "1.0",
         selectionId: `sel-${intent.taskId}`,
         ...pathMatch.selection,
@@ -138,21 +150,33 @@ export class WebDesignerOrchestrator {
           `Configured deployment to ${pathMatch.selection.deploymentTarget}.`
         ]
       };
+    } else {
+      // Fallback selection if no match
+      selection = {
+        version: "1.0",
+        selectionId: `sel-${intent.taskId}`,
+        experienceType: expType,
+        frontendRuntime: "react-vite",
+        backendRuntime: "node-express",
+        dataLayer: "none",
+        deploymentTarget: "netlify",
+        designProvider: "stitch",
+        integrations: [],
+        rationale: ["Default fallback stack selection applied."]
+      };
     }
 
-    // Fallback selection if no match
-    return {
-      version: "1.0",
-      selectionId: `sel-${intent.taskId}`,
-      experienceType: expType,
-      frontendRuntime: "react-vite",
-      backendRuntime: "node-express",
-      dataLayer: "none",
-      deploymentTarget: "netlify",
-      designProvider: "stitch",
-      integrations: [],
-      rationale: ["Default fallback stack selection applied."]
-    };
+    if (intent.constraints.requiresAnimatedUI) {
+      const supportsAnimateUi = selection.frontendRuntime === 'nextjs' || selection.frontendRuntime === 'react-vite';
+      if (supportsAnimateUi) {
+        selection.integrations = Array.from(new Set([...selection.integrations, 'animate-ui']));
+        selection.rationale.push('Animated UI requested; enabled the Animate UI component registry for the build stage.');
+      } else {
+        selection.rationale.push(`Animated UI requested, but Animate UI is incompatible with ${selection.frontendRuntime}; use a framework-native motion solution.`);
+      }
+    }
+
+    return selection;
   }
 
   public createManifest(intent: TaskIntent, selection: StackSelection): ArtifactManifest {

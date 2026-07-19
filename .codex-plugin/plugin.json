@@ -1,20 +1,20 @@
 {
   "name": "webdesigner",
   "version": "1.1.0",
-  "description": "Modern web and app design orchestration with Nightglass UI, conditional Three.js, Mint, and Blender workflows.",
+  "description": "Modern web and app design orchestration with Nightglass UI, conditional Animate UI, Three.js, Mint, and Blender workflows.",
   "author": {
     "name": "Carlos Carpio",
     "url": "https://github.com/uset82"
   },
   "homepage": "https://github.com/uset82/webdesigner#readme",
   "repository": "https://github.com/uset82/webdesigner",
-  "keywords": ["design-system", "frontend", "threejs", "blender", "codex"],
+  "keywords": ["design-system", "frontend", "animation", "threejs", "blender", "codex"],
   "mcpServers": "./.mcp.json",
   "skills": "./skills/",
   "interface": {
     "displayName": "WebDesigner Core",
     "shortDescription": "Modern web, app, and optional 3D design workflows",
-    "longDescription": "Coordinate planning, Nightglass design, implementation, review, security, deployment, and explicitly requested Three.js or Blender work.",
+    "longDescription": "Coordinate planning, Nightglass design, conditional animated React UI, implementation, review, security, deployment, and explicitly requested Three.js or Blender work.",
     "developerName": "Carlos Carpio",
     "category": "Productivity",
     "capabilities": ["Read", "Write"],

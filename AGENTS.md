@@ -46,6 +46,7 @@ WebDesigner uses stable workflow roles, but model assignment is dynamic. Agents 
 - Scaffold the generated workspace in the selected stack
 - Convert approved design artifacts into framework-idiomatic code
 - Preserve brand hierarchy, restrained section structure, dominant imagery, and intentional motion from the design artifacts
+- Apply the `animate-ui` skill when the stack selection includes that integration; keep registry installs scoped to the generated React workspace
 - Inspect rendered frontend work across desktop and mobile viewports when browser tooling is available
 - Keep the control plane separate from the generated project
 - Emit implementation artifacts and workspace paths into the `ArtifactManifest`

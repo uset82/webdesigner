@@ -90,6 +90,13 @@ WebDesigner skills are stage contracts, not vendor-specific prompt bundles. Each
 
 ## Global Optional Skills
 
+### `animate-ui`
+- **Stage**: `build`
+- **Role**: Adds selected animated React components from the `imskyleen/animate-ui` Shadcn registry when animated interface behavior is requested
+- **Inputs**: `TaskIntent`, `StackSelection`, motion plan, generated Next.js or React/Vite workspace
+- **Outputs**: installed component map and normal/reduced-motion verification log
+- **Notes**: Activates through the `requiresAnimatedUI` constraint and `animate-ui` stack integration; it is not used for video, Flutter, or WebGL-only animation.
+
 ### `frontend-skill`
 - **Stages**: `design`, `build`, `review`
 - **Role**: Adds art-direction, hierarchy, motion, and restraint rules for visually led frontend work

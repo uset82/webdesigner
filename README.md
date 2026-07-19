@@ -27,6 +27,7 @@ Rerun the same one-line command at any time to update WebDesigner.
 ## What gets installed
 
 - `webdesigner-design-system`: the Nightglass interface workflow, 86 framework-neutral design tokens, Tailwind CSS v4 mappings, composition guidance, motion defaults, accessibility rules, prompt recipes, and design QA.
+- `animate-ui`: an on-demand build workflow for selecting and adapting individual animated React components from the Animate UI Shadcn registry.
 - Eight Blender specialists for modeling, materials, rigging, animation, motion inspection, export, technical art, and animation quality review.
 - The WebDesigner MCP orchestration server, bundled as a self-contained Node.js artifact so installation does not run `npm install` on the user's computer.
 - Existing Antigravity planning, framework selection, design-provider, code-generation, security, and deployment skills, packaged into the plugin's discoverable `skills/` directory.
@@ -46,6 +47,12 @@ WebDesigner defaults new and unspecified surfaces to Nightglass:
 - hierarchy and media instead of generic card mosaics.
 
 Explicit user briefs and an existing product's coherent visual language always take precedence.
+
+## Conditional animated UI behavior
+
+Requests for animated Next.js or React/Vite interfaces enable the `animate-ui` integration. The build workflow previews and installs only the required `@animate-ui/...` registry items inside the generated application, then adapts them to the active design tokens and verifies keyboard and reduced-motion behavior.
+
+Static UI requests, rendered-video tasks, Flutter applications, and backend-only work do not enable Animate UI automatically. No Animate UI component source or runtime dependency is bundled into the WebDesigner control plane.
 
 ## Conditional 3D behavior
 
@@ -102,6 +109,7 @@ Model and provider selection remains capability-based. Roles are not permanently
 | `.agents/plugins/marketplace.json` | Public repository marketplace catalog |
 | `.mcp.json` | Installed WebDesigner MCP server configuration |
 | `skills/webdesigner-design-system/` | Nightglass, conditional 3D references, tokens, and Blender setup resources |
+| `skills/animate-ui/` | Conditional Animate UI registry workflow for animated React interfaces |
 | `skills/blender-*/`, `skills/rigging-animation/` | Source-pinned Blender specialists |
 | `skills/` | Discoverable design, Blender, planning, design-provider, build, security, and deployment workflows |
 | `.antigravity/skills/` | Maintained source copies used by the orchestration runtime |

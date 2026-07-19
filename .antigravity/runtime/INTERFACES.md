@@ -20,6 +20,7 @@ export interface TaskIntent {
     requiresSEO?: boolean;
     requiresVision?: boolean;
     requiresImageGeneration?: boolean;
+    requiresAnimatedUI?: boolean;
     preferredProviders?: string[];
     excludedProviders?: string[];
     latencyPreference?: "low" | "balanced" | "quality";
@@ -42,7 +43,7 @@ export interface StackSelection {
   dataLayer: "none" | "prisma" | "mongodb" | "mysql";
   deploymentTarget: "vercel" | "netlify" | "cloud-run" | "docker" | "mobile-store";
   designProvider: "stitch" | "outline";
-  integrations: Array<"google-maps">;
+  integrations: Array<"google-maps" | "animate-ui">;
   rationale: string[];
 }
 
