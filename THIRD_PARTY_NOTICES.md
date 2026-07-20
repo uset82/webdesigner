@@ -18,4 +18,10 @@ The optional project configuration pins `blender-mcp==1.6.4`. The Blender add-on
 
 The add-on remains governed by its [upstream terms and conditions](https://github.com/ahujasid/blender-mcp/blob/6641189231caf3752302ae20591bc87fda85fc4e/TERMS_AND_CONDITIONS.md). The setup verifier installs or replaces it only through an explicit command; normal agent work must use verification-only mode.
 
+## Optional image-to-Three.js skill
+
+| Skill | Source | License and notice |
+| --- | --- | --- |
+| `img2threejs` | [`hoainho/img2threejs`](https://github.com/hoainho/img2threejs) | MIT. Upstream LICENSE is retained under `skills/img2threejs/LICENSE` and `.antigravity/skills/img2threejs/LICENSE`. Demo GIFs from upstream are not bundled. |
+
 No Blender binary, third-party demo asset, model, texture, motion, voice, or remote-provider content is bundled by this project.

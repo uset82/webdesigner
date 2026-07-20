@@ -1,4 +1,4 @@
-# WebDesigner
+﻿# WebDesigner
 
 ## Vision
 **WebDesigner** is an Antigravity-hosted control plane for generating applications across multiple runtimes. It is not a self-regenerating app core and it is not tied to a single model, provider, or framework. Its job is to normalize user requests, select a layered stack, route each workflow stage to the best available model, and emit structured artifacts so any later model can continue the task safely.
@@ -22,7 +22,7 @@
 - **SPA web**: React + Vite
 - **Cross-platform mobile**: Flutter
 - **API/backend**: Node + Express
-- **Supporting layers and integrations**: Prisma, MongoDB, MySQL, and Google Maps as optional layers, not peer framework choices
+- **Supporting layers and integrations**: Prisma, MongoDB, MySQL, Google Maps, Animate UI, and img2threejs as optional layers, not peer framework choices
 
 ## Source of Truth
 - Provider and model metadata lives in `.antigravity/runtime/provider-registry.json`.

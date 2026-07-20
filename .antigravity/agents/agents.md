@@ -32,6 +32,9 @@ Outputs:
 ## Builder Agent
 Owns `build`.
 
+When `StackSelection.integrations` includes `animate-ui`, apply the `animate-ui` skill inside the generated Next.js or React/Vite workspace.
+When `StackSelection.integrations` includes `img2threejs`, apply the `img2threejs` skill: run the staged image-to-Three.js forge pipeline and emit the factory into the generated Next.js or React/Vite workspace.
+
 Outputs:
 - generated workspace
 - scaffold log

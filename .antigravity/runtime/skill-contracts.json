@@ -38,6 +38,24 @@
       "postconditions": ["Implementation log exists", "File map is recorded", "Rendered frontend work is verified when applicable"]
     },
     {
+      "skillId": "animate-ui",
+      "stage": "build",
+      "inputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "emittedArtifacts": ["animate-ui-component-map", "animation-verification-log"],
+      "preconditions": ["Generated workspace exists", "StackSelection includes animate-ui", "Frontend runtime is nextjs or react-vite"],
+      "postconditions": ["Only required registry components are installed", "Normal and reduced-motion behavior are verified", "Installed component paths are recorded"]
+    },
+    {
+      "skillId": "img2threejs",
+      "stage": "build",
+      "inputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "emittedArtifacts": ["object-sculpt-spec", "threejs-factory", "img2threejs-review-log", "comparison-sheet"],
+      "preconditions": ["Generated workspace exists", "StackSelection includes img2threejs", "Frontend runtime is nextjs or react-vite", "Reference image path is available"],
+      "postconditions": ["ObjectSculptSpec is validated", "Three.js factory is emitted into the generated workspace", "Pass reviews and comparison evidence are recorded"]
+    },
+    {
       "skillId": "security-audit",
       "stage": "security",
       "inputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
@@ -56,49 +74,85 @@
       "postconditions": ["Deploy config exists", "Instructions are recorded"]
     },
     {
-      "skillId": "figma-use",
+      "skillId": "web-shader-extractor",
       "stage": "design",
       "inputSchemaRef": ".antigravity/runtime/schemas/task-intent.schema.json",
       "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
-      "emittedArtifacts": ["figma-use-log"],
-      "preconditions": ["Figma MCP server is connected"],
-      "postconditions": ["Plugin API execution was tracked and node IDs returned"]
+      "emittedArtifacts": ["shader-source", "render-pipeline", "standalone-webgl-reproduction"],
+      "preconditions": ["Target website URL is available", "Browser environment is ready"],
+      "postconditions": ["Shader code is extracted", "WebGL/Canvas scene is reproduced in the workspace"]
     },
     {
-      "skillId": "figma-generate-design",
+      "skillId": "frontend-skill",
       "stage": "design",
       "inputSchemaRef": ".antigravity/runtime/schemas/task-intent.schema.json",
       "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
-      "emittedArtifacts": ["figma-design-brief", "figma-design-tokens", "figma-component-inventory"],
-      "preconditions": ["Figma MCP server is connected", "Target Figma file exists"],
-      "postconditions": ["Page, screen, or layout generated in Figma reusing the design system"]
+      "emittedArtifacts": ["mood-board", "content-plan", "motion-plan", "taste-dial-configuration"],
+      "preconditions": ["TaskIntent exists", "Design brief or tokens are active"],
+      "postconditions": ["Aesthetic dials (Variance, Motion, Density) are configured", "Visual and narrative theses are validated"]
     },
     {
-      "skillId": "figma-generate-library",
-      "stage": "design",
+      "skillId": "frontend-skill",
+      "stage": "build",
       "inputSchemaRef": ".antigravity/runtime/schemas/task-intent.schema.json",
       "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
-      "emittedArtifacts": ["figma-library-structure", "figma-variable-summary"],
-      "preconditions": ["Figma MCP server is connected", "Target Figma file exists"],
-      "postconditions": ["Component library or variable tokens created in Figma matching code"]
+      "emittedArtifacts": ["mood-board", "content-plan", "motion-plan", "taste-dial-configuration"],
+      "preconditions": ["TaskIntent exists", "Design brief or tokens are active"],
+      "postconditions": ["Aesthetic dials (Variance, Motion, Density) are configured", "Visual and narrative theses are validated"]
     },
     {
-      "skillId": "figma-use-figjam",
-      "stage": "design",
-      "inputSchemaRef": ".antigravity/runtime/schemas/task-intent.schema.json",
+      "skillId": "remotion-video-generator",
+      "stage": "build",
+      "inputSchemaRef": ".antigravity/runtime/schemas/stack-selection.schema.json",
       "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
-      "emittedArtifacts": ["figma-figjam-log"],
-      "preconditions": ["Figma MCP server is connected"],
-      "postconditions": ["FigJam board created or updated"]
+      "emittedArtifacts": ["remotion-composition", "video-rendering-log", "rendered-video-asset"],
+      "preconditions": ["Generated workspace exists", "React framework is present"],
+      "postconditions": ["React-based animations are compiled", "Video assets are generated programmatically"]
     },
     {
-      "skillId": "figma-use-slides",
+      "skillId": "remotion-video-generator",
+      "stage": "deploy",
+      "inputSchemaRef": ".antigravity/runtime/schemas/stack-selection.schema.json",
+      "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "emittedArtifacts": ["remotion-composition", "video-rendering-log", "rendered-video-asset"],
+      "preconditions": ["Generated workspace exists", "React framework is present"],
+      "postconditions": ["React-based animations are compiled", "Video assets are generated programmatically"]
+    },
+    {
+      "skillId": "understand-anything",
+      "stage": "plan",
+      "inputSchemaRef": ".antigravity/runtime/schemas/task-intent.schema.json",
+      "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "emittedArtifacts": ["codebase-knowledge-graph", "architecture-summary-report"],
+      "preconditions": ["Target codebase/workspace is accessible"],
+      "postconditions": ["Class, function, and import relationships are indexed", "Domain logic mappings exist in the manifest"]
+    },
+    {
+      "skillId": "understand-anything",
+      "stage": "review",
+      "inputSchemaRef": ".antigravity/runtime/schemas/task-intent.schema.json",
+      "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "emittedArtifacts": ["codebase-knowledge-graph", "architecture-summary-report"],
+      "preconditions": ["Target codebase/workspace is accessible"],
+      "postconditions": ["Class, function, and import relationships are indexed", "Domain logic mappings exist in the manifest"]
+    },
+    {
+      "skillId": "figma-implement-design",
       "stage": "design",
       "inputSchemaRef": ".antigravity/runtime/schemas/task-intent.schema.json",
       "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
-      "emittedArtifacts": ["figma-slides-log"],
-      "preconditions": ["Figma MCP server is connected"],
-      "postconditions": ["Figma Slides deck created or updated"]
+      "emittedArtifacts": ["figma-design-context", "mood-board"],
+      "preconditions": ["Figma URL or desktop selection is available", "Figma MCP server is connected"],
+      "postconditions": ["Figma design context and screenshots are retrieved"]
+    },
+    {
+      "skillId": "figma-implement-design",
+      "stage": "build",
+      "inputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "emittedArtifacts": ["implementation-log", "ui-verification-log"],
+      "preconditions": ["Figma design context is retrieved", "Generated workspace is accessible"],
+      "postconditions": ["Design translated into codebase conventions with 1:1 parity", "Implementation is validated against original design screenshot"]
     }
   ]
 }

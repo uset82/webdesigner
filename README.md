@@ -103,6 +103,7 @@ Model and provider selection remains capability-based. Roles are not permanently
 | `.mcp.json` | Installed WebDesigner MCP server configuration |
 | `skills/webdesigner-design-system/` | Nightglass, conditional 3D references, tokens, and Blender setup resources |
 | `skills/blender-*/`, `skills/rigging-animation/` | Source-pinned Blender specialists |
+| `skills/img2threejs/`, `skills/animate-ui/` | Optional image-to-Three.js sculpt pipeline and animated React UI registry integration |
 | `skills/` | Discoverable design, Blender, planning, design-provider, build, security, and deployment workflows |
 | `.antigravity/skills/` | Maintained source copies used by the orchestration runtime |
 | `.antigravity/runtime/` | Routing policies, schemas, catalogs, and handoff contracts |

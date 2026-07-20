@@ -51,6 +51,8 @@ Supporting layers:
 - `mongodb`
 - `mysql`
 - `google-maps`
+- `animate-ui` (optional component registry when `requiresAnimatedUI` is true)
+- `img2threejs` (optional image-to-Three.js pipeline when `requiresImageToThreeJS` is true)
 
 These are integrations or data layers, not primary runtime choices.
 

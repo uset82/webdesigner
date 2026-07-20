@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "taskId": "img2threejs-demo",
+  "title": "Image to Three.js product prop",
+  "prompt": "Rebuild this product reference image as a procedural Three.js model for an interactive React product page.",
+  "requestedStages": ["plan", "design", "build", "security", "review", "deploy"],
+  "constraints": {
+    "experienceType": "spa-web",
+    "requiresSEO": false,
+    "requiresVision": true,
+    "requiresImageGeneration": false,
+    "requiresAnimatedUI": false,
+    "requiresImageToThreeJS": true,
+    "latencyPreference": "balanced",
+    "budgetPreference": "balanced",
+    "designProvider": "stitch"
+  },
+  "context": {
+    "host": "antigravity",
+    "sourceDocs": ["skills.md", "agents.md"]
+  }
+}

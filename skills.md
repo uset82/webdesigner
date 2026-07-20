@@ -1,4 +1,4 @@
-# Agent Skills
+﻿# Agent Skills
 
 WebDesigner skills are stage contracts, not vendor-specific prompt bundles. Each skill must declare its inputs, outputs, preconditions, postconditions, and emitted artifact types.
 
@@ -96,5 +96,19 @@ WebDesigner skills are stage contracts, not vendor-specific prompt bundles. Each
 - **Inputs**: task brief, design artifacts, optional visual references or existing images
 - **Outputs**: stronger visual thesis, content plan, interaction thesis, and section-level quality checks
 - **Notes**: This skill complements `stitch-design` and `code-generator`; it does not replace WebDesigner's artifact and handoff contracts.
+
+### `animate-ui`
+- **Stage**: `build`
+- **Role**: Adds selected animated React components from the `imskyleen/animate-ui` Shadcn registry when animated interface behavior is requested
+- **Inputs**: `TaskIntent`, `StackSelection`, motion plan, generated Next.js or React/Vite workspace
+- **Outputs**: installed component map and normal/reduced-motion verification log
+- **Notes**: Activates through the `requiresAnimatedUI` constraint and `animate-ui` stack integration; it is not used for video, Flutter, or WebGL-only animation.
+
+### `img2threejs`
+- **Stage**: `build`
+- **Role**: Rebuilds a reference object or character image as a quality-gated, animation-ready procedural Three.js model using staged sculpt passes and vision review
+- **Inputs**: `TaskIntent`, `StackSelection`, reference image path, generated Next.js or React/Vite workspace
+- **Outputs**: `ObjectSculptSpec`, TypeScript Three.js factory, review log, and optional comparison sheets
+- **Notes**: Activates through the `requiresImageToThreeJS` constraint and `img2threejs` stack integration. Scripts live under `.antigravity/skills/img2threejs/forge` (Python 3.10+ stdlib) and are mirrored into `skills/img2threejs` for plugin discovery. Three.js is installed only in the generated workspace. Not used for Flutter, photogrammetry meshes, or pure CSS motion.
 
 Official Stitch-oriented or OpenAI-oriented skills can be attached when they fit the active workflow, but they do not replace WebDesigner's stage contracts, routing policy, or artifact manifest.

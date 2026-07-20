@@ -24,6 +24,8 @@ This reference mirrors `.antigravity/runtime/stack-catalog.json`.
 - **mongodb**: document data integration
 - **mysql**: relational data integration
 - **google-maps**: product integration, not a runtime choice
+- **animate-ui**: optional component-registry integration for animated React UI (`requiresAnimatedUI`)
+- **img2threejs**: optional image-to-3D integration for procedural Three.js reconstruction (`requiresImageToThreeJS`)
 
 ## Deployment Targets
 - **vercel**: preferred for Next.js

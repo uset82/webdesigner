@@ -52,6 +52,8 @@ These rules apply to every provider and model used by WebDesigner.
 - Each section gets one job, one dominant visual idea, and one primary takeaway.
 - Use a real visual anchor instead of relying on gradients or abstract decoration alone.
 - Visually led work should ship with 2-3 intentional motions, not generic animation noise.
+- When `requiresAnimatedUI` is true on a compatible React stack, select the `animate-ui` integration and install only the registry components required by the motion plan.
+- When `requiresImageToThreeJS` is true on a compatible React stack, select the `img2threejs` integration, run the staged forge pipeline from the skill root, and emit the Three.js factory only into the generated workspace.
 
 ## 10. Frontend Verification Loop
 - Use uploaded or pre-generated images first. Otherwise generate images. Do not hotlink web images unless the user explicitly requests them.

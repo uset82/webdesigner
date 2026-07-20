@@ -26,6 +26,8 @@
         "requiresSEO": { "type": "boolean" },
         "requiresVision": { "type": "boolean" },
         "requiresImageGeneration": { "type": "boolean" },
+        "requiresAnimatedUI": { "type": "boolean" },
+        "requiresImageToThreeJS": { "type": "boolean" },
         "preferredProviders": {
           "type": "array",
           "items": { "type": "string" }

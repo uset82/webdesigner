@@ -1,0 +1,4 @@
+interface:
+  display_name: "img2threejs"
+  short_description: "Rebuild a reference image as a procedural Three.js model"
+  default_prompt: "Use $img2threejs to rebuild this object image as a quality-gated Three.js model."
