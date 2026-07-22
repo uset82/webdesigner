@@ -1,0 +1,132 @@
+/*
+ * Optional Nightglass adapter for Tailwind CSS v4.
+ *
+ * Import this file from the Tailwind entry stylesheet. It imports the
+ * framework-neutral token contract, then exposes ng-prefixed utilities.
+ */
+
+@import "./tokens.css";
+
+@theme inline {
+  /* Color */
+  --color-ng-canvas: var(--ng-color-canvas);
+  --color-ng-surface-1: var(--ng-color-surface-1);
+  --color-ng-surface-2: var(--ng-color-surface-2);
+  --color-ng-surface-3: var(--ng-color-surface-3);
+  --color-ng-surface-hover: var(--ng-color-surface-hover);
+  --color-ng-overlay: var(--ng-color-overlay);
+  --color-ng-border: var(--ng-color-border);
+  --color-ng-border-strong: var(--ng-color-border-strong);
+  --color-ng-text: var(--ng-color-text);
+  --color-ng-text-secondary: var(--ng-color-text-secondary);
+  --color-ng-text-muted: var(--ng-color-text-muted);
+  --color-ng-text-faint: var(--ng-color-text-faint);
+  --color-ng-accent: var(--ng-color-accent);
+  --color-ng-accent-hover: var(--ng-color-accent-hover);
+  --color-ng-accent-pressed: var(--ng-color-accent-pressed);
+  --color-ng-on-accent: var(--ng-color-on-accent);
+  --color-ng-focus: var(--ng-color-focus);
+  --color-ng-success: var(--ng-color-success);
+  --color-ng-warning: var(--ng-color-warning);
+  --color-ng-danger: var(--ng-color-danger);
+  --color-ng-info: var(--ng-color-info);
+
+  /* Typography */
+  --font-ng-sans: var(--ng-font-sans);
+  --font-ng-mono: var(--ng-font-mono);
+  --font-weight-ng-regular: var(--ng-weight-regular);
+  --font-weight-ng-medium: var(--ng-weight-medium);
+  --font-weight-ng-semibold: var(--ng-weight-semibold);
+  --text-ng-xs: var(--ng-text-xs);
+  --text-ng-sm: var(--ng-text-sm);
+  --text-ng-base: var(--ng-text-base);
+  --text-ng-lg: var(--ng-text-lg);
+  --text-ng-xl: var(--ng-text-xl);
+  --text-ng-2xl: var(--ng-text-2xl);
+  --text-ng-3xl: var(--ng-text-3xl);
+  --text-ng-4xl: var(--ng-text-4xl);
+  --text-ng-display: var(--ng-text-display);
+  --leading-ng-tight: var(--ng-leading-tight);
+  --leading-ng-snug: var(--ng-leading-snug);
+  --leading-ng-normal: var(--ng-leading-normal);
+  --leading-ng-relaxed: var(--ng-leading-relaxed);
+  --tracking-ng-tight: var(--ng-tracking-tight);
+  --tracking-ng-normal: var(--ng-tracking-normal);
+  --tracking-ng-wide: var(--ng-tracking-wide);
+
+  /* Spacing */
+  --spacing-ng-0: var(--ng-space-0);
+  --spacing-ng-1: var(--ng-space-1);
+  --spacing-ng-2: var(--ng-space-2);
+  --spacing-ng-3: var(--ng-space-3);
+  --spacing-ng-4: var(--ng-space-4);
+  --spacing-ng-5: var(--ng-space-5);
+  --spacing-ng-6: var(--ng-space-6);
+  --spacing-ng-8: var(--ng-space-8);
+  --spacing-ng-10: var(--ng-space-10);
+  --spacing-ng-12: var(--ng-space-12);
+  --spacing-ng-16: var(--ng-space-16);
+  --spacing-ng-20: var(--ng-space-20);
+  --spacing-ng-24: var(--ng-space-24);
+  --spacing-ng-32: var(--ng-space-32);
+  --spacing-ng-header: var(--ng-header-height);
+  --spacing-ng-control: var(--ng-control-height);
+  --spacing-ng-sidebar: var(--ng-sidebar-width);
+  --spacing-ng-inspector: var(--ng-inspector-width);
+  --spacing-ng-motion: var(--ng-motion-distance);
+
+  /* Containers and breakpoints */
+  --container-ng-page: var(--ng-page-max);
+  --container-ng-reading: var(--ng-reading-max);
+  --container-ng-copy: var(--ng-copy-max);
+  --breakpoint-ng-sm: var(--ng-breakpoint-sm);
+  --breakpoint-ng-md: var(--ng-breakpoint-md);
+  --breakpoint-ng-lg: var(--ng-breakpoint-lg);
+  --breakpoint-ng-xl: var(--ng-breakpoint-xl);
+
+  /* Shape and elevation */
+  --radius-ng-sm: var(--ng-radius-sm);
+  --radius-ng-md: var(--ng-radius-md);
+  --radius-ng-lg: var(--ng-radius-lg);
+  --radius-ng-full: var(--ng-radius-full);
+  --shadow-ng-hairline: var(--ng-shadow-hairline);
+  --shadow-ng-surface: var(--ng-shadow-surface);
+  --shadow-ng-floating: var(--ng-shadow-floating);
+  --shadow-ng-focus: var(--ng-shadow-focus);
+
+  /* Easing */
+  --ease-ng-standard: var(--ng-ease-standard);
+  --ease-ng-emphasized: var(--ng-ease-emphasized);
+}
+
+@utility duration-ng-fast {
+  transition-duration: var(--ng-duration-fast);
+}
+
+@utility duration-ng-base {
+  transition-duration: var(--ng-duration-base);
+}
+
+@utility duration-ng-reveal {
+  transition-duration: var(--ng-duration-reveal);
+}
+
+@utility duration-ng-slow {
+  transition-duration: var(--ng-duration-slow);
+}
+
+@utility z-ng-header {
+  z-index: var(--ng-z-header);
+}
+
+@utility z-ng-overlay {
+  z-index: var(--ng-z-overlay);
+}
+
+@utility z-ng-modal {
+  z-index: var(--ng-z-modal);
+}
+
+@utility z-ng-toast {
+  z-index: var(--ng-z-toast);
+}

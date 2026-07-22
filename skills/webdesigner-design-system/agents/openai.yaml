@@ -1,0 +1,4 @@
+interface:
+  display_name: "WebDesigner Design System"
+  short_description: "Build polished Nightglass web and 3D interfaces"
+  default_prompt: "Design and build a modern interface using the WebDesigner system."
