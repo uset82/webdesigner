@@ -1,0 +1,30 @@
+{
+  "name": "@codex-avatar-studio/runtime-pixi",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js",
+      "default": "./dist/src/index.js"
+    }
+  },
+  "scripts": {
+    "dev": "tsc -p tsconfig.json --watch --preserveWatchOutput",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "pnpm --workspace-root exec biome lint packages/runtime-pixi",
+    "test": "pnpm --workspace-root exec vitest run packages/runtime-pixi"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.14",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@codex-avatar-studio/avatar-core": "workspace:*",
+    "pixi.js": "8.14.0"
+  }
+}

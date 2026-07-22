@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "StackSelection",
+  "type": "object",
+  "required": [
+    "version",
+    "selectionId",
+    "experienceType",
+    "frontendRuntime",
+    "backendRuntime",
+    "dataLayer",
+    "deploymentTarget",
+    "designProvider",
+    "integrations",
+    "rationale"
+  ],
+  "properties": {
+    "version": { "const": "1.0" },
+    "selectionId": { "type": "string" },
+    "experienceType": {
+      "type": "string",
+      "enum": ["seo-fullstack-web", "spa-web", "cross-platform-mobile", "api-backend"]
+    },
+    "frontendRuntime": {
+      "type": "string",
+      "enum": ["nextjs", "react-vite", "flutter", "none"]
+    },
+    "backendRuntime": {
+      "type": "string",
+      "enum": ["nextjs-route-handlers", "node-express", "none"]
+    },
+    "dataLayer": {
+      "type": "string",
+      "enum": ["none", "prisma", "mongodb", "mysql"]
+    },
+    "deploymentTarget": {
+      "type": "string",
+      "enum": ["vercel", "netlify", "cloud-run", "docker", "mobile-store"]
+    },
+    "designProvider": {
+      "type": "string",
+      "enum": ["stitch", "outline"]
+    },
+    "integrations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["google-maps", "animate-ui", "img2threejs"]
+      }
+    },
+    "rationale": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

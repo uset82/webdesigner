@@ -1,0 +1,33 @@
+name: Blender asset pipeline task
+about: Track Blender SVG/GLB/PNG export work
+title: "[Blender] "
+labels: ["workstream:blender", "needs-assets"]
+body:
+  - type: textarea
+    id: scene-setup
+    attributes:
+      label: Scene setup
+      value: |
+        - [ ] Uses orthographic camera for line-art export
+        - [ ] Uses named collections: Avatar, Rig, Export, Guides, Ignore
+        - [ ] Materials are flat/stylized when targeting SVG/line art
+        - [ ] GLB export is under target size
+        - [ ] Generated outputs are local
+  - type: textarea
+    id: tasks
+    attributes:
+      label: Tasks
+      value: |
+        - [ ] Add/adjust Blender script
+        - [ ] Run Blender dry-run
+        - [ ] Export SVG/GLB/PNG preview
+        - [ ] Validate output path
+        - [ ] Update manifest/docs
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      value: |
+        - [ ] Missing Blender path is handled gracefully
+        - [ ] Valid Blender path runs without blocking the extension
+        - [ ] Errors are readable

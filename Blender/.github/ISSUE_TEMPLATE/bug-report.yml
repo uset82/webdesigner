@@ -1,0 +1,41 @@
+name: Bug report
+about: Report a defect in the extension, Webview, asset pipeline, or renderer
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      value: |
+        1.
+        2.
+        3.
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      value: |
+        OS:
+        VS Code version:
+        Extension version:
+        Runtime selected: svg/rive/live2d/webgl/webgpu
+        Blender installed: yes/no
+  - type: textarea
+    id: safety
+    attributes:
+      label: Safety/fallback checklist
+      value: |
+        - [ ] SVG fallback still works
+        - [ ] No external network call occurred
+        - [ ] No user assets were uploaded

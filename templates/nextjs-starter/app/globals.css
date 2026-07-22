@@ -1,0 +1,165 @@
+/* WebDesigner Next.js Global Styles */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Space+Mono&display=swap');
+
+:root {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Outfit', var(--font-sans);
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-mono: 'Space Mono', monospace;
+
+  /* Palette - SaaS Defaults */
+  --bg-base: hsl(222, 47%, 6%);
+  --bg-surface: hsl(222, 47%, 10%);
+  --bg-surface-bright: hsl(222, 40%, 15%);
+  --text-main: hsl(210, 40%, 98%);
+  --text-muted: hsl(215, 20%, 75%);
+  --text-dim: hsl(215, 15%, 55%);
+  --brand-accent: hsl(263, 90%, 65%);
+  --brand-accent-glow: hsla(263, 90%, 65%, 0.35);
+  --border-base: hsl(222, 30%, 16%);
+  
+  --layout-padding: 2rem;
+  --layout-gap: 1.5rem;
+  --border-radius: 12px;
+  
+  --transition-fast: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-normal: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --transition-slow: all 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+  
+  --shadow-soft: 0 4px 30px rgba(0, 0, 0, 0.3);
+  --shadow-medium: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  --glass-bg: rgba(10, 15, 30, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.08);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-base);
+  color: var(--text-main);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+/* Minimalist */
+.vibe-minimalist {
+  --bg-base: hsl(0, 0%, 5%);
+  --bg-surface: hsl(0, 0%, 8%);
+  --bg-surface-bright: hsl(0, 0%, 12%);
+  --text-main: hsl(0, 0%, 98%);
+  --text-muted: hsl(0, 0%, 75%);
+  --text-dim: hsl(0, 0%, 50%);
+  --brand-accent: hsl(0, 0%, 95%);
+  --brand-accent-glow: rgba(255, 255, 255, 0.15);
+  --border-base: hsl(0, 0%, 15%);
+  --border-radius: 0px;
+}
+
+/* Editorial */
+.vibe-editorial {
+  --font-display: var(--font-serif);
+  --bg-base: hsl(30, 24%, 96%);
+  --bg-surface: hsl(30, 18%, 92%);
+  --bg-surface-bright: hsl(30, 12%, 88%);
+  --text-main: hsl(30, 30%, 12%);
+  --text-muted: hsl(30, 15%, 28%);
+  --text-dim: hsl(30, 10%, 45%);
+  --brand-accent: hsl(0, 72%, 30%);
+  --brand-accent-glow: hsla(0, 72%, 30%, 0.15);
+  --border-base: hsl(30, 10%, 80%);
+  --border-radius: 4px;
+}
+
+/* Retro-Futuristic */
+.vibe-retro-futuristic {
+  --bg-base: hsl(276, 50%, 4%);
+  --bg-surface: hsl(276, 45%, 8%);
+  --bg-surface-bright: hsl(276, 40%, 12%);
+  --text-main: hsl(180, 100%, 97%);
+  --text-muted: hsl(328, 100%, 70%);
+  --text-dim: hsl(276, 30%, 55%);
+  --brand-accent: hsl(190, 100%, 50%);
+  --brand-accent-glow: hsla(190, 100%, 50%, 0.4);
+  --border-base: hsl(328, 80%, 40%);
+  --border-radius: 8px;
+}
+
+/* Layout Utilities */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--layout-padding);
+}
+
+.hero {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  padding: calc(var(--layout-padding) * 2) var(--layout-padding);
+  background: radial-gradient(circle at top, var(--brand-accent-glow), transparent 60%);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--layout-gap);
+}
+
+.card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-base);
+  border-radius: var(--border-radius);
+  padding: var(--layout-padding);
+  box-shadow: var(--shadow-soft);
+  transition: var(--transition-normal);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--brand-accent);
+  box-shadow: var(--shadow-medium);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.75rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  border-radius: var(--border-radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background-color: var(--brand-accent);
+  color: #ffffff;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border-color: var(--border-base);
+  color: var(--text-main);
+}

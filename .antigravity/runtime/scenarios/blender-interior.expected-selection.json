@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "selectionId": "sel-blender-interior-demo",
+  "experienceType": "spa-web",
+  "frontendRuntime": "react-vite",
+  "backendRuntime": "node-express",
+  "dataLayer": "none",
+  "deploymentTarget": "netlify",
+  "designProvider": "stitch",
+  "integrations": ["blender-mcp"],
+  "rationale": [
+    "Matched recommended stack for spa-web",
+    "Selected react-vite for frontend and node-express for backend.",
+    "Blender MCP requested for interior visualization; multiple camera angles require iterative viewport composition.",
+    "Vision capability required for lighting quality assessment and furniture placement review.",
+    "Quality latency preference supports render iteration for natural lighting evaluation."
+  ]
+}

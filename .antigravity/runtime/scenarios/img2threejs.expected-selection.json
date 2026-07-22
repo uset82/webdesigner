@@ -1,0 +1,17 @@
+{
+  "version": "1.0",
+  "selectionId": "sel-img2threejs-demo",
+  "experienceType": "spa-web",
+  "frontendRuntime": "react-vite",
+  "backendRuntime": "node-express",
+  "dataLayer": "none",
+  "deploymentTarget": "netlify",
+  "designProvider": "stitch",
+  "integrations": ["img2threejs"],
+  "rationale": [
+    "Matched recommended stack for spa-web",
+    "Selected react-vite for frontend and node-express for backend.",
+    "Configured deployment to netlify.",
+    "Image-to-Three.js reconstruction requested; enabled the img2threejs sculpting pipeline for the build stage."
+  ]
+}

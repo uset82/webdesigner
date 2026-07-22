@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "selectionId": "seo-fullstack-demo-selection",
+  "experienceType": "seo-fullstack-web",
+  "frontendRuntime": "nextjs",
+  "backendRuntime": "nextjs-route-handlers",
+  "dataLayer": "none",
+  "deploymentTarget": "vercel",
+  "designProvider": "stitch",
+  "integrations": [],
+  "rationale": [
+    "SEO requirement selects the seo-fullstack-web experience type.",
+    "Next.js is the v1 frontend runtime for SEO-sensitive web applications.",
+    "Route handlers keep the first backend path inside the curated v1 boundary."
+  ]
+}

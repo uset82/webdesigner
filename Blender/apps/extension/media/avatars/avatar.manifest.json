@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "id": "default-coder-orb",
+  "name": "Default Coder Orb",
+  "version": "0.1.0",
+  "author": "Codex Avatar Studio contributors",
+  "license": "UNLICENSED (original project work)",
+  "preferredRuntime": "pixi",
+  "fallbackRuntime": "svg",
+  "entrypoints": {
+    "pixi": "pixi/placeholder-spritesheet.json",
+    "svg": "svg/placeholder-avatar.svg"
+  },
+  "capabilities": [
+    "state-animation",
+    "one-shot-triggers",
+    "speech-level",
+    "reduced-motion",
+    "gaze",
+    "particles"
+  ],
+  "states": {
+    "idle": "idle_loop",
+    "welcome": "greet_once",
+    "listening": "listen_loop",
+    "thinking": "think_loop",
+    "speaking": "talk_loop",
+    "coding": "type_loop",
+    "reviewing": "inspect_loop",
+    "debugging": "debug_loop",
+    "building": "scan_loop",
+    "success": "celebrate_once",
+    "warning": "concerned_loop",
+    "error": "error_once",
+    "sleeping": "sleep_loop"
+  },
+  "triggers": {
+    "blink": "blink_once",
+    "look-left": "look_left_once",
+    "look-right": "look_right_once",
+    "nod": "nod_once",
+    "shake": "shake_once",
+    "celebrate": "celebrate_once",
+    "point": "point_once",
+    "start-speaking": "talk_start",
+    "stop-speaking": "talk_stop",
+    "show-particles": "particles_success",
+    "clear-effects": "clear_effects"
+  },
+  "previewImage": "svg/placeholder-avatar.svg",
+  "runtimePriority": ["pixi", "svg"],
+  "assets": {
+    "pixi": "pixi/placeholder-spritesheet.json",
+    "svg": "svg/placeholder-avatar.svg"
+  },
+  "checksums": {
+    "pixi/placeholder-spritesheet.json": "b9f4a917542d2fb7715a0d51ec8e9f49328af9c0441bf027e71e9f7277732241",
+    "pixi/placeholder-spritesheet.svg": "cce1d12d930a246b25f55661af36a9b960a228e834201a1821341bea94b28db4",
+    "svg/placeholder-avatar.svg": "2f7389390c64d310f9849ce7eca519ce514cb2e942b6e63764eebad10f21d980"
+  }
+}

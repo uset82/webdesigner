@@ -1,0 +1,27 @@
+name: Design review
+about: Review avatar UX, animation behavior, SVG layer quality, or visual direction
+title: "[Design Review] "
+labels: ["design-review", "workstream:svg"]
+body:
+  - type: textarea
+    id: design-goal
+    attributes:
+      label: Design goal
+      description: What should this design/animation communicate?
+    validations:
+      required: true
+  - type: textarea
+    id: checklist
+    attributes:
+      label: Review checklist
+      value: |
+        - [ ] Original design, not copied from Grok/Ani/Rudi or any copyrighted mascot
+        - [ ] Calm enough for coding environment
+        - [ ] Works in light/dark themes
+        - [ ] Reduced-motion alternative exists
+        - [ ] SVG layers are named if this asset is animated
+        - [ ] No huge path explosion
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes / screenshots / asset links

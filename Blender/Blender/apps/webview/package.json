@@ -1,0 +1,29 @@
+{
+  "name": "@codex-avatar-studio/webview",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build && node ../../scripts/copy-webview-build.mjs",
+    "typecheck": "pnpm --filter @codex-avatar-studio/avatar-core build && pnpm --filter @codex-avatar-studio/runtime-pixi build && tsc -p tsconfig.json --noEmit",
+    "lint": "pnpm --workspace-root exec biome lint apps/webview",
+    "test": "pnpm build && pnpm --workspace-root exec vitest run apps/webview/test && node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@codex-avatar-studio/avatar-core": "workspace:*",
+    "@codex-avatar-studio/runtime-pixi": "workspace:*",
+    "@vitejs/plugin-react": "^5.0.4",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "three": "0.185.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.9"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.14",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "@types/three": "0.185.1"
+  }
+}

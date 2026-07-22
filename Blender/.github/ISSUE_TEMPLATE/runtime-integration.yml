@@ -1,0 +1,35 @@
+name: Runtime integration
+about: Track SVG, Rive, Live2D, WebGL, or WebGPU runtime integration
+title: "[Runtime] "
+labels: ["workstream:runtime"]
+body:
+  - type: dropdown
+    id: runtime
+    attributes:
+      label: Runtime
+      options:
+        - svg
+        - rive
+        - live2d
+        - webgl
+        - webgpu
+    validations:
+      required: true
+  - type: textarea
+    id: tasks
+    attributes:
+      label: Tasks
+      value: |
+        - [ ] Add renderer/adapter
+        - [ ] Add manifest support
+        - [ ] Add state mapping
+        - [ ] Add graceful fallback
+        - [ ] Add reduced-motion behavior
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      value: |
+        - [ ] Missing assets do not crash
+        - [ ] Unsupported runtime falls back to SVG
+        - [ ] State changes are visible

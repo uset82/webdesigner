@@ -1,0 +1,12 @@
+src/**
+test/**
+*.tsbuildinfo
+tsconfig.json
+AGENTS.md
+node_modules/**/src/**
+node_modules/**/test/**
+node_modules/**/tsconfig.json
+node_modules/**/.tsbuildinfo
+node_modules/**
+*.map
+**/*.map

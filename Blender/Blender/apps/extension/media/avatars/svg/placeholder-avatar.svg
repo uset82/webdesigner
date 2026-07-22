@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Codex Avatar placeholder">
+  <defs>
+    <linearGradient id="body" x1="26" y1="20" x2="102" y2="112" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5eead4"/>
+      <stop offset="0.52" stop-color="#60a5fa"/>
+      <stop offset="1" stop-color="#a78bfa"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <path fill="url(#body)" stroke="#1f2937" stroke-width="4" d="M64 12c25 0 45 20 45 45 0 39-25 59-45 59S19 96 19 57c0-25 20-45 45-45Z"/>
+    <path fill="#f8fafc" stroke="#1f2937" stroke-width="4" d="M36 58c0-16 12-28 28-28s28 12 28 28v19c0 16-12 28-28 28S36 93 36 77V58Z"/>
+    <path stroke="#1f2937" stroke-width="5" d="M51 66h.1M77 66h.1"/>
+    <path stroke="#1f2937" stroke-width="4" d="M54 84c6 5 14 5 20 0"/>
+    <path stroke="#1f2937" stroke-width="3" d="M29 50 16 42M99 50l13-8M64 20V7"/>
+    <circle cx="64" cy="7" r="4" fill="#f8fafc" stroke="#1f2937" stroke-width="3"/>
+  </g>
+</svg>

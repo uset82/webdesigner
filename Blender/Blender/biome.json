@@ -1,0 +1,40 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.3/schema.json",
+  "files": {
+    "includes": [
+      "apps/**",
+      "packages/**",
+      "scripts/**",
+      "*.json",
+      "!**/node_modules/**",
+      "!**/dist/**",
+      "!apps/extension/media/**",
+      "!apps/webview/dist/**",
+      "!apps/webview/src/renderers/Live2DAvatarRenderer.tsx",
+      "!apps/webview/src/renderers/RiveAvatarRenderer.tsx",
+      "!apps/webview/src/renderers/WebGLAvatarRenderer.tsx",
+      "!mcps/**"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "lineWidth": 120
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "style": {
+        "noDescendingSpecificity": "off"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "semicolons": "always",
+      "trailingCommas": "none"
+    }
+  }
+}

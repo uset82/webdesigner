@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "taskId": "blender-hero-demo",
+  "title": "3D hero render for marketing site",
+  "prompt": "Create a dramatic hero image showing a premium wireless speaker on a dark marble surface with cinematic lighting, volumetric fog, and subtle reflections. The composition should be suitable for a 16:9 hero section with text overlay space on the left third.",
+  "requestedStages": ["plan", "design", "build", "review"],
+  "constraints": {
+    "experienceType": "seo-fullstack-web",
+    "requiresSEO": true,
+    "requiresVision": true,
+    "requiresImageGeneration": false,
+    "requiresAnimatedUI": false,
+    "requiresBlenderMCP": true,
+    "latencyPreference": "quality",
+    "budgetPreference": "balanced",
+    "designProvider": "stitch"
+  },
+  "context": {
+    "host": "antigravity",
+    "sourceDocs": ["skills.md", "agents.md"]
+  }
+}

@@ -1,0 +1,58 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+**/dist/
+*.vsix
+.turbo/
+.vite/
+*.tsbuildinfo
+
+# Env & secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# OS / editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json.example
+
+# Logs & caches
+*.log
+npm-debug.log*
+pnpm-debug.log*
+.cache/
+.parcel-cache/
+coverage/
+.nyc_output/
+
+# Local runtime artifacts
+artifact_manifest.json
+task_intent.json
+stack_selection.json
+.codex-avatar/
+**/.codex-avatar/
+
+# Workspaces — keep source, drop installs & Vite cache
+workspaces/**/node_modules/
+workspaces/**/dist/
+workspaces/**/.vite/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Misc
+*.local
+.pnpm-store/

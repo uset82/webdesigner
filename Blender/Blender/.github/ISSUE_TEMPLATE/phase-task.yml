@@ -1,0 +1,53 @@
+name: Phase task
+about: Track one implementation phase or subtask for Codex Avatar Studio
+title: "[Phase X] "
+labels: ["codex-ready"]
+body:
+  - type: input
+    id: phase
+    attributes:
+      label: Phase
+      description: Example: Phase 2 — VS Code extension shell
+      placeholder: "Phase 2 — VS Code extension shell"
+    validations:
+      required: true
+  - type: dropdown
+    id: workstream
+    attributes:
+      label: Workstream
+      options:
+        - github
+        - agents
+        - extension
+        - webview
+        - avatar-core
+        - svg
+        - rive
+        - blender
+        - live2d
+        - webgl-webgpu
+        - qa
+        - release
+    validations:
+      required: true
+  - type: textarea
+    id: tasks
+    attributes:
+      label: Markable task list
+      value: |
+        - [ ] Task 1
+        - [ ] Task 2
+        - [ ] Task 3
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      value: |
+        - [ ] Typecheck passes
+        - [ ] Lint passes
+        - [ ] Tests/build pass or reason documented
+        - [ ] docs/PLAN_CHECKLIST.md updated
+    validations:
+      required: true

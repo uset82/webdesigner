@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SkillContract",
+  "type": "object",
+  "required": [
+    "version",
+    "skillId",
+    "stage",
+    "inputSchemaRef",
+    "emittedArtifacts",
+    "preconditions",
+    "postconditions"
+  ],
+  "properties": {
+    "version": { "const": "1.0" },
+    "skillId": { "type": "string" },
+    "stage": {
+      "type": "string",
+      "enum": ["plan", "design", "build", "security", "review", "deploy"]
+    },
+    "inputSchemaRef": { "type": "string" },
+    "outputSchemaRef": { "type": "string" },
+    "emittedArtifacts": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "preconditions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "postconditions": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,28 @@
+{
+  "name": "webdesigner-core",
+  "version": "1.0.0",
+  "description": "Active Orchestrator Engine & MCP Server for WebDesigner",
+  "main": "dist/cli/index.js",
+  "bin": {
+    "wd": "./dist/cli/index.js"
+  },
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc",
+    "test": "npm run build && node --test dist/core/orchestrator.test.js",
+    "start": "node dist/cli/index.js",
+    "mcp": "node dist/mcp/server.js",
+    "dev:cli": "tsx src/cli/index.ts",
+    "dev:mcp": "tsx src/mcp/server.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.6.0",
+    "commander": "^11.1.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3"
+  }
+}

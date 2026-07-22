@@ -1,0 +1,52 @@
+{
+  "name": "codex-avatar-studio",
+  "version": "0.1.0",
+  "private": true,
+  "description": "VS Code/Codex-compatible animated assistant system with SVG fallback and optional richer avatar runtimes.",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uset82/avatar-studio.git"
+  },
+  "homepage": "https://github.com/uset82/avatar-studio#readme",
+  "bugs": {
+    "url": "https://github.com/uset82/avatar-studio/issues"
+  },
+  "packageManager": "pnpm@11.7.0",
+  "engines": {
+    "node": ">=22 <23",
+    "pnpm": "11.7.0"
+  },
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "test": "pnpm -r test",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "test:unit": "vitest run",
+    "ci": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build",
+    "clean": "node scripts/clean.mjs",
+    "package": "node scripts/package-extension.mjs",
+    "dev:extension": "pnpm --filter ./apps/extension watch",
+    "package:vsix": "pnpm run package",
+    "smoke:webview": "node scripts/smoke-webview-render.mjs",
+    "smoke:blender": "pnpm --filter codex-avatar-studio-extension build && node scripts/smoke-blender-host.mjs",
+    "smoke:vsix": "node scripts/smoke-installed-vsix.mjs",
+    "smoke:clean-profile": "node scripts/smoke-clean-profile-install.mjs",
+    "setup:blender-mcp": "node scripts/setup-blender-mcp.mjs",
+    "verify:blender-mcp": "node scripts/setup-blender-mcp.mjs --verify-only",
+    "validate:docs": "node scripts/validate-docs.mjs",
+    "validate:notices": "node scripts/validate-notices.mjs",
+    "validate:vsix": "node scripts/validate-vsix.mjs",
+    "package:vsix:pre": "node scripts/package-vsix.mjs --pre-release"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.3",
+    "@vscode/vsce": "^3.9.2",
+    "esbuild": "^0.28.1",
+    "typescript": "^5.9.2",
+    "vitest": "4.1.10"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "version": "1.0",
+  "taskId": "blender-to-threejs-demo",
+  "title": "Product render to interactive Three.js",
+  "prompt": "Create a cinematic Blender render of a premium smart watch on a dark surface with volumetric lighting, then generate an interactive Three.js version for the product page that users can rotate and zoom. The watch should have a metal case, ceramic bezel, and leather strap.",
+  "requestedStages": ["plan", "design", "build", "review", "deploy"],
+  "constraints": {
+    "experienceType": "spa-web",
+    "requiresSEO": false,
+    "requiresVision": true,
+    "requiresImageGeneration": false,
+    "requiresAnimatedUI": false,
+    "requiresBlenderMCP": true,
+    "requiresImageToThreeJS": true,
+    "latencyPreference": "quality",
+    "budgetPreference": "quality",
+    "designProvider": "stitch"
+  },
+  "context": {
+    "host": "antigravity",
+    "sourceDocs": ["skills.md", "agents.md", ".antigravity/skills/blender-mcp/docs/integration-img2threejs.md"]
+  }
+}

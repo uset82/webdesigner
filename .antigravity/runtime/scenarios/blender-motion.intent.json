@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "taskId": "blender-motion-demo",
+  "title": "Procedural motion design with Blender MCP",
+  "prompt": "Create a looping abstract motion design piece featuring rotating chrome geometric forms with iridescent materials, extruded typography spelling 'LAUNCH', and a gradient background. Export as a seamless loop for a SaaS landing page hero section.",
+  "requestedStages": ["plan", "design", "build", "review", "deploy"],
+  "constraints": {
+    "experienceType": "spa-web",
+    "requiresSEO": false,
+    "requiresVision": true,
+    "requiresImageGeneration": false,
+    "requiresAnimatedUI": true,
+    "requiresBlenderMCP": true,
+    "latencyPreference": "quality",
+    "budgetPreference": "quality",
+    "designProvider": "stitch"
+  },
+  "context": {
+    "host": "antigravity",
+    "sourceDocs": ["skills.md", "agents.md"]
+  }
+}

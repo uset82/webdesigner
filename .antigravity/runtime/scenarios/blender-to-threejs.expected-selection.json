@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "selectionId": "sel-blender-to-threejs-demo",
+  "experienceType": "spa-web",
+  "frontendRuntime": "react-vite",
+  "backendRuntime": "node-express",
+  "dataLayer": "none",
+  "deploymentTarget": "netlify",
+  "designProvider": "stitch",
+  "integrations": ["blender-mcp", "img2threejs"],
+  "rationale": [
+    "Matched recommended stack for spa-web",
+    "Selected react-vite for frontend and node-express for backend.",
+    "Blender MCP requested for cinematic render creation with volumetric lighting.",
+    "img2threejs requested for procedural Three.js factory generation from Blender render.",
+    "Combined workflow: Blender creates reference render, img2threejs generates interactive code.",
+    "Vision capability required for both render feedback loop and sculpt comparison sheets.",
+    "Quality budget and latency preference supports multi-stage iteration across both pipelines.",
+    "Three.js will be installed in generated workspace, not control plane."
+  ]
+}

@@ -1,0 +1,21 @@
+# WebDesigner IDE Rules for Cursor
+
+You are operating within a WebDesigner-governed workspace. Follow these rules strictly to ensure the control plane remains consistent:
+
+## 1. Handoff & Manifest Compliance
+- Before making ANY changes to the codebase or generated workspace, run `wd status` or inspect `artifact_manifest.json` to understand the active task ID, stack selection, and latest stage.
+- Do not run commands that bypass the stages (Plan -> Design -> Build -> Security -> Review -> Deploy).
+- Whenever you successfully complete a stage, run the `wd run` command (or call the `wd_add_artifact` tool) to record the emitted artifacts and handoff notes.
+
+## 2. Visual Quality & Dials Steering
+- For frontend and UI work, check the `.antigravity/skills/frontend-skill/SKILL.md` guidelines first.
+- Maintain the visual dials configured in `taste-dial-configuration`:
+  - **Variance**: If low, use standard grids; if high, design asymmetrical, creative layouts.
+  - **Motion**: If low, use simple fades; if high, incorporate scroll animations or canvas interactions.
+  - **Density**: If low, leave generous whitespace; if high, build compact tool-like structures.
+- Commit to the chosen design **Vibe** (SaaS, Minimalist, Editorial, Brutalist, Retro-Futuristic, Soft) and import/use the corresponding CSS tokens.
+
+## 3. Implementation Rules
+- ALWAYS reuse existing design system components and CSS variables defined in the stylesheet. DO NOT hardcode font-families, colors, or border-radii.
+- Maintain SEO best practices (descriptive title tags, proper meta descriptions, single `<h1>` per page, and HTML5 semantic tags).
+- If Figma integration is required, refer to `figma-implement-design` rules.

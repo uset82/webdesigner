@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Codex Avatar Studio plan
+    url: https://github.com/
+    about: See docs/PLAN_CHECKLIST.md and docs/GITHUB_PROJECT_SETUP.md in this repository.

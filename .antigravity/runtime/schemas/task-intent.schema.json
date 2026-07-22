@@ -1,0 +1,73 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TaskIntent",
+  "type": "object",
+  "required": ["version", "taskId", "title", "prompt", "requestedStages", "constraints", "context"],
+  "properties": {
+    "version": { "const": "1.0" },
+    "taskId": { "type": "string" },
+    "title": { "type": "string" },
+    "prompt": { "type": "string" },
+    "requestedStages": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["plan", "design", "build", "security", "review", "deploy"]
+      },
+      "minItems": 1
+    },
+    "constraints": {
+      "type": "object",
+      "properties": {
+        "experienceType": {
+          "type": "string",
+          "enum": ["seo-fullstack-web", "spa-web", "cross-platform-mobile", "api-backend"]
+        },
+        "requiresSEO": { "type": "boolean" },
+        "requiresVision": { "type": "boolean" },
+        "requiresImageGeneration": { "type": "boolean" },
+        "requiresAnimatedUI": { "type": "boolean" },
+        "requiresImageToThreeJS": { "type": "boolean" },
+        "requiresBlenderMCP": { "type": "boolean" },
+        "preferredProviders": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "excludedProviders": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "latencyPreference": {
+          "type": "string",
+          "enum": ["low", "balanced", "quality"]
+        },
+        "budgetPreference": {
+          "type": "string",
+          "enum": ["low", "balanced", "quality"]
+        },
+        "designProvider": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "context": {
+      "type": "object",
+      "required": ["host"],
+      "properties": {
+        "host": {
+          "type": "string",
+          "enum": ["antigravity", "external"]
+        },
+        "sourceDocs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "currentArtifactIds": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

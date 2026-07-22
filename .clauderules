@@ -1,0 +1,18 @@
+# WebDesigner Rules for Claude Code
+
+Follow these rules when executing coding, review, or deployment commands inside this repository:
+
+## 1. Respect Stage Transitions
+- The project runs on a structured, multi-stage pipeline: Plan -> Design -> Build -> Security -> Review -> Deploy.
+- Never jump to build or code generation without ensuring that Planning (`StackSelection`) and Design (`DesignBrief`) stages have recorded their outcomes in `artifact_manifest.json`.
+
+## 2. Register Outputs
+- Every script run, file creation, or audit validation must be registered back to the control plane.
+- Execute `npx tsx src/cli/index.ts run <stage>` or call the corresponding MCP tools to record the generated files, log the output, and document handoff notes.
+
+## 3. Styling & Interface Standards
+- Respect the styling systems and vibes configured in the templates.
+- Enforce the "Anti-Slop" rules for landing pages:
+  - The first viewport must be a single, cohesive full-bleed layout composition.
+  - No cards inside the hero section unless interactive.
+  - The brand must have top-level visual weight.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Animate UI"
+  short_description: "Add accessible animated React UI components"
+  default_prompt: "Use $animate-ui to add an intentional animated interface component."

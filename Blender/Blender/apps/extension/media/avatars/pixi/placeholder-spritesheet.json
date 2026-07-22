@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "image": "placeholder-spritesheet.svg",
+  "frameWidth": 64,
+  "frameHeight": 64,
+  "clips": {
+    "idle_loop": { "name": "idle_loop", "frames": [0, 1, 2, 1], "fps": 6, "loop": true },
+    "greet_once": { "name": "greet_once", "frames": [3, 0, 3], "fps": 8, "loop": false, "priority": 2 },
+    "listen_loop": { "name": "listen_loop", "frames": [4, 0, 4, 0], "fps": 5, "loop": true },
+    "think_loop": { "name": "think_loop", "frames": [5, 1, 5, 2], "fps": 4, "loop": true },
+    "talk_loop": { "name": "talk_loop", "frames": [6, 7, 6, 7], "fps": 8, "loop": true },
+    "type_loop": { "name": "type_loop", "frames": [8, 0, 8, 2], "fps": 6, "loop": true },
+    "inspect_loop": { "name": "inspect_loop", "frames": [9, 0, 9, 1], "fps": 5, "loop": true },
+    "debug_loop": { "name": "debug_loop", "frames": [10, 1, 10, 13], "fps": 4, "loop": true },
+    "scan_loop": { "name": "scan_loop", "frames": [11, 8, 11, 0], "fps": 6, "loop": true },
+    "celebrate_once": { "name": "celebrate_once", "frames": [12, 12, 0], "fps": 8, "loop": false, "priority": 8 },
+    "concerned_loop": { "name": "concerned_loop", "frames": [13, 4, 13], "fps": 4, "loop": true },
+    "error_once": { "name": "error_once", "frames": [14, 14, 0], "fps": 8, "loop": false, "priority": 10 },
+    "sleep_loop": { "name": "sleep_loop", "frames": [15, 15, 1], "fps": 3, "loop": true },
+    "blink_once": { "name": "blink_once", "frames": [1, 0], "fps": 10, "loop": false, "priority": 1 },
+    "look_left_once": { "name": "look_left_once", "frames": [2, 0], "fps": 8, "loop": false, "priority": 1 },
+    "look_right_once": { "name": "look_right_once", "frames": [2, 0], "fps": 8, "loop": false, "priority": 1 },
+    "nod_once": { "name": "nod_once", "frames": [2, 0], "fps": 8, "loop": false, "priority": 1 },
+    "shake_once": { "name": "shake_once", "frames": [14, 13], "fps": 8, "loop": false, "priority": 4 },
+    "point_once": { "name": "point_once", "frames": [11, 0], "fps": 8, "loop": false, "priority": 2 },
+    "talk_start": { "name": "talk_start", "frames": [6, 7], "fps": 10, "loop": false, "priority": 3 },
+    "talk_stop": { "name": "talk_stop", "frames": [7, 0], "fps": 10, "loop": false, "priority": 3 },
+    "particles_success": { "name": "particles_success", "frames": [12, 12], "fps": 8, "loop": false, "priority": 1 },
+    "clear_effects": { "name": "clear_effects", "frames": [0], "fps": 1, "loop": false, "priority": 1 }
+  }
+}

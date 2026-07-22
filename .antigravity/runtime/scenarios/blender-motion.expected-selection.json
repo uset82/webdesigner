@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "selectionId": "sel-blender-motion-demo",
+  "experienceType": "spa-web",
+  "frontendRuntime": "react-vite",
+  "backendRuntime": "node-express",
+  "dataLayer": "none",
+  "deploymentTarget": "netlify",
+  "designProvider": "stitch",
+  "integrations": ["blender-mcp", "animate-ui"],
+  "rationale": [
+    "Matched recommended stack for spa-web",
+    "Selected react-vite for frontend and node-express for backend.",
+    "Blender MCP requested for procedural motion design; keyframe animation and loop timing require visual inspection.",
+    "animate-ui integration enabled for animated UI constraint; Blender loop can complement web motion.",
+    "Vision capability required for iridescent material evaluation and motion timing assessment.",
+    "Quality budget and latency preference supports iterative animation refinement."
+  ]
+}

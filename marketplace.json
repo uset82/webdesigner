@@ -1,0 +1,20 @@
+{
+  "name": "webdesigner-repo-marketplace",
+  "interface": {
+    "displayName": "WebDesigner Local Repo Marketplace"
+  },
+  "plugins": [
+    {
+      "name": "webdesigner",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "INSTALLED_BY_DEFAULT",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

@@ -1,0 +1,527 @@
+.layered-mascot-shell {
+  display: grid;
+  place-items: center;
+  overflow: visible;
+  isolation: isolate;
+}
+
+.layered-mascot {
+  width: min(92%, 30rem);
+  height: min(92%, 38rem);
+  overflow: visible;
+  filter: drop-shadow(0 1rem 1.25rem rgb(15 23 42 / 24%));
+}
+
+.layered-mascot *,
+.layered-mascot *::before,
+.layered-mascot *::after {
+  transform-box: fill-box;
+}
+
+.mascot-ground-shadow {
+  fill: rgb(15 23 42 / 22%);
+  filter: url("#mascot-shadow");
+  transform-origin: center;
+  animation: mascot-shadow-breathe 3.8s ease-in-out infinite;
+}
+
+.mascot-body-rig {
+  transform-origin: 50% 82%;
+  animation: mascot-breathe 3.8s ease-in-out infinite;
+}
+
+.mascot-head-rig {
+  transform-origin: 50% 62%;
+  transform: translate(var(--mascot-head-x), var(--mascot-head-y)) rotate(var(--mascot-head-rotate));
+  animation: mascot-head-idle 5.6s ease-in-out infinite;
+}
+
+.mascot-hands,
+.mascot-feet,
+.mascot-cape,
+.mascot-scarf,
+.mascot-medallion,
+.mascot-brows,
+.mascot-cheeks,
+.mascot-mouth,
+.mascot-hat {
+  transform-origin: center;
+}
+
+.mascot-cape {
+  transform-origin: 50% 40%;
+  animation: mascot-cape-sway 4.8s ease-in-out infinite;
+}
+
+.mascot-scarf {
+  transform-origin: 50% 30%;
+  animation: mascot-scarf-sway 5.2s ease-in-out infinite;
+}
+
+.mascot-skirt {
+  transform-origin: 50% 20%;
+}
+
+.mascot-skirt-trim {
+  fill: none;
+  stroke: #ef0c18;
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+
+.mascot-skirt-trim-two {
+  stroke-width: 6;
+}
+
+.mascot-eyes {
+  transform-origin: center;
+}
+
+.mascot-eye {
+  transform-origin: center;
+  transition: transform 90ms ease-out;
+}
+
+.mascot-iris {
+  transform: translate(var(--mascot-look-x), var(--mascot-look-y));
+  transform-origin: center;
+  transition: transform 90ms ease-out;
+}
+
+.mascot-eyelids {
+  opacity: 0;
+  transition: opacity 55ms linear;
+}
+
+.layered-mascot-shell[data-blinking="true"] .mascot-eye {
+  transform: scaleY(0.08);
+}
+
+.layered-mascot-shell[data-blinking="true"] .mascot-eyelids {
+  opacity: 1;
+}
+
+.mascot-mouth-open,
+.mascot-mouth-concerned {
+  display: none;
+}
+
+.mascot-mouth-open {
+  transform-origin: center;
+  transform: scaleY(var(--mascot-mouth-open));
+}
+
+.mascot-thinking-effect,
+.mascot-success-effect,
+.mascot-error-effect,
+.mascot-warning-effect,
+.mascot-sleep-effect,
+.mascot-confetti {
+  opacity: 0;
+  transform-origin: center;
+  transition: opacity 160ms ease-out;
+}
+
+.layered-mascot-shell[data-avatar-state="thinking"] .mascot-thinking-effect {
+  opacity: 1;
+  animation: mascot-thoughts 1.6s ease-in-out infinite;
+}
+
+.layered-mascot-shell[data-avatar-state="thinking"] .mascot-head-rig {
+  animation: mascot-thinking-tilt 2.4s ease-in-out infinite;
+}
+
+.layered-mascot-shell[data-avatar-state="thinking"] .mascot-brow-left {
+  transform: translateY(-3px) rotate(-4deg);
+}
+
+.layered-mascot-shell[data-avatar-state="thinking"] .mascot-brow-right {
+  transform: translateY(2px) rotate(4deg);
+}
+
+.layered-mascot-shell[data-avatar-state="speaking"] .mascot-mouth-smile {
+  display: none;
+}
+
+.layered-mascot-shell[data-avatar-state="speaking"] .mascot-mouth-open {
+  display: block;
+  animation: mascot-talk 320ms ease-in-out infinite alternate;
+}
+
+.layered-mascot-shell[data-avatar-state="speaking"] .mascot-head-rig {
+  animation: mascot-speaking-nod 1.35s ease-in-out infinite;
+}
+
+.layered-mascot-shell[data-avatar-state="success"] .mascot-success-effect {
+  opacity: 1;
+  animation: mascot-pop-in 650ms cubic-bezier(0.18, 0.88, 0.32, 1.28) both;
+}
+
+.layered-mascot-shell[data-avatar-state="success"] .mascot-body-rig {
+  animation: mascot-celebrate 900ms ease-in-out both;
+}
+
+.mascot-cheeks {
+  opacity: 1;
+}
+
+.layered-mascot-shell[data-avatar-state="error"] .mascot-error-effect {
+  opacity: 1;
+  animation: mascot-pop-in 420ms cubic-bezier(0.18, 0.88, 0.32, 1.28) both;
+}
+
+.layered-mascot-shell[data-avatar-state="error"] .mascot-mouth-smile {
+  display: none;
+}
+
+.layered-mascot-shell[data-avatar-state="error"] .mascot-mouth-concerned {
+  display: block;
+}
+
+.layered-mascot-shell[data-avatar-state="error"] .mascot-head-rig {
+  animation: mascot-error-shake 520ms ease-in-out 1;
+}
+
+.layered-mascot-shell[data-avatar-state="error"] .mascot-brow-left {
+  transform: rotate(12deg) translateY(4px);
+}
+
+.layered-mascot-shell[data-avatar-state="error"] .mascot-brow-right {
+  transform: rotate(-12deg) translateY(4px);
+}
+
+.layered-mascot-shell[data-avatar-state="warning"] .mascot-warning-effect {
+  opacity: 1;
+  animation: mascot-warning-pulse 900ms ease-in-out infinite;
+}
+
+.layered-mascot-shell[data-avatar-state="warning"] .mascot-mouth-smile {
+  display: none;
+}
+
+.layered-mascot-shell[data-avatar-state="warning"] .mascot-mouth-concerned {
+  display: block;
+}
+
+.layered-mascot-shell[data-avatar-state="sleeping"] .mascot-sleep-effect {
+  opacity: 1;
+  animation: mascot-sleep-drift 2.2s ease-in-out infinite;
+}
+
+.layered-mascot-shell[data-avatar-state="sleeping"] .mascot-head-rig {
+  animation: mascot-sleep-bob 4.2s ease-in-out infinite;
+}
+
+.layered-mascot-shell[data-avatar-state="sleeping"] .mascot-mouth-smile {
+  transform: scale(0.72);
+}
+
+.layered-mascot-shell[data-avatar-state="listening"] .mascot-head-rig,
+.layered-mascot-shell[data-avatar-state="welcome"] .mascot-head-rig {
+  animation: mascot-attentive 1.8s ease-in-out infinite;
+}
+
+.layered-mascot-shell[data-avatar-state="coding"] .mascot-head-rig,
+.layered-mascot-shell[data-avatar-state="reviewing"] .mascot-head-rig,
+.layered-mascot-shell[data-avatar-state="debugging"] .mascot-head-rig,
+.layered-mascot-shell[data-avatar-state="building"] .mascot-head-rig {
+  animation: mascot-working 2s ease-in-out infinite;
+}
+
+.layered-mascot-shell[data-trigger="look-left"] .mascot-iris {
+  transform: translate(-9px, var(--mascot-look-y));
+}
+
+.layered-mascot-shell[data-trigger="look-right"] .mascot-iris {
+  transform: translate(9px, var(--mascot-look-y));
+}
+
+.layered-mascot-shell[data-trigger="nod"] .mascot-head-rig {
+  animation: mascot-trigger-nod 700ms ease-in-out 1;
+}
+
+.layered-mascot-shell[data-trigger="shake"] .mascot-head-rig {
+  animation: mascot-error-shake 620ms ease-in-out 1;
+}
+
+.layered-mascot-shell[data-trigger="celebrate"] .mascot-body-rig {
+  animation: mascot-celebrate 900ms ease-in-out 1;
+}
+
+.layered-mascot-shell[data-trigger="celebrate"] .mascot-confetti,
+.layered-mascot-shell[data-trigger="show-particles"] .mascot-confetti {
+  opacity: 1;
+  animation: mascot-confetti 900ms ease-out 1;
+}
+
+.layered-mascot-shell[data-trigger="point"] .mascot-hands {
+  animation: mascot-point 760ms ease-in-out 1;
+}
+
+.layered-mascot-shell[data-intensity="low"] .mascot-body-rig,
+.layered-mascot-shell[data-intensity="low"] .mascot-head-rig {
+  animation-duration: 6.2s;
+}
+
+.layered-mascot-shell[data-intensity="high"] .mascot-body-rig,
+.layered-mascot-shell[data-intensity="high"] .mascot-head-rig {
+  animation-duration: 2.7s;
+}
+
+.layered-mascot-shell[data-focus-mode="true"] .mascot-ground-shadow,
+.layered-mascot-shell[data-focus-mode="true"] .mascot-body-rig,
+.layered-mascot-shell[data-focus-mode="true"] .mascot-head-rig,
+.layered-mascot-shell[data-focus-mode="true"] .mascot-cape,
+.layered-mascot-shell[data-focus-mode="true"] .mascot-scarf {
+  animation-play-state: paused;
+}
+
+.layered-mascot-shell[data-reduced-motion="true"] .layered-mascot *,
+.avatar-stage[data-page-visible="false"] .layered-mascot * {
+  animation: none;
+  transition: none;
+}
+
+@keyframes mascot-breathe {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-2px) scale(1.008, 1.018);
+  }
+}
+
+@keyframes mascot-shadow-breathe {
+  0%,
+  100% {
+    transform: scaleX(1);
+    opacity: 0.22;
+  }
+  50% {
+    transform: scaleX(0.95);
+    opacity: 0.17;
+  }
+}
+
+@keyframes mascot-head-idle {
+  0%,
+  100% {
+    transform: translate(var(--mascot-head-x), var(--mascot-head-y)) rotate(var(--mascot-head-rotate));
+  }
+  35% {
+    transform: translate(var(--mascot-head-x), calc(var(--mascot-head-y) - 2px))
+      rotate(calc(var(--mascot-head-rotate) - 0.8deg));
+  }
+  70% {
+    transform: translate(var(--mascot-head-x), calc(var(--mascot-head-y) + 1px))
+      rotate(calc(var(--mascot-head-rotate) + 0.65deg));
+  }
+}
+
+@keyframes mascot-thinking-tilt {
+  0%,
+  100% {
+    transform: translate(var(--mascot-head-x), var(--mascot-head-y)) rotate(-2deg);
+  }
+  50% {
+    transform: translate(var(--mascot-head-x), calc(var(--mascot-head-y) - 3px)) rotate(-4deg);
+  }
+}
+
+@keyframes mascot-thoughts {
+  0%,
+  100% {
+    transform: translateY(3px) scale(0.94);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-4px) scale(1.04);
+    opacity: 1;
+  }
+}
+
+@keyframes mascot-talk {
+  from {
+    transform: scaleY(0.72);
+  }
+  to {
+    transform: scaleY(var(--mascot-mouth-open));
+  }
+}
+
+@keyframes mascot-speaking-nod {
+  0%,
+  100% {
+    transform: translate(var(--mascot-head-x), var(--mascot-head-y)) rotate(var(--mascot-head-rotate));
+  }
+  50% {
+    transform: translate(var(--mascot-head-x), calc(var(--mascot-head-y) + 3px)) rotate(var(--mascot-head-rotate));
+  }
+}
+
+@keyframes mascot-celebrate {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  35% {
+    transform: translateY(-12px) scale(1.025);
+  }
+  65% {
+    transform: translateY(2px) scale(0.995);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes mascot-pop-in {
+  0% {
+    transform: scale(0.25) rotate(-12deg);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.1) rotate(2deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0);
+    opacity: 1;
+  }
+}
+
+@keyframes mascot-error-shake {
+  0%,
+  100% {
+    transform: translate(var(--mascot-head-x), var(--mascot-head-y)) rotate(0);
+  }
+  20%,
+  60% {
+    transform: translate(calc(var(--mascot-head-x) - 7px), var(--mascot-head-y)) rotate(-2deg);
+  }
+  40%,
+  80% {
+    transform: translate(calc(var(--mascot-head-x) + 7px), var(--mascot-head-y)) rotate(2deg);
+  }
+}
+
+@keyframes mascot-warning-pulse {
+  0%,
+  100% {
+    transform: scale(0.94);
+    opacity: 0.65;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+@keyframes mascot-sleep-drift {
+  0%,
+  100% {
+    transform: translateY(4px);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}
+
+@keyframes mascot-sleep-bob {
+  0%,
+  100% {
+    transform: translate(-3px, 3px) rotate(-3deg);
+  }
+  50% {
+    transform: translate(-3px, 6px) rotate(-2deg);
+  }
+}
+
+@keyframes mascot-attentive {
+  0%,
+  100% {
+    transform: translate(var(--mascot-head-x), var(--mascot-head-y)) rotate(var(--mascot-head-rotate));
+  }
+  50% {
+    transform: translate(var(--mascot-head-x), calc(var(--mascot-head-y) - 3px)) rotate(var(--mascot-head-rotate));
+  }
+}
+
+@keyframes mascot-working {
+  0%,
+  100% {
+    transform: translate(var(--mascot-head-x), var(--mascot-head-y)) rotate(-1deg);
+  }
+  50% {
+    transform: translate(var(--mascot-head-x), calc(var(--mascot-head-y) + 3px)) rotate(1deg);
+  }
+}
+
+@keyframes mascot-trigger-nod {
+  0%,
+  100% {
+    transform: translate(var(--mascot-head-x), var(--mascot-head-y)) rotate(0);
+  }
+  45% {
+    transform: translate(var(--mascot-head-x), calc(var(--mascot-head-y) + 9px)) rotate(2deg);
+  }
+}
+
+@keyframes mascot-confetti {
+  0% {
+    transform: translateY(-18px) scale(0.7);
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(14px) rotate(12deg) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes mascot-point {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  45%,
+  70% {
+    transform: translateX(10px) rotate(-3deg);
+  }
+}
+
+@keyframes mascot-cape-sway {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(1.2deg);
+  }
+}
+
+@keyframes mascot-scarf-sway {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1.5px);
+  }
+}
+
+@media (forced-colors: active) {
+  .layered-mascot {
+    filter: none;
+  }
+
+  .layered-mascot path,
+  .layered-mascot ellipse,
+  .layered-mascot circle {
+    forced-color-adjust: auto;
+  }
+}

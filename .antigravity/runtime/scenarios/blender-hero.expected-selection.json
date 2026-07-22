@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "selectionId": "sel-blender-hero-demo",
+  "experienceType": "seo-fullstack-web",
+  "frontendRuntime": "nextjs",
+  "backendRuntime": "nextjs-route-handlers",
+  "dataLayer": "none",
+  "deploymentTarget": "vercel",
+  "designProvider": "stitch",
+  "integrations": ["blender-mcp"],
+  "rationale": [
+    "Matched recommended stack for seo-fullstack-web with SEO requirement",
+    "Selected nextjs for frontend with nextjs-route-handlers backend.",
+    "Blender MCP requested for cinematic hero render; volumetric fog and reflections require visual iteration.",
+    "Vision capability required for composition balance and text overlay space verification.",
+    "Quality latency preference supports multiple lighting iterations for cinematic effect.",
+    "16:9 composition constraint requires viewport framing validation."
+  ]
+}

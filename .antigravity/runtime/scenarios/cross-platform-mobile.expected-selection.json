@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "selectionId": "cross-platform-mobile-demo-selection",
+  "experienceType": "cross-platform-mobile",
+  "frontendRuntime": "flutter",
+  "backendRuntime": "node-express",
+  "dataLayer": "none",
+  "deploymentTarget": "mobile-store",
+  "designProvider": "stitch",
+  "integrations": [],
+  "rationale": [
+    "Cross-platform mobile requirement selects Flutter in the curated v1 matrix.",
+    "Node/Express is the paired backend option for Flutter when service logic is required.",
+    "Store distribution is the deployment default for Flutter clients."
+  ]
+}

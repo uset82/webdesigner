@@ -1,0 +1,63 @@
+{
+  "version": "1.0",
+  "manifestId": "sample-manifest",
+  "taskId": "seo-fullstack-demo",
+  "host": "antigravity",
+  "latestStage": "security",
+  "stackSelectionId": "seo-fullstack-demo-selection",
+  "artifacts": [
+    {
+      "artifactId": "stack-selection-1",
+      "stage": "plan",
+      "artifactType": "stack-selection",
+      "producer": {
+        "providerId": "google",
+        "modelKey": "gemini-3.1-pro",
+        "skillId": "framework-selector"
+      },
+      "path": ".antigravity/runtime/scenarios/seo-fullstack.expected-selection.json",
+      "summary": "Layered stack selected for SEO-sensitive app generation."
+    },
+    {
+      "artifactId": "design-brief-1",
+      "stage": "design",
+      "artifactType": "design-brief",
+      "producer": {
+        "providerId": "google",
+        "modelKey": "gemini-3.1-pro",
+        "skillId": "stitch-design"
+      },
+      "summary": "Portable design brief emitted for downstream code generation.",
+      "dependsOn": ["stack-selection-1"]
+    },
+    {
+      "artifactId": "content-plan-1",
+      "stage": "design",
+      "artifactType": "content-plan",
+      "producer": {
+        "providerId": "openai",
+        "modelKey": "gpt-5.4",
+        "skillId": "stitch-design"
+      },
+      "summary": "Hero, support, detail, and CTA narrative captured for the generated frontend.",
+      "dependsOn": ["stack-selection-1", "design-brief-1"]
+    },
+    {
+      "artifactId": "security-threat-model-1",
+      "stage": "security",
+      "artifactType": "security-threat-model",
+      "producer": {
+        "providerId": "openai",
+        "modelKey": "codex-security",
+        "skillId": "security-audit"
+      },
+      "summary": "Threat model captured for generated workspace and stack boundaries.",
+      "dependsOn": ["stack-selection-1", "design-brief-1"]
+    }
+  ],
+  "handoffNotes": [
+    "A review-stage model can continue from this manifest without prior session context.",
+    "If Stitch export is unavailable, code generation should use the design brief, component inventory, and any content or motion plans.",
+    "Security findings and patch proposals must be reviewed before remediation is applied."
+  ]
+}

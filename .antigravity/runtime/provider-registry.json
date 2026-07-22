@@ -1,0 +1,220 @@
+{
+  "version": "1.0",
+  "defaultRoutingPolicy": "capability-first-v1",
+  "providers": [
+    {
+      "id": "google",
+      "displayName": "Google",
+      "adapterId": "google-antigravity",
+      "authEnv": ["GOOGLE_API_KEY"],
+      "models": [
+        {
+          "key": "gemini-3.1-pro",
+          "displayName": "Gemini 3.1 Pro",
+          "configuredModelId": "gemini-3.1-pro",
+          "preferredStages": ["plan", "design", "review"],
+          "capabilities": {
+            "reasoning": "high",
+            "coding": "medium",
+            "vision": "high",
+            "imageGeneration": "none",
+            "securityAnalysis": "medium",
+            "toolUse": "high",
+            "contextWindow": "large",
+            "latencyTier": "medium",
+            "costTier": "high"
+          },
+          "toolAccess": ["structured-output", "tool-calling", "stitch-tools", "browser"],
+          "fallbackModelKeys": ["gemini-3.1-high", "gpt-5.4", "claude-opus-4.6"]
+        },
+        {
+          "key": "gemini-3.1-high",
+          "displayName": "Gemini 3.1 High",
+          "configuredModelId": "gemini-3.1-high",
+          "preferredStages": ["plan", "review"],
+          "capabilities": {
+            "reasoning": "high",
+            "coding": "medium",
+            "vision": "medium",
+            "imageGeneration": "none",
+            "securityAnalysis": "medium",
+            "toolUse": "high",
+            "contextWindow": "large",
+            "latencyTier": "high",
+            "costTier": "high"
+          },
+          "toolAccess": ["structured-output", "tool-calling", "browser"],
+          "fallbackModelKeys": ["gemini-3.1-pro", "gpt-5.4"]
+        },
+        {
+          "key": "nano-banana-pro",
+          "displayName": "Nano Banana Pro",
+          "configuredModelId": "nano-banana-pro",
+          "aliases": ["gemini-3-pro-image"],
+          "preferredStages": ["design"],
+          "capabilities": {
+            "reasoning": "low",
+            "coding": "none",
+            "vision": "high",
+            "imageGeneration": "high",
+            "securityAnalysis": "none",
+            "toolUse": "medium",
+            "contextWindow": "medium",
+            "latencyTier": "medium",
+            "costTier": "high"
+          },
+          "toolAccess": ["image-generation", "visual-assets"],
+          "fallbackModelKeys": ["gemini-3.1-pro"]
+        }
+      ]
+    },
+    {
+      "id": "anthropic",
+      "displayName": "Anthropic",
+      "adapterId": "anthropic-ai-sdk",
+      "authEnv": ["ANTHROPIC_API_KEY"],
+      "models": [
+        {
+          "key": "claude-opus-4.6",
+          "displayName": "Claude Opus 4.6",
+          "configuredModelId": "claude-opus-4-6",
+          "preferredStages": ["plan", "review", "security"],
+          "capabilities": {
+            "reasoning": "high",
+            "coding": "medium",
+            "vision": "medium",
+            "imageGeneration": "none",
+            "securityAnalysis": "high",
+            "toolUse": "medium",
+            "contextWindow": "large",
+            "latencyTier": "high",
+            "costTier": "high"
+          },
+          "toolAccess": ["structured-output", "tool-calling"],
+          "fallbackModelKeys": ["gpt-5.4", "gemini-3.1-pro"]
+        }
+      ]
+    },
+    {
+      "id": "openai",
+      "displayName": "OpenAI",
+      "adapterId": "openai-ai-sdk",
+      "authEnv": ["OPENAI_API_KEY"],
+      "models": [
+        {
+          "key": "codex-security",
+          "displayName": "Codex Security",
+          "configuredModelId": "codex-security",
+          "preferredStages": ["security"],
+          "availability": "research-preview-2026-03-06",
+          "capabilities": {
+            "reasoning": "high",
+            "coding": "high",
+            "vision": "none",
+            "imageGeneration": "none",
+            "securityAnalysis": "high",
+            "toolUse": "high",
+            "contextWindow": "large",
+            "latencyTier": "medium",
+            "costTier": "high"
+          },
+          "toolAccess": ["repo-access", "sandbox-validation", "patch-proposals", "structured-output"],
+          "fallbackModelKeys": ["gpt-5.4", "claude-opus-4.6"]
+        },
+        {
+          "key": "gpt-5.4",
+          "displayName": "GPT-5.4",
+          "configuredModelId": "gpt-5.4",
+          "preferredStages": ["plan", "design", "build", "review"],
+          "capabilities": {
+            "reasoning": "high",
+            "coding": "high",
+            "vision": "high",
+            "imageGeneration": "medium",
+            "securityAnalysis": "medium",
+            "toolUse": "high",
+            "contextWindow": "large",
+            "latencyTier": "medium",
+            "costTier": "high"
+          },
+          "toolAccess": ["structured-output", "tool-calling", "browser", "shell", "image-generation", "computer-use"],
+          "fallbackModelKeys": ["gpt-5.3", "gemini-3.1-pro"]
+        },
+        {
+          "key": "gpt-5.3",
+          "displayName": "GPT-5.3",
+          "configuredModelId": "gpt-5.3",
+          "preferredStages": ["build"],
+          "capabilities": {
+            "reasoning": "medium",
+            "coding": "high",
+            "vision": "low",
+            "imageGeneration": "none",
+            "securityAnalysis": "low",
+            "toolUse": "high",
+            "contextWindow": "large",
+            "latencyTier": "medium",
+            "costTier": "medium"
+          },
+          "toolAccess": ["structured-output", "tool-calling", "shell"],
+          "fallbackModelKeys": ["gpt-5.4"]
+        }
+      ]
+    },
+    {
+      "id": "qoder",
+      "displayName": "Qoder",
+      "adapterId": "qoder-custom",
+      "authEnv": ["QODER_API_KEY"],
+      "models": [
+        {
+          "key": "qoder-default",
+          "displayName": "Qoder",
+          "configuredModelId": "qoder-default",
+          "preferredStages": ["build"],
+          "capabilities": {
+            "reasoning": "medium",
+            "coding": "high",
+            "vision": "none",
+            "imageGeneration": "none",
+            "securityAnalysis": "low",
+            "toolUse": "medium",
+            "contextWindow": "medium",
+            "latencyTier": "medium",
+            "costTier": "medium"
+          },
+          "toolAccess": ["structured-output", "tool-calling", "shell"],
+          "fallbackModelKeys": ["gpt-5.4", "gpt-5.3"]
+        }
+      ]
+    },
+    {
+      "id": "bytedance",
+      "displayName": "ByteDance (Volcengine)",
+      "adapterId": "bytedance-adapter",
+      "authEnv": ["VOLCENGINE_API_KEY"],
+      "models": [
+        {
+          "key": "doubao-seed-2.1-pro",
+          "displayName": "Doubao Seed 2.1 Pro",
+          "configuredModelId": "doubao-seed-2.1-pro",
+          "preferredStages": ["design", "build"],
+          "capabilities": {
+            "reasoning": "medium",
+            "coding": "medium",
+            "vision": "high",
+            "imageGeneration": "none",
+            "securityAnalysis": "low",
+            "toolUse": "high",
+            "contextWindow": "medium",
+            "latencyTier": "low",
+            "costTier": "low"
+          },
+          "toolAccess": ["structured-output", "tool-calling", "browser"],
+          "fallbackModelKeys": ["gpt-5.3", "gemini-3.1-pro"]
+        }
+      ]
+    }
+  ]
+}
+

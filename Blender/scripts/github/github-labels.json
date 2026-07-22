@@ -1,0 +1,202 @@
+[
+  {
+    "name": "codex-ready",
+    "color": "0052CC",
+    "description": "Ready for Codex implementation"
+  },
+  {
+    "name": "design-review",
+    "color": "D876E3",
+    "description": "Needs visual/UX review"
+  },
+  {
+    "name": "needs-assets",
+    "color": "FBCA04",
+    "description": "Requires asset input or placeholder"
+  },
+  {
+    "name": "security",
+    "color": "B60205",
+    "description": "Security/privacy sensitive"
+  },
+  {
+    "name": "performance",
+    "color": "006B75",
+    "description": "Performance sensitive"
+  },
+  {
+    "name": "release",
+    "color": "5319E7",
+    "description": "Release or packaging work"
+  },
+  {
+    "name": "workstream:github",
+    "color": "0E8A16",
+    "description": "GitHub setup and project management"
+  },
+  {
+    "name": "workstream:agents",
+    "color": "0E8A16",
+    "description": "Codex AGENTS.md and skills"
+  },
+  {
+    "name": "workstream:extension",
+    "color": "1D76DB",
+    "description": "VS Code extension host"
+  },
+  {
+    "name": "workstream:webview",
+    "color": "1D76DB",
+    "description": "React/Vite Webview"
+  },
+  {
+    "name": "workstream:avatar-core",
+    "color": "1D76DB",
+    "description": "Avatar state machine and core types"
+  },
+  {
+    "name": "workstream:svg",
+    "color": "BFDADC",
+    "description": "SVG fallback and vector pipeline"
+  },
+  {
+    "name": "workstream:rive",
+    "color": "BFDADC",
+    "description": "Rive runtime integration"
+  },
+  {
+    "name": "workstream:blender",
+    "color": "F9D0C4",
+    "description": "Blender technical art pipeline"
+  },
+  {
+    "name": "workstream:live2d",
+    "color": "F9D0C4",
+    "description": "Live2D optional adapter"
+  },
+  {
+    "name": "workstream:webgl-webgpu",
+    "color": "F9D0C4",
+    "description": "WebGL/WebGPU renderer"
+  },
+  {
+    "name": "workstream:qa",
+    "color": "5319E7",
+    "description": "Quality and release"
+  },
+  {
+    "name": "priority:P0",
+    "color": "B60205",
+    "description": "Critical path"
+  },
+  {
+    "name": "priority:P1",
+    "color": "D93F0B",
+    "description": "Important"
+  },
+  {
+    "name": "priority:P2",
+    "color": "FBCA04",
+    "description": "Useful"
+  },
+  {
+    "name": "priority:P3",
+    "color": "C5DEF5",
+    "description": "Later"
+  },
+  {
+    "name": "phase:0",
+    "color": "EDEDED",
+    "description": "Implementation phase 0"
+  },
+  {
+    "name": "phase:1",
+    "color": "EDEDED",
+    "description": "Implementation phase 1"
+  },
+  {
+    "name": "phase:2",
+    "color": "EDEDED",
+    "description": "Implementation phase 2"
+  },
+  {
+    "name": "phase:3",
+    "color": "EDEDED",
+    "description": "Implementation phase 3"
+  },
+  {
+    "name": "phase:4",
+    "color": "EDEDED",
+    "description": "Implementation phase 4"
+  },
+  {
+    "name": "phase:5",
+    "color": "EDEDED",
+    "description": "Implementation phase 5"
+  },
+  {
+    "name": "phase:6",
+    "color": "EDEDED",
+    "description": "Implementation phase 6"
+  },
+  {
+    "name": "phase:7",
+    "color": "EDEDED",
+    "description": "Implementation phase 7"
+  },
+  {
+    "name": "phase:8",
+    "color": "EDEDED",
+    "description": "Implementation phase 8"
+  },
+  {
+    "name": "phase:9",
+    "color": "EDEDED",
+    "description": "Implementation phase 9"
+  },
+  {
+    "name": "phase:10",
+    "color": "EDEDED",
+    "description": "Implementation phase 10"
+  },
+  {
+    "name": "phase:11",
+    "color": "EDEDED",
+    "description": "Implementation phase 11"
+  },
+  {
+    "name": "phase:12",
+    "color": "EDEDED",
+    "description": "Implementation phase 12"
+  },
+  {
+    "name": "phase:13",
+    "color": "EDEDED",
+    "description": "Implementation phase 13"
+  },
+  {
+    "name": "phase:14",
+    "color": "EDEDED",
+    "description": "Implementation phase 14"
+  },
+  {
+    "name": "phase:15",
+    "color": "EDEDED",
+    "description": "Implementation phase 15"
+  },
+  {
+    "name": "phase:16",
+    "color": "EDEDED",
+    "description": "Implementation phase 16"
+  },
+  {
+    "name": "phase:17",
+    "color": "EDEDED",
+    "description": "Implementation phase 17"
+  },
+  {
+    "name": "phase:18",
+    "color": "EDEDED",
+    "description": "Implementation phase 18"
+  }
+]

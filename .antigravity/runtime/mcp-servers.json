@@ -1,0 +1,92 @@
+{
+  "version": "1.0",
+  "servers": [
+    {
+      "id": "blender",
+      "displayName": "Blender MCP",
+      "description": "Connect to Blender for 3D scene creation, manipulation, and export with visual feedback loops",
+      "transport": "stdio",
+      "command": "uvx",
+      "args": ["blender-mcp"],
+      "env": {
+        "BLENDER_MCP_PORT": "9876",
+        "BLENDER_MCP_HOST": "localhost"
+      },
+      "requiredAddon": {
+        "name": "blender_mcp",
+        "version": "1.6.4",
+        "setupScript": "Blender/scripts/setup-blender-mcp.mjs"
+      },
+      "tools": [
+        {
+          "name": "get_scene_info",
+          "description": "Get information about the current Blender scene",
+          "requiresApproval": false
+        },
+        {
+          "name": "get_object_info",
+          "description": "Get detailed information about a specific object",
+          "requiresApproval": false
+        },
+        {
+          "name": "get_screenshot",
+          "description": "Capture a viewport screenshot for visual feedback",
+          "requiresApproval": false
+        },
+        {
+          "name": "execute_blender_code",
+          "description": "Execute arbitrary Python code in Blender's bpy environment",
+          "requiresApproval": true,
+          "approvalPrompt": "This will execute Python code in Blender. Review the code before approving."
+        }
+      ],
+      "healthCheck": {
+        "tool": "get_scene_info",
+        "timeout": 5000
+      },
+      "disabledIntegrations": [
+        "polyhaven",
+        "sketchfab", 
+        "hyper3d",
+        "hunyuan",
+        "telemetry"
+      ],
+      "notes": "Keep network-backed integrations disabled per project policy. Work on explicit copies; never overwrite user-selected source scenes."
+    },
+    {
+      "id": "figma",
+      "displayName": "Figma MCP",
+      "description": "Connect to Figma for design extraction and implementation",
+      "transport": "streamable_http",
+      "url": "https://mcp.figma.com/mcp",
+      "authEnv": ["FIGMA_API_KEY"],
+      "tools": [
+        {
+          "name": "get_file",
+          "description": "Get Figma file data",
+          "requiresApproval": false
+        },
+        {
+          "name": "get_node",
+          "description": "Get specific node data from Figma file",
+          "requiresApproval": false
+        },
+        {
+          "name": "export_node",
+          "description": "Export node as image",
+          "requiresApproval": false
+        }
+      ],
+      "healthCheck": {
+        "endpoint": "/health",
+        "timeout": 5000
+      }
+    }
+  ],
+  "defaults": {
+    "connectionTimeout": 10000,
+    "requestTimeout": 30000,
+    "retryAttempts": 3,
+    "retryDelay": 1000
+  }
+}

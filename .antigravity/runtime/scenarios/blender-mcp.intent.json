@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "taskId": "blender-mcp-demo",
+  "title": "3D product visualization with Blender MCP",
+  "prompt": "Create a premium product render of a transparent handheld gaming console with visible internal components, studio lighting, and a dark reflective surface. Export the final scene as a GLB for a Three.js product page.",
+  "requestedStages": ["plan", "design", "build", "security", "review", "deploy"],
+  "constraints": {
+    "experienceType": "spa-web",
+    "requiresSEO": false,
+    "requiresVision": true,
+    "requiresImageGeneration": false,
+    "requiresAnimatedUI": false,
+    "requiresBlenderMCP": true,
+    "latencyPreference": "quality",
+    "budgetPreference": "balanced",
+    "designProvider": "stitch"
+  },
+  "context": {
+    "host": "antigravity",
+    "sourceDocs": ["skills.md", "agents.md"]
+  }
+}

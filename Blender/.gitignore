@@ -1,0 +1,25 @@
+node_modules/
+dist/
+out/
+build/
+*.tsbuildinfo
+
+.codex-avatar/cache/
+.codex-avatar/exports/
+.codex-avatar/previews/
+.codex-avatar/imports/
+.codex-avatar/avatars/
+.codex-avatar/avatar-registry.json
+# Workspace-specific avatar selection and private/local artwork.
+.vscode/settings.json
+.cursor/mcp.json
+assets/avatars/cholita-live/
+tools/blender-mcp/
+*.blend1
+*.mp4
+*.mov
+*.webm
+*.png.tmp
+
+apps/extension/media/webview/
+*.vsix

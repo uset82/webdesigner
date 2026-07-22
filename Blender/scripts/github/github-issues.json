@@ -1,0 +1,62 @@
+[
+  {
+    "title": "[Phase 0] Add Codex AGENTS.md, skills, and GitHub operating system",
+    "labels": ["phase:0", "workstream:agents", "workstream:github", "priority:P0", "codex-ready"],
+    "milestone": "M0 \u2014 GitHub + Codex operating system",
+    "body": "Tasks:\n- [ ] Read AGENTS.md and relevant skill.\n- [ ] Implement the requested phase scope.\n- [ ] Update docs/PLAN_CHECKLIST.md.\n- [ ] Run relevant checks.\n\nAcceptance:\n- [ ] Acceptance criteria in docs/PLAN_CHECKLIST.md pass.\n- [ ] Optional runtimes fall back to SVG.\n- [ ] No external network calls.\n"
+  },
+  {
+    "title": "[Phase 2] Build VS Code/Codex extension shell",
+    "labels": ["phase:2", "workstream:extension", "priority:P0", "codex-ready"],
+    "milestone": "M1 \u2014 MVP IDE extension shell",
+    "body": "Tasks:\n- [ ] Read AGENTS.md and relevant skill.\n- [ ] Implement the requested phase scope.\n- [ ] Update docs/PLAN_CHECKLIST.md.\n- [ ] Run relevant checks.\n\nAcceptance:\n- [ ] Acceptance criteria in docs/PLAN_CHECKLIST.md pass.\n- [ ] Optional runtimes fall back to SVG.\n- [ ] No external network calls.\n"
+  },
+  {
+    "title": "[Phase 3] Build React/Vite Webview avatar UI",
+    "labels": ["phase:3", "workstream:webview", "priority:P0", "codex-ready"],
+    "milestone": "M1 \u2014 MVP IDE extension shell",
+    "body": "Tasks:\n- [ ] Read AGENTS.md and relevant skill.\n- [ ] Implement the requested phase scope.\n- [ ] Update docs/PLAN_CHECKLIST.md.\n- [ ] Run relevant checks.\n\nAcceptance:\n- [ ] Acceptance criteria in docs/PLAN_CHECKLIST.md pass.\n- [ ] Optional runtimes fall back to SVG.\n- [ ] No external network calls.\n"
+  },
+  {
+    "title": "[Phase 5] Implement SVG fallback avatar runtime",
+    "labels": ["phase:5", "workstream:svg", "priority:P0", "codex-ready"],
+    "milestone": "M2 \u2014 SVG fallback + Rive runtime",
+    "body": "Tasks:\n- [ ] Read AGENTS.md and relevant skill.\n- [ ] Implement the requested phase scope.\n- [ ] Update docs/PLAN_CHECKLIST.md.\n- [ ] Run relevant checks.\n\nAcceptance:\n- [ ] Acceptance criteria in docs/PLAN_CHECKLIST.md pass.\n- [ ] Optional runtimes fall back to SVG.\n- [ ] No external network calls.\n"
+  },
+  {
+    "title": "[Phase 7] Add Rive runtime adapter with SVG fallback",
+    "labels": ["phase:7", "workstream:rive", "priority:P1", "codex-ready"],
+    "milestone": "M2 \u2014 SVG fallback + Rive runtime",
+    "body": "Tasks:\n- [ ] Read AGENTS.md and relevant skill.\n- [ ] Implement the requested phase scope.\n- [ ] Update docs/PLAN_CHECKLIST.md.\n- [ ] Run relevant checks.\n\nAcceptance:\n- [ ] Acceptance criteria in docs/PLAN_CHECKLIST.md pass.\n- [ ] Optional runtimes fall back to SVG.\n- [ ] No external network calls.\n"
+  },
+  {
+    "title": "[Phase 8] Build local image-to-SVG pipeline",
+    "labels": ["phase:8", "workstream:svg", "priority:P1", "codex-ready"],
+    "milestone": "M3 \u2014 Asset conversion pipeline",
+    "body": "Tasks:\n- [ ] Read AGENTS.md and relevant skill.\n- [ ] Implement the requested phase scope.\n- [ ] Update docs/PLAN_CHECKLIST.md.\n- [ ] Run relevant checks.\n\nAcceptance:\n- [ ] Acceptance criteria in docs/PLAN_CHECKLIST.md pass.\n- [ ] Optional runtimes fall back to SVG.\n- [ ] No external network calls.\n"
+  },
+  {
+    "title": "[Phase 10] Build Blender SVG/GLB export pipeline",
+    "labels": ["phase:10", "workstream:blender", "priority:P1", "codex-ready"],
+    "milestone": "M4 \u2014 Blender + WebGL/WebGPU pipeline",
+    "body": "Tasks:\n- [ ] Read AGENTS.md and relevant skill.\n- [ ] Implement the requested phase scope.\n- [ ] Update docs/PLAN_CHECKLIST.md.\n- [ ] Run relevant checks.\n\nAcceptance:\n- [ ] Acceptance criteria in docs/PLAN_CHECKLIST.md pass.\n- [ ] Optional runtimes fall back to SVG.\n- [ ] No external network calls.\n"
+  },
+  {
+    "title": "[Phase 12] Add optional WebGL/WebGPU avatar renderer",
+    "labels": ["phase:12", "workstream:webgl-webgpu", "priority:P2"],
+    "milestone": "M4 \u2014 Blender + WebGL/WebGPU pipeline",
+    "body": "Tasks:\n- [ ] Read AGENTS.md and relevant skill.\n- [ ] Implement the requested phase scope.\n- [ ] Update docs/PLAN_CHECKLIST.md.\n- [ ] Run relevant checks.\n\nAcceptance:\n- [ ] Acceptance criteria in docs/PLAN_CHECKLIST.md pass.\n- [ ] Optional runtimes fall back to SVG.\n- [ ] No external network calls.\n"
+  },
+  {
+    "title": "[Phase 13] Add optional Live2D VTuber-lite adapter",
+    "labels": ["phase:13", "workstream:live2d", "priority:P2"],
+    "milestone": "M5 \u2014 Live2D optional VTuber-lite adapter",
+    "body": "Tasks:\n- [ ] Read AGENTS.md and relevant skill.\n- [ ] Implement the requested phase scope.\n- [ ] Update docs/PLAN_CHECKLIST.md.\n- [ ] Run relevant checks.\n\nAcceptance:\n- [ ] Acceptance criteria in docs/PLAN_CHECKLIST.md pass.\n- [ ] Optional runtimes fall back to SVG.\n- [ ] No external network calls.\n"
+  },
+  {
+    "title": "[Phase 16-18] Testing, hardening, and VSIX packaging",
+    "labels": ["phase:16", "phase:17", "phase:18", "workstream:qa", "release", "priority:P0"],
+    "milestone": "M6 \u2014 Settings, QA, packaging",
+    "body": "Tasks:\n- [ ] Read AGENTS.md and relevant skill.\n- [ ] Implement the requested phase scope.\n- [ ] Update docs/PLAN_CHECKLIST.md.\n- [ ] Run relevant checks.\n\nAcceptance:\n- [ ] Acceptance criteria in docs/PLAN_CHECKLIST.md pass.\n- [ ] Optional runtimes fall back to SVG.\n- [ ] No external network calls.\n"
+  }
+]

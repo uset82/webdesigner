@@ -1,0 +1,10 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+# Post-MVP adapters live under optional/ and are deliberately not workspace
+# packages. They must be introduced through their numbered, lazy-loaded phases.
+allowBuilds:
+  '@vscode/vsce-sign': false
+  esbuild: true
+  keytar: false

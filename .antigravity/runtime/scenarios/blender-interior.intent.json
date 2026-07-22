@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "taskId": "blender-interior-demo",
+  "title": "Interior concept visualization with Blender MCP",
+  "prompt": "Create an interior concept for a minimalist Scandinavian living room with natural light streaming through large windows. Include a low-profile sofa, wooden coffee table, potted plants, and warm evening lighting option. Generate multiple camera angles for a real estate landing page.",
+  "requestedStages": ["plan", "design", "build", "review", "deploy"],
+  "constraints": {
+    "experienceType": "spa-web",
+    "requiresSEO": false,
+    "requiresVision": true,
+    "requiresImageGeneration": false,
+    "requiresAnimatedUI": false,
+    "requiresBlenderMCP": true,
+    "latencyPreference": "quality",
+    "budgetPreference": "balanced",
+    "designProvider": "stitch"
+  },
+  "context": {
+    "host": "antigravity",
+    "sourceDocs": ["skills.md", "agents.md"]
+  }
+}

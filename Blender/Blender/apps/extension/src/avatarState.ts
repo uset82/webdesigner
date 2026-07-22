@@ -1,0 +1,32 @@
+export {
+  avatarCapabilities,
+  avatarRuntimeKinds,
+  avatarStates,
+  avatarTriggers,
+  createExtensionToWebviewMessage,
+  createWebviewToExtensionMessage,
+  isAvatarRuntime,
+  isAvatarState,
+  isAvatarTrigger,
+  isIdeAssistantEvent,
+  parseExtensionToWebviewMessage,
+  parseWebviewToExtensionMessage,
+  type AvatarCapability,
+  type AvatarConfig,
+  type AvatarConfigPatch,
+  type AvatarManifest,
+  type AvatarRuntime,
+  type AvatarRuntimeKind,
+  type AvatarState,
+  type AvatarTrigger,
+  type ExtensionToWebviewMessage,
+  type ExtensionToWebviewMessageInput,
+  type GeneratedAvatarMetadata,
+  type JsonValue,
+  type IdeAssistantEvent,
+  type VectorizeStudioOptions,
+  type WebviewToExtensionMessage,
+  type WebviewToExtensionMessageInput
+} from "@codex-avatar-studio/avatar-core";
+
+export type AvatarExtensionConfig = import("@codex-avatar-studio/avatar-core").AvatarConfig;

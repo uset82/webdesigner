@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "selectionId": "sel-blender-mcp-demo",
+  "experienceType": "spa-web",
+  "frontendRuntime": "react-vite",
+  "backendRuntime": "node-express",
+  "dataLayer": "none",
+  "deploymentTarget": "netlify",
+  "designProvider": "stitch",
+  "integrations": ["blender-mcp"],
+  "rationale": [
+    "Matched recommended stack for spa-web",
+    "Selected react-vite for frontend and node-express for backend.",
+    "Configured deployment to netlify.",
+    "Blender MCP requested for 3D product visualization; requires running Blender instance with MCP addon.",
+    "Vision capability required for render feedback loop; prefer GPT-5.4 (Codex/GPT path) with other vision-capable fallbacks.",
+    "Quality latency preference supports iterative render-inspect-fix workflow."
+  ]
+}

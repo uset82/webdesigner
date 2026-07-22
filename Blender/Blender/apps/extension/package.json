@@ -1,0 +1,353 @@
+{
+  "name": "codex-avatar-studio-extension",
+  "displayName": "Codex Avatar Studio",
+  "description": "IDE-native animated assistant with a local SVG fallback runtime.",
+  "version": "0.1.0",
+  "publisher": "codex-avatar-studio",
+  "private": true,
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uset82/avatar-studio.git"
+  },
+  "homepage": "https://github.com/uset82/avatar-studio#readme",
+  "bugs": {
+    "url": "https://github.com/uset82/avatar-studio/issues"
+  },
+  "icon": "media/icon.png",
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onView:codexAvatar.assistantView",
+    "onCommand:codexAvatar.openAssistant",
+    "onCommand:codexAvatar.toggleAssistant",
+    "onCommand:codexAvatar.resetSettings",
+    "onCommand:codexAvatar.openSettings",
+    "onCommand:codexAvatar.showDebugPanel",
+    "onCommand:codexAvatar.openAssetsFolder",
+    "onCommand:codexAvatar.reloadAvatar",
+    "onCommand:codexAvatar.importAvatar",
+    "onCommand:codexAvatar.removeAvatar",
+    "onCommand:codexAvatar.deleteImportedAvatar",
+    "onCommand:codexAvatar.activateAvatar",
+    "onCommand:codexAvatar.clearCache",
+    "onCommand:codexAvatar.setState",
+    "onCommand:codexAvatar.startThinking",
+    "onCommand:codexAvatar.startSpeaking",
+    "onCommand:codexAvatar.emitEvent",
+    "onCommand:codexAvatar.markSuccess",
+    "onCommand:codexAvatar.markError",
+    "onCommand:codexAvatar.createFromPicture",
+    "onCommand:codexAvatar.trigger.blink",
+    "onCommand:codexAvatar.trigger.lookleft",
+    "onCommand:codexAvatar.trigger.lookright",
+    "onCommand:codexAvatar.trigger.nod",
+    "onCommand:codexAvatar.trigger.shake",
+    "onCommand:codexAvatar.trigger.celebrate",
+    "onCommand:codexAvatar.trigger.point",
+    "onCommand:codexAvatar.trigger.startspeaking",
+    "onCommand:codexAvatar.trigger.stopspeaking",
+    "onCommand:codexAvatar.trigger.showparticles",
+    "onCommand:codexAvatar.trigger.cleareffects",
+    "onCommand:codexAvatar.vectorizeImage",
+    "onCommand:codexAvatar.exportBlenderScene"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "codexAvatar.openAssistant",
+        "title": "Codex Avatar: Open Assistant"
+      },
+      {
+        "command": "codexAvatar.toggleAssistant",
+        "title": "Codex Avatar: Toggle Assistant"
+      },
+      {
+        "command": "codexAvatar.resetSettings",
+        "title": "Codex Avatar: Reset Settings"
+      },
+      {
+        "command": "codexAvatar.openSettings",
+        "title": "Codex Avatar: Open Settings"
+      },
+      {
+        "command": "codexAvatar.showDebugPanel",
+        "title": "Codex Avatar: Show Debug Panel"
+      },
+      {
+        "command": "codexAvatar.trigger.blink",
+        "title": "Codex Avatar: Trigger Blink"
+      },
+      {
+        "command": "codexAvatar.trigger.lookleft",
+        "title": "Codex Avatar: Trigger Look Left"
+      },
+      {
+        "command": "codexAvatar.trigger.lookright",
+        "title": "Codex Avatar: Trigger Look Right"
+      },
+      {
+        "command": "codexAvatar.trigger.nod",
+        "title": "Codex Avatar: Trigger Nod"
+      },
+      {
+        "command": "codexAvatar.trigger.shake",
+        "title": "Codex Avatar: Trigger Shake"
+      },
+      {
+        "command": "codexAvatar.trigger.celebrate",
+        "title": "Codex Avatar: Trigger Celebrate"
+      },
+      {
+        "command": "codexAvatar.trigger.point",
+        "title": "Codex Avatar: Trigger Point"
+      },
+      {
+        "command": "codexAvatar.trigger.startspeaking",
+        "title": "Codex Avatar: Start Speaking Animation"
+      },
+      {
+        "command": "codexAvatar.trigger.stopspeaking",
+        "title": "Codex Avatar: Stop Speaking Animation"
+      },
+      {
+        "command": "codexAvatar.trigger.showparticles",
+        "title": "Codex Avatar: Show Particles"
+      },
+      {
+        "command": "codexAvatar.trigger.cleareffects",
+        "title": "Codex Avatar: Clear Effects"
+      },
+      {
+        "command": "codexAvatar.openAssetsFolder",
+        "title": "Codex Avatar: Open Avatar Assets Folder"
+      },
+      {
+        "command": "codexAvatar.reloadAvatar",
+        "title": "Codex Avatar: Reload Avatar"
+      },
+      {
+        "command": "codexAvatar.importAvatar",
+        "title": "Codex Avatar: Import Avatar Package"
+      },
+      {
+        "command": "codexAvatar.removeAvatar",
+        "title": "Codex Avatar: Remove Avatar Package"
+      },
+      {
+        "command": "codexAvatar.deleteImportedAvatar",
+        "title": "Codex Avatar: Delete Imported Avatar Package"
+      },
+      {
+        "command": "codexAvatar.activateAvatar",
+        "title": "Codex Avatar: Activate Avatar Package"
+      },
+      {
+        "command": "codexAvatar.clearCache",
+        "title": "Codex Avatar: Clear Generated Cache"
+      },
+      {
+        "command": "codexAvatar.setState",
+        "title": "Codex Avatar: Set State"
+      },
+      {
+        "command": "codexAvatar.startThinking",
+        "title": "Codex Avatar: Start Thinking"
+      },
+      {
+        "command": "codexAvatar.startSpeaking",
+        "title": "Codex Avatar: Start Speaking"
+      },
+      {
+        "command": "codexAvatar.emitEvent",
+        "title": "Codex Avatar: Emit IDE Event"
+      },
+      {
+        "command": "codexAvatar.markSuccess",
+        "title": "Codex Avatar: Mark Success"
+      },
+      {
+        "command": "codexAvatar.markError",
+        "title": "Codex Avatar: Mark Error"
+      },
+      {
+        "command": "codexAvatar.createFromPicture",
+        "title": "Codex Avatar: Create Avatar from Picture"
+      },
+      {
+        "command": "codexAvatar.vectorizeImage",
+        "title": "Codex Avatar: Vectorize Image to SVG"
+      },
+      {
+        "command": "codexAvatar.exportBlenderScene",
+        "title": "Codex Avatar: Export Blender Scene"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "codexAvatar",
+          "title": "Codex Avatar",
+          "icon": "media/avatars/svg/placeholder-avatar.svg"
+        }
+      ]
+    },
+    "views": {
+      "codexAvatar": [
+        {
+          "id": "codexAvatar.assistantView",
+          "name": "Assistant",
+          "type": "webview"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Codex Avatar Studio",
+      "properties": {
+        "codexAvatar.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable the Codex Avatar assistant."
+        },
+        "codexAvatar.runtime": {
+          "type": "string",
+          "enum": [
+            "svg",
+            "pixi",
+            "webgl"
+          ],
+          "default": "svg",
+          "description": "Preferred avatar runtime. WebGL is optional and unsupported or failed runtimes fall back to SVG."
+        },
+        "codexAvatar.position": {
+          "type": "string",
+          "enum": [
+            "activity-bar-view",
+            "side-panel",
+            "bottom-right",
+            "bottom-left"
+          ],
+          "default": "activity-bar-view",
+          "description": "Preferred assistant position."
+        },
+        "codexAvatar.character": {
+          "type": "string",
+          "default": "default",
+          "description": "Selected avatar character id."
+        },
+        "codexAvatar.animationIntensity": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "default": "medium",
+          "description": "Avatar animation intensity."
+        },
+        "codexAvatar.frameRate": {
+          "type": "number",
+          "enum": [
+            30,
+            60
+          ],
+          "default": 30,
+          "description": "Maximum avatar animation frame rate."
+        },
+        "codexAvatar.particleEffects": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable success and error particle effects."
+        },
+        "codexAvatar.soundEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Allow optional local avatar sounds when a runtime supports them."
+        },
+        "codexAvatar.lipSyncEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Allow audio-level input to drive mouth animation."
+        },
+        "codexAvatar.idleTimeout": {
+          "type": "number",
+          "minimum": 0,
+          "default": 15,
+          "description": "Seconds before transient activity returns to idle."
+        },
+        "codexAvatar.sleepTimeout": {
+          "type": "number",
+          "minimum": 0,
+          "default": 300,
+          "description": "Seconds without activity before the avatar sleeps."
+        },
+        "codexAvatar.debugOverlay": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show recent avatar debug events in the assistant panel."
+        },
+        "codexAvatar.noAnimation": {
+          "type": "boolean",
+          "default": false,
+          "description": "Disable continuous and event animation while keeping the assistant functional."
+        },
+        "codexAvatar.focusMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "Reduce avatar motion and background chatter while coding."
+        },
+        "codexAvatar.showSpeechBubble": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show short contextual assistant messages."
+        },
+        "codexAvatar.respectReducedMotion": {
+          "type": "boolean",
+          "default": true,
+          "description": "Respect the system reduced-motion preference."
+        },
+        "codexAvatar.blenderPath": {
+          "type": "string",
+          "default": "",
+          "description": "Optional path to the Blender executable.",
+          "restricted": true
+        },
+        "codexAvatar.blenderTimeoutSeconds": {
+          "type": "number",
+          "minimum": 10,
+          "maximum": 600,
+          "default": 120,
+          "description": "Maximum seconds allowed for one Blender export process."
+        },
+        "codexAvatar.assetWorkspace": {
+          "type": "string",
+          "default": ".codex-avatar",
+          "description": "Workspace-local folder for avatar assets, exports, and cache."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "dev": "tsc -p tsconfig.json --watch --preserveWatchOutput",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "pnpm --filter @codex-avatar-studio/avatar-core build && pnpm --filter @codex-avatar-studio/asset-pipeline build && tsc -p tsconfig.json --noEmit",
+    "lint": "pnpm --workspace-root exec biome lint apps/extension",
+    "test": "pnpm --filter @codex-avatar-studio/avatar-core build && pnpm --filter @codex-avatar-studio/asset-pipeline build && pnpm build && node --test test/*.test.mjs && pnpm --workspace-root exec vitest run apps/extension/test/avatar-webview-provider.test.ts apps/extension/test/blender-avatar-package.test.ts apps/extension/test/generated-avatar-package.test.ts apps/extension/test/ideEvents.test.ts apps/extension/test/picture-studio.test.ts apps/extension/test/settings.test.ts",
+    "watch": "tsc -p tsconfig.json --watch",
+    "package:vsix": "node ../../scripts/package-extension.mjs"
+  },
+  "dependencies": {
+    "@codex-avatar-studio/asset-pipeline": "workspace:*",
+    "@codex-avatar-studio/avatar-core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.14",
+    "@types/vscode": "^1.96.0",
+    "typescript": "^5.9.2"
+  }
+}

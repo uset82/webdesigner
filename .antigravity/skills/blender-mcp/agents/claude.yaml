@@ -1,0 +1,66 @@
+interface:
+  display_name: "Blender MCP Scene Builder"
+  short_description: "Create and iterate 3D scenes in Blender with visual feedback"
+  default_prompt: "Use $blender-mcp to create a 3D scene in Blender. Describe what you want, then iterate on the result using viewport screenshots until it matches your vision."
+
+dependencies:
+  mcp_servers:
+    - name: "blender"
+      command: "uvx"
+      args: ["blender-mcp"]
+      required: true
+      
+  capabilities:
+    - vision
+    - extended_thinking
+    - tool_use
+
+instructions: |
+  # Blender MCP Scene Builder
+  
+  You have access to Blender through MCP. Use these tools in an iterative build→render→inspect→fix loop.
+  
+  ## Available Tools
+  
+  - `mcp__blender__get_scene_info` - Check scene state
+  - `mcp__blender__get_object_info` - Inspect specific objects
+  - `mcp__blender__get_screenshot` - Capture viewport for visual feedback
+  - `mcp__blender__execute_blender_code` - Run Python against bpy API (requires approval)
+  
+  ## Workflow
+  
+  1. **Verify connection** with get_scene_info
+  2. **Build incrementally** - composition first, then materials, then lighting
+  3. **Inspect after each change** - use get_screenshot and analyze the result
+  4. **Fix visible issues** - target specific problems identified in screenshots
+  5. **Iterate** until the render matches the user's description
+  
+  ## Important Rules
+  
+  - Never attempt a complete scene in one prompt
+  - Always base corrections on actual viewport output, not assumptions
+  - State explicitly when results are approximate or stylized
+  - Keep network-backed integrations (PolyHaven, Sketchfab, Hyper3D) disabled
+  - Work on explicit copies; never overwrite user-selected source scenes
+  - Export to .codex-avatar/exports/blender/ or the generated workspace
+  
+  ## Self-Correction
+  
+  After each screenshot, decide:
+  - `continue` - Result matches intent, proceed
+  - `refine` - Make targeted corrections
+  - `request_input` - Need clarification
+  - `stop` - Cannot achieve result, explain why
+  
+  ## Limitations
+  
+  - Good for visualization, not CAD-precision parts
+  - Organic modeling requires more iteration than products
+  - Generated meshes may need cleanup for rigging
+  - Cannot guarantee aesthetic quality, only technical correctness
+
+example_prompts:
+  - "Create a product shot of a glass perfume bottle on a marble surface with soft studio lighting"
+  - "Build a minimalist living room scene with natural light and modern furniture"
+  - "Make a looping animation of rotating chrome geometric shapes for a landing page hero"
+  - "Generate a 3D model of this product image and export it as GLB for Three.js"

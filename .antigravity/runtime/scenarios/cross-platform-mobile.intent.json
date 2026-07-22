@@ -1,0 +1,18 @@
+{
+  "version": "1.0",
+  "taskId": "cross-platform-mobile-demo",
+  "title": "Cross-platform mobile product",
+  "prompt": "Build a mobile app for iOS and Android from one codebase, with optional API support and design exploration.",
+  "requestedStages": ["plan", "design", "build", "security", "review"],
+  "constraints": {
+    "experienceType": "cross-platform-mobile",
+    "requiresVision": true,
+    "latencyPreference": "balanced",
+    "budgetPreference": "balanced",
+    "designProvider": "stitch"
+  },
+  "context": {
+    "host": "antigravity",
+    "sourceDocs": ["mainidea.md", "skills.md"]
+  }
+}

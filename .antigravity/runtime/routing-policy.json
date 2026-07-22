@@ -1,0 +1,64 @@
+{
+  "version": "1.0",
+  "policyId": "capability-first-v1",
+  "defaults": {
+    "userOverrideWinsWhenValid": true,
+    "requireToolAccessMatch": true,
+    "preferStageContinuity": true,
+    "defaultBudgetPreference": "balanced",
+    "defaultLatencyPreference": "balanced"
+  },
+  "weights": {
+    "capabilityMatch": 5,
+    "toolAccess": 5,
+    "userPreference": 3,
+    "continuity": 2,
+    "latency": 2,
+    "cost": 2
+  },
+  "stagePolicies": {
+    "plan": {
+      "requiredCapabilities": ["reasoning", "toolUse"],
+      "preferredModelKeys": ["gemini-3.1-pro", "claude-opus-4.6", "gpt-5.4"]
+    },
+    "design": {
+      "requiredCapabilities": ["toolUse"],
+      "preferredModelKeys": ["gemini-3.1-pro", "doubao-seed-2.1-pro", "nano-banana-pro", "gpt-5.4"]
+    },
+    "build": {
+      "requiredCapabilities": ["coding", "toolUse"],
+      "preferredModelKeys": ["gpt-5.4", "doubao-seed-2.1-pro", "qoder-default", "gpt-5.3"]
+    },
+    "security": {
+      "requiredCapabilities": ["securityAnalysis", "toolUse"],
+      "preferredModelKeys": ["codex-security", "claude-opus-4.6", "gpt-5.4"]
+    },
+    "review": {
+      "requiredCapabilities": ["reasoning"],
+      "preferredModelKeys": ["claude-opus-4.6", "gpt-5.4", "gemini-3.1-pro"]
+    },
+    "deploy": {
+      "requiredCapabilities": ["toolUse"],
+      "preferredModelKeys": ["gpt-5.4", "gemini-3.1-pro", "qoder-default"]
+    }
+  },
+  "skillOverrides": {
+    "blender-mcp": {
+      "requiredCapabilities": ["vision", "toolUse", "reasoning"],
+      "preferredModelKeys": ["gpt-5.4", "gemini-3.1-pro", "claude-opus-4.6"],
+      "requiredToolAccess": ["mcp-blender"],
+      "notes": "Prefer Codex/GPT-5.4 for the build→screenshot→inspect→fix loop. Vision is required to judge viewport captures; tool use is required for Blender MCP. Fallbacks remain vision-capable models only."
+    },
+    "img2threejs": {
+      "requiredCapabilities": ["vision", "coding", "toolUse"],
+      "preferredModelKeys": ["claude-opus-4.6", "gpt-5.4", "gemini-3.1-pro"],
+      "notes": "Vision capability required for comparison sheet review and pass-gated sculpting feedback."
+    },
+    "figma-implement-design": {
+      "requiredCapabilities": ["vision", "coding", "toolUse"],
+      "preferredModelKeys": ["claude-opus-4.6", "gpt-5.4", "gemini-3.1-pro"],
+      "requiredToolAccess": ["mcp-figma"],
+      "notes": "Vision capability required for 1:1 design fidelity validation."
+    }
+  }
+}

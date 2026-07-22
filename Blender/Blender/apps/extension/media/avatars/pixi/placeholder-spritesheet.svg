@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img">
+  <title>Codex Avatar Studio original placeholder spritesheet</title>
+  <defs>
+    <linearGradient id="orb-body" x1="12" y1="8" x2="54" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5eead4" />
+      <stop offset="0.52" stop-color="#60a5fa" />
+      <stop offset="1" stop-color="#a78bfa" />
+    </linearGradient>
+    <radialGradient id="orb-face" cx="50%" cy="32%" r="72%">
+      <stop stop-color="#ffffff" />
+      <stop offset="1" stop-color="#dbeafe" />
+    </radialGradient>
+    <symbol id="orb-base" viewBox="0 0 64 64">
+      <path d="M16 32c0-13 7-23 16-23s16 10 16 23c0 15-8 24-16 24S16 47 16 32Z" fill="url(#orb-body)" stroke="#111827" stroke-width="2.5" />
+      <path d="M23 31c0-8 4-14 9-14s9 6 9 14v8c0 8-4 13-9 13s-9-5-9-13v-8Z" fill="url(#orb-face)" stroke="#111827" stroke-width="2.5" />
+      <path d="M21 26 13 21M43 26l8-5M32 11V5" fill="none" stroke="#111827" stroke-width="2" stroke-linecap="round" />
+      <circle cx="32" cy="5" r="2.5" fill="#f8fafc" stroke="#111827" stroke-width="1.5" />
+    </symbol>
+    <symbol id="orb-idle" viewBox="0 0 64 64">
+      <use href="#orb-base" />
+      <path d="M28 31h.1M36 31h.1M28 42c3 2 5 2 8 0" fill="none" stroke="#111827" stroke-width="2.5" stroke-linecap="round" />
+    </symbol>
+    <symbol id="orb-blink" viewBox="0 0 64 64">
+      <use href="#orb-base" />
+      <path d="M26 31h4M34 31h4M28 42c3 2 5 2 8 0" fill="none" stroke="#111827" stroke-width="2.5" stroke-linecap="round" />
+    </symbol>
+    <symbol id="orb-bob" viewBox="0 0 64 64">
+      <use href="#orb-base" transform="translate(0 2)" />
+      <path d="M28 31h.1M36 31h.1M28 42c3 2 5 2 8 0" fill="none" stroke="#111827" stroke-width="2.5" stroke-linecap="round" />
+    </symbol>
+    <symbol id="orb-greet" viewBox="0 0 64 64">
+      <use href="#orb-idle" />
+      <path d="M48 38c5-3 7-8 5-13M52 25l3 2M52 25l-1 4" fill="none" stroke="#111827" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+    <symbol id="orb-listen" viewBox="0 0 64 64">
+      <use href="#orb-base" />
+      <path d="M27 31h.1M37 31h.1M28 42c3 2 5 2 8 0M18 29c-3 2-3 6 0 8M46 29c3 2 3 6 0 8" fill="none" stroke="#111827" stroke-width="2.5" stroke-linecap="round" />
+    </symbol>
+    <symbol id="orb-think" viewBox="0 0 64 64">
+      <use href="#orb-idle" />
+      <circle cx="50" cy="17" r="2" fill="#a78bfa" />
+      <circle cx="55" cy="11" r="1.5" fill="#60a5fa" />
+    </symbol>
+    <symbol id="orb-talk" viewBox="0 0 64 64">
+      <use href="#orb-base" />
+      <path d="M28 31h.1M36 31h.1" fill="none" stroke="#111827" stroke-width="2.5" stroke-linecap="round" />
+      <ellipse cx="32" cy="42" rx="5" ry="3.5" fill="#111827" />
+    </symbol>
+    <symbol id="orb-talk-open" viewBox="0 0 64 64">
+      <use href="#orb-base" />
+      <path d="M28 31h.1M36 31h.1" fill="none" stroke="#111827" stroke-width="2.5" stroke-linecap="round" />
+      <ellipse cx="32" cy="42" rx="3.5" ry="5" fill="#111827" />
+    </symbol>
+    <symbol id="orb-code" viewBox="0 0 64 64">
+      <use href="#orb-idle" />
+      <path d="M48 12h7v7h-7zM51.5 12v7M48 15.5h7" fill="none" stroke="#5eead4" stroke-width="1.5" />
+    </symbol>
+    <symbol id="orb-review" viewBox="0 0 64 64">
+      <use href="#orb-idle" />
+      <circle cx="49" cy="42" r="6" fill="#f8fafc" stroke="#111827" stroke-width="2" />
+      <path d="m53 46 4 4" fill="none" stroke="#111827" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+    <symbol id="orb-debug" viewBox="0 0 64 64">
+      <use href="#orb-base" />
+      <path d="M28 31h.1M36 31h.1M32 39v5M32 48h.1" fill="none" stroke="#f85149" stroke-width="2.5" stroke-linecap="round" />
+    </symbol>
+    <symbol id="orb-build" viewBox="0 0 64 64">
+      <use href="#orb-idle" />
+      <path d="m47 15 5 5M52 15l-5 5M49.5 12v11" fill="none" stroke="#facc15" stroke-width="1.5" stroke-linecap="round" />
+    </symbol>
+    <symbol id="orb-celebrate" viewBox="0 0 64 64">
+      <use href="#orb-idle" />
+      <path d="m49 12 1.5 3 3.5.5-2.5 2.5.5 3.5-3-1.5-3 1.5.5-3.5-2.5-2.5 3.5-.5ZM16 13l1 2 2 .3-1.5 1.5.3 2-1.8-1-1.8 1 .3-2-1.5-1.5 2-.3Z" fill="#facc15" />
+    </symbol>
+    <symbol id="orb-warning" viewBox="0 0 64 64">
+      <use href="#orb-base" />
+      <path d="M32 38v-9M32 44h.1" fill="none" stroke="#d29922" stroke-width="2.5" stroke-linecap="round" />
+    </symbol>
+    <symbol id="orb-error" viewBox="0 0 64 64">
+      <use href="#orb-base" />
+      <path d="m28 38 8 8M36 38l-8 8" fill="none" stroke="#f85149" stroke-width="2.5" stroke-linecap="round" />
+    </symbol>
+    <symbol id="orb-sleep" viewBox="0 0 64 64">
+      <use href="#orb-base" />
+      <path d="M26 31h4M34 31h4M28 43c3-2 5-2 8 0M48 13h6l-6 7h6" fill="none" stroke="#111827" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+  </defs>
+
+  <use href="#orb-idle" x="0" y="0" />
+  <use href="#orb-blink" x="64" y="0" />
+  <use href="#orb-bob" x="128" y="0" />
+  <use href="#orb-greet" x="192" y="0" />
+  <use href="#orb-listen" x="0" y="64" />
+  <use href="#orb-think" x="64" y="64" />
+  <use href="#orb-talk" x="128" y="64" />
+  <use href="#orb-talk-open" x="192" y="64" />
+  <use href="#orb-code" x="0" y="128" />
+  <use href="#orb-review" x="64" y="128" />
+  <use href="#orb-debug" x="128" y="128" />
+  <use href="#orb-build" x="192" y="128" />
+  <use href="#orb-celebrate" x="0" y="192" />
+  <use href="#orb-warning" x="64" y="192" />
+  <use href="#orb-error" x="128" y="192" />
+  <use href="#orb-sleep" x="192" y="192" />
+</svg>

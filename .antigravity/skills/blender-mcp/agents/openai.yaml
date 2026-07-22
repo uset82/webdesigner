@@ -1,0 +1,94 @@
+interface:
+  display_name: "Blender MCP Scene Builder (Codex / GPT)"
+  short_description: "Codex builds Blender scenes from description, then fixes them from viewport screenshots"
+  icon_small: "./assets/blender-small.svg"
+  icon_large: "./assets/blender.png"
+  default_prompt: "Use $blender-mcp with Codex/GPT: describe the scene, build in stages (composition → materials → lighting), capture the viewport after each meaningful change, fix visible mismatches, then export GLB/PNG to the workspace. Never one-shot a full cinematic scene."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "blender"
+      description: "Blender MCP server for scene manipulation"
+      transport: "stdio"
+      command: "uvx"
+      args: ["blender-mcp"]
+  capabilities:
+    - vision
+    - tool_use
+    - reasoning
+
+workflow:
+  stages:
+    - name: "connection"
+      description: "Verify Blender MCP connection"
+      tool: "mcp__blender__get_scene_info"
+      on_failure: "Request user to start Blender with MCP addon enabled on localhost:9876"
+
+    - name: "composition"
+      description: "Block out main objects, camera, and basic layout"
+      tool: "mcp__blender__execute_blender_code"
+      requires_approval: true
+      iteration_trigger: "mcp__blender__get_screenshot"
+
+    - name: "materials"
+      description: "Apply initial materials and textures"
+      tool: "mcp__blender__execute_blender_code"
+      requires_approval: true
+      iteration_trigger: "mcp__blender__get_screenshot"
+
+    - name: "lighting"
+      description: "Establish lighting rig and mood"
+      tool: "mcp__blender__execute_blender_code"
+      requires_approval: true
+      iteration_trigger: "mcp__blender__get_screenshot"
+
+    - name: "refinement"
+      description: "Iterate based on visual feedback until result matches intent"
+      tool: "mcp__blender__execute_blender_code"
+      requires_approval: true
+      iteration_trigger: "mcp__blender__get_screenshot"
+      max_iterations: 10
+
+    - name: "export"
+      description: "Export final assets (GLB, PNG)"
+      tool: "mcp__blender__execute_blender_code"
+      requires_approval: true
+      output_paths:
+        - ".codex-avatar/exports/blender/"
+        - "${workspace}/public/assets/3d/"
+
+feedback_loop:
+  trigger_tool: "mcp__blender__get_screenshot"
+  inspection_prompt: |
+    Analyze this Blender viewport screenshot and identify:
+    1. Does the composition match the user's description?
+    2. Is the camera framing appropriate?
+    3. Are materials reading correctly?
+    4. Is lighting flattering or creating issues?
+    5. Are there any visible problems (clipping, floating objects, missing elements)?
+    
+    Provide specific corrections for any issues found.
+  
+  decision_actions:
+    - continue: "Result matches intent, proceed to next stage"
+    - refine: "Adjustments needed, issue corrections"
+    - request_input: "Need clarification from user"
+    - stop: "Cannot achieve requested result, explain limitation"
+
+security:
+  code_execution_warning: |
+    execute_blender_code runs arbitrary Python in Blender.
+    All code is logged and requires approval when configured.
+  
+  disabled_features:
+    - "PolyHaven asset download"
+    - "Sketchfab import"
+    - "Hyper3D generation"
+    - "Hunyuan3D generation"
+    - "Telemetry"
+  
+  local_only:
+    - "All asset processing"
+    - "File exports"
+    - "Scene manipulation"

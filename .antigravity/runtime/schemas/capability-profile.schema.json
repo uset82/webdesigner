@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CapabilityProfile",
+  "type": "object",
+  "required": [
+    "reasoning",
+    "coding",
+    "vision",
+    "imageGeneration",
+    "securityAnalysis",
+    "toolUse",
+    "contextWindow",
+    "latencyTier",
+    "costTier"
+  ],
+  "properties": {
+    "reasoning": { "type": "string", "enum": ["none", "low", "medium", "high"] },
+    "coding": { "type": "string", "enum": ["none", "low", "medium", "high"] },
+    "vision": { "type": "string", "enum": ["none", "low", "medium", "high"] },
+    "imageGeneration": { "type": "string", "enum": ["none", "low", "medium", "high"] },
+    "securityAnalysis": { "type": "string", "enum": ["none", "low", "medium", "high"] },
+    "toolUse": { "type": "string", "enum": ["none", "low", "medium", "high"] },
+    "contextWindow": { "type": "string", "enum": ["small", "medium", "large"] },
+    "latencyTier": { "type": "string", "enum": ["low", "medium", "high"] },
+    "costTier": { "type": "string", "enum": ["low", "medium", "high"] }
+  },
+  "additionalProperties": false
+}
