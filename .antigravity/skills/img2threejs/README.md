@@ -9,10 +9,12 @@
 Quality-gated, animation-ready, and deliberately token-efficient — reconstruction-by-code, not photogrammetry, mesh extraction, or downloaded art packs.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.2.0-green.svg)](SKILL.md)
+[![Version](https://img.shields.io/badge/version-1.3.0-green.svg)](SKILL.md)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![Runtime](https://img.shields.io/badge/runtime-Three.js-000000.svg)](https://threejs.org)
 [![Tooling](https://img.shields.io/badge/tooling-Python%203.10%2B%20stdlib-3776ab.svg)](scripts)
+
+<a href="https://trendshift.io/repositories/83608?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-83608" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/83608/daily?language=Python" alt="hoainho%2Fimg2threejs | Trendshift" width="250" height="55"/></a>
 
 ![img2threejs demo — a reference loot-chest image reconstructed as a procedural Three.js model](assets/demo.gif)
 
@@ -183,7 +185,7 @@ The `grimoire/` folder holds the detailed rubrics each gate applies (validation,
 - **v1.0** — object pipeline: staged sculpt, render-vs-reference review loop, action-ready hierarchy. *Shipped.*
 - **v1.1** — detail-first analysis: required detail inventory, strict-quality gate. *Shipped.*
 - **v1.2** — humanoid character generator: anatomy track, proportion-lock and feature-placement passes. *Shipped.*
-- **v1.3** — likeness maximization: projection-first character rendering, per-region confidence. *Planned.*
+- **v1.3** — quality and efficiency: Divine Eye review harness, texture-finish analysis, geometry-truth gates, multi-angle diagnostics, InstancedMesh emission. *Shipped.*
 - **v1.4** — animation-ready rigs: SkinnedMesh, morph targets, glTF export. *Planned.*
 
 Full detail and later milestones: [ROADMAP.md](ROADMAP.md). Technical specification: [docs/UPGRADE_PLAN.md](docs/UPGRADE_PLAN.md).
@@ -193,6 +195,20 @@ Full detail and later milestones: [ROADMAP.md](ROADMAP.md). Technical specificat
 ## Honesty about limits
 
 A single image cannot reveal hidden sides or guarantee exact geometry. The skill states plainly when output is approximate, stylized, or low-poly, and infers unseen faces by mirroring visible ones rather than faking confidence. It is strong for hard-surface objects; characters are stylized reconstructions, not photoreal likeness. "This cannot reach the requested fidelity from this image" is a valid, expected result.
+
+---
+
+## Star history
+
+If img2threejs is useful to you, a star helps others find it.
+
+<a href="https://star-history.com/#hoainho/img2threejs&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=hoainho/img2threejs&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=hoainho/img2threejs&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=hoainho/img2threejs&type=Date" width="600" />
+  </picture>
+</a>
 
 ---
 

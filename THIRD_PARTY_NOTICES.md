@@ -22,6 +22,6 @@ The add-on remains governed by its [upstream terms and conditions](https://githu
 
 | Skill | Source | License and notice |
 | --- | --- | --- |
-| `img2threejs` | [`hoainho/img2threejs`](https://github.com/hoainho/img2threejs) | MIT. Upstream LICENSE is retained under `skills/img2threejs/LICENSE` and `.antigravity/skills/img2threejs/LICENSE`. Demo GIFs from upstream are not bundled. |
+| `img2threejs` | [`hoainho/img2threejs@v1.3`](https://github.com/hoainho/img2threejs/releases/tag/v1.3) (`2c78038`) | MIT. Upstream LICENSE is retained under `skills/img2threejs/LICENSE` and `.antigravity/skills/img2threejs/LICENSE`. Demo GIFs are kept under `.antigravity/skills/img2threejs/assets/` only; the slim `skills/img2threejs` tree omits them. |
 
 No Blender binary, third-party demo asset, model, texture, motion, voice, or remote-provider content is bundled by this project.

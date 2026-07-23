@@ -60,12 +60,12 @@ WebDesigner skills are stage contracts, not vendor-specific prompt bundles. Each
 - **Outputs**: installed component map and normal/reduced-motion verification log
 - **Notes**: Activates through the `requiresAnimatedUI` constraint and `animate-ui` stack integration; it is not used for video, Flutter, or WebGL-only animation.
 
-### `img2threejs`
+### `img2threejs` (v1.3.0)
 - **Stage**: `build`
-- **Role**: Rebuilds a reference object or character image as a quality-gated, animation-ready procedural Three.js model using staged sculpt passes and vision review
+- **Role**: Rebuilds a reference object or character image as a quality-gated, animation-ready procedural Three.js model using staged sculpt passes, Divine Eye deterministic review, and vision review
 - **Inputs**: `TaskIntent`, `StackSelection`, reference image path, generated Next.js or React/Vite workspace
 - **Outputs**: `ObjectSculptSpec`, TypeScript Three.js factory, review log, and optional comparison sheets
-- **Notes**: Activates through the `requiresImageToThreeJS` constraint and `img2threejs` stack integration. Scripts live under `.antigravity/skills/img2threejs/forge` (Python 3.10+ stdlib). Three.js is installed only in the generated workspace. Not used for Flutter, photogrammetry meshes, or pure CSS motion.
+- **Notes**: Activates through the `requiresImageToThreeJS` constraint and `img2threejs` stack integration. Scripts live under `.antigravity/skills/img2threejs/forge` (Python 3.10+ stdlib). v1.3 adds reference admission, texture-finish analysis, geometry-truth gates, multi-angle diagnostics, and InstancedMesh emission. Three.js is installed only in the generated workspace. Not used for Flutter, photogrammetry meshes, or pure CSS motion.
 
 ### `frontend-skill`
 - **Stages**: `design`, `build`, `review`
