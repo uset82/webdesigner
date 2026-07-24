@@ -1,12 +1,11 @@
-﻿# Project Agents
+# Project Agents
 
 WebDesigner uses stable workflow roles, but model assignment is dynamic. Agents own stages and artifacts. The routing policy chooses the actual provider and model at runtime.
 
 ## Core Rule
 - Roles are **not** hard-bound to Gemini, Claude, Codex, Qoder, or any single provider.
 - Each role declares required capabilities. Runtime selection happens through `.antigravity/runtime/provider-registry.json` and `.antigravity/runtime/routing-policy.json`.
-- For visually led frontend work, agents must use the bundled `webdesigner-design-system` skill and its Nightglass references. Existing product conventions and explicit user briefs take precedence.
-- Mint and Blender are conditional 3D routes. Ordinary UI and decorative-depth requests activate neither capability.
+- For visually led frontend work, agents must also follow the constraints in `openaidesign.md` and may attach the installed `frontend-skill` as an overlay on the stage contract.
 
 ## 1. Architect Agent
 **Stage ownership**: `plan`
@@ -47,6 +46,9 @@ WebDesigner uses stable workflow roles, but model assignment is dynamic. Agents 
 - Convert approved design artifacts into framework-idiomatic code
 - Preserve brand hierarchy, restrained section structure, dominant imagery, and intentional motion from the design artifacts
 - Apply the `animate-ui` skill when the stack selection includes that integration; keep registry installs scoped to the generated React workspace
+- Apply the `gsap-animation` skill when the stack selection includes that integration or when timeline/scroll/SVG motion is required; register plugins and use `useGSAP` or local bonus plugins from `gsap-public`
+- Apply the `3d-scroll-website` skill when the stack selection includes that integration or when 3D frame-sequence / video-to-canvas scroll animations, Lenis smooth scroll, or neumorphic design are requested
+- Apply the `video-to-site` skill when video asset conversion (`.mp4`, `.mov`), video frame extraction, or video scroll controllers (`videotoside`) are requested
 - Apply the `img2threejs` skill when the stack selection includes that integration; run forge scripts from the skill root and emit the Three.js factory only into the generated workspace
 - Inspect rendered frontend work across desktop and mobile viewports when browser tooling is available
 - Keep the control plane separate from the generated project
@@ -98,12 +100,3 @@ WebDesigner uses stable workflow roles, but model assignment is dynamic. Agents 
 - Tool use
 - Infra reasoning
 - Configuration generation
-
-## Packaging and release gate
-
-- Keep `.codex-plugin/plugin.json`, `.mcp.json`, and both marketplace files consistent.
-- The public installer must remain idempotent: first run adds the marketplace; later runs upgrade it before reinstalling the plugin.
-- Keep the installed MCP runtime self-contained. Plugin installation must not require `npm install` in the user's cache.
-- Preserve the 86-token Nightglass CSS/Tailwind contract and all source-pinned Blender notices.
-- Before publishing, run `npm run build`, `npm run verify`, `npm run test:mcp`, `npm audit --audit-level=high`, and the plugin validator.
-- Test installation with an isolated `CODEX_HOME`, then start a new task for skill and MCP discovery.
