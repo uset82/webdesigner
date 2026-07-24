@@ -46,6 +46,37 @@ test('incompatible frontend records a fallback instead of enabling Animate UI', 
   assert.match(selection.rationale.at(-1) || '', /incompatible with flutter/);
 });
 
+test('GSAP animation prompts enable gsap-animation integration', () => {
+  const { intent, selection } = route('Build a web landing page with GSAP ScrollTrigger and SplitText animations.');
+
+  assert.equal(intent.constraints.requiresGSAPAnimation, true);
+  assert.ok(selection.integrations.includes('gsap-animation'));
+  assert.equal(selection.frontendRuntime, 'react-vite');
+});
+
+test('explicit GSAP request enables integration on Next.js', () => {
+  const { selection } = route('Create an SEO-friendly Next.js site with GSAP ScrollSmoother and MorphSVG.');
+
+  assert.deepEqual(selection.integrations, ['gsap-animation']);
+  assert.equal(selection.frontendRuntime, 'nextjs');
+});
+
+test('3D scroll frame-sequence prompts enable 3d-scroll-canvas integration', () => {
+  const { intent, selection } = route('Build a 3D scroll-animated landing page with a sticky canvas frame sequence and Lenis smooth scroll.');
+
+  assert.equal(intent.constraints.requires3DScrollCanvas, true);
+  assert.ok(selection.integrations.includes('3d-scroll-canvas'));
+  assert.equal(selection.frontendRuntime, 'react-vite');
+});
+
+test('video-to-site prompts enable video-to-site integration', () => {
+  const { intent, selection } = route('Convert this hero MP4 video into a video-to-site scroll animation.');
+
+  assert.equal(intent.constraints.requiresVideoToSite, true);
+  assert.ok(selection.integrations.includes('video-to-site'));
+  assert.equal(selection.frontendRuntime, 'react-vite');
+});
+
 test('image-to-Three.js prompts enable img2threejs', () => {
   const { intent, selection } = route(
     'Rebuild this product reference image as a procedural Three.js model for a React product page.'

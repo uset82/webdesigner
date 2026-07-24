@@ -1,0 +1,260 @@
+{
+  "axis": "u",
+  "requestedStops": 6,
+  "stops": [
+    {
+      "t": 0.0833,
+      "rgb": [
+        1,
+        8,
+        23
+      ],
+      "hsv": [
+        220.9,
+        0.957,
+        0.09
+      ],
+      "hueName": "blue",
+      "hueRisk": "blue-collapse",
+      "suggestedRgb": [
+        23,
+        8,
+        1
+      ]
+    },
+    {
+      "t": 0.25,
+      "rgb": [
+        1,
+        8,
+        23
+      ],
+      "hsv": [
+        220.9,
+        0.957,
+        0.09
+      ],
+      "hueName": "blue",
+      "hueRisk": "blue-collapse",
+      "suggestedRgb": [
+        23,
+        8,
+        1
+      ]
+    },
+    {
+      "t": 0.4167,
+      "rgb": [
+        1,
+        8,
+        22
+      ],
+      "hsv": [
+        220.0,
+        0.955,
+        0.086
+      ],
+      "hueName": "blue",
+      "hueRisk": "blue-collapse",
+      "suggestedRgb": [
+        22,
+        8,
+        1
+      ]
+    },
+    {
+      "t": 0.5833,
+      "rgb": [
+        1,
+        8,
+        22
+      ],
+      "hsv": [
+        220.0,
+        0.955,
+        0.086
+      ],
+      "hueName": "blue",
+      "hueRisk": "blue-collapse",
+      "suggestedRgb": [
+        22,
+        8,
+        1
+      ]
+    },
+    {
+      "t": 0.75,
+      "rgb": [
+        0,
+        8,
+        23
+      ],
+      "hsv": [
+        219.1,
+        1.0,
+        0.09
+      ],
+      "hueName": "blue",
+      "hueRisk": "blue-collapse",
+      "suggestedRgb": [
+        23,
+        8,
+        0
+      ]
+    },
+    {
+      "t": 0.9167,
+      "rgb": [
+        0,
+        8,
+        23
+      ],
+      "hsv": [
+        219.1,
+        1.0,
+        0.09
+      ],
+      "hueName": "blue",
+      "hueRisk": "blue-collapse",
+      "suggestedRgb": [
+        23,
+        8,
+        0
+      ]
+    }
+  ],
+  "hueZones": [
+    {
+      "hueName": "blue",
+      "tStart": 0.0833,
+      "tEnd": 0.9167
+    }
+  ],
+  "riskFlags": [
+    {
+      "t": 0.0833,
+      "rgb": [
+        1,
+        8,
+        23
+      ],
+      "hsv": [
+        220.9,
+        0.957,
+        0.09
+      ],
+      "hueName": "blue",
+      "hueRisk": "blue-collapse",
+      "suggestedRgb": [
+        23,
+        8,
+        1
+      ]
+    },
+    {
+      "t": 0.25,
+      "rgb": [
+        1,
+        8,
+        23
+      ],
+      "hsv": [
+        220.9,
+        0.957,
+        0.09
+      ],
+      "hueName": "blue",
+      "hueRisk": "blue-collapse",
+      "suggestedRgb": [
+        23,
+        8,
+        1
+      ]
+    },
+    {
+      "t": 0.4167,
+      "rgb": [
+        1,
+        8,
+        22
+      ],
+      "hsv": [
+        220.0,
+        0.955,
+        0.086
+      ],
+      "hueName": "blue",
+      "hueRisk": "blue-collapse",
+      "suggestedRgb": [
+        22,
+        8,
+        1
+      ]
+    },
+    {
+      "t": 0.5833,
+      "rgb": [
+        1,
+        8,
+        22
+      ],
+      "hsv": [
+        220.0,
+        0.955,
+        0.086
+      ],
+      "hueName": "blue",
+      "hueRisk": "blue-collapse",
+      "suggestedRgb": [
+        22,
+        8,
+        1
+      ]
+    },
+    {
+      "t": 0.75,
+      "rgb": [
+        0,
+        8,
+        23
+      ],
+      "hsv": [
+        219.1,
+        1.0,
+        0.09
+      ],
+      "hueName": "blue",
+      "hueRisk": "blue-collapse",
+      "suggestedRgb": [
+        23,
+        8,
+        0
+      ]
+    },
+    {
+      "t": 0.9167,
+      "rgb": [
+        0,
+        8,
+        23
+      ],
+      "hsv": [
+        219.1,
+        1.0,
+        0.09
+      ],
+      "hueName": "blue",
+      "hueRisk": "blue-collapse",
+      "suggestedRgb": [
+        23,
+        8,
+        0
+      ]
+    }
+  ],
+  "warnings": [
+    "image is not clearly isolated from background; using most pixels as material evidence"
+  ],
+  "reference": "E:\\PROYECTOS\\webdesigner\\workspaces\\ca2-logo-threejs\\ref\\logo-reference.png",
+  "note": "band-median stops grounded in the reference; feed to the texture painter instead of hand-guessed STOPS. hueRisk=blue-collapse stops need a magenta-lean correction."
+}

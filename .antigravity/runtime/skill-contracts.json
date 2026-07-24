@@ -47,6 +47,33 @@
       "postconditions": ["Only required registry components are installed", "Normal and reduced-motion behavior are verified", "Installed component paths are recorded"]
     },
     {
+      "skillId": "gsap-animation",
+      "stage": "build",
+      "inputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "emittedArtifacts": ["gsap-animation-config", "animation-verification-log"],
+      "preconditions": ["Generated workspace exists", "StackSelection includes gsap-animation or explicit GSAP motion request"],
+      "postconditions": ["GSAP core and required plugins are registered", "Timeline cleanup and reduced-motion behavior are verified"]
+    },
+    {
+      "skillId": "3d-scroll-website",
+      "stage": "build",
+      "inputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "emittedArtifacts": ["3d-scroll-canvas-spec", "frame-sequence-manifest", "animation-verification-log"],
+      "preconditions": ["Generated workspace exists", "StackSelection includes 3d-scroll-canvas or explicit frame sequence request", "Frontend runtime is nextjs or react-vite"],
+      "postconditions": ["Canvas frame-sequence engine and Lenis smooth scroll are configured", "RAF throttling, DPR scaling, and frame preloading are verified"]
+    },
+    {
+      "skillId": "video-to-site",
+      "stage": "build",
+      "inputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "outputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",
+      "emittedArtifacts": ["extracted-frame-manifest", "canvas-video-controller", "video-to-site-config"],
+      "preconditions": ["Generated workspace exists", "StackSelection includes video-to-site or video scroll request", "Video file or extracted frames are available"],
+      "postconditions": ["Video frame extraction or keyframed video scrubbing is configured", "Canvas scroll controller and frame preloading overlay are verified"]
+    },
+    {
       "skillId": "img2threejs",
       "stage": "build",
       "inputSchemaRef": ".antigravity/runtime/schemas/artifact-manifest.schema.json",

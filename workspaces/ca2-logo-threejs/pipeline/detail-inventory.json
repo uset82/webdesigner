@@ -3,7 +3,7 @@
   "zonesDir": "E:\\PROYECTOS\\webdesigner\\workspaces\\ca2-logo-threejs\\pipeline\\zones",
   "detailInventory": {
     "scanMethod": "grid-3x3",
-    "targetMinDetails": 6,
+    "targetMinDetails": 10,
     "details": [
       {
         "id": "zone-r0c0",

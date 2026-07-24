@@ -73,6 +73,29 @@ function route(prompt, options = {}) {
     strict_1.default.deepEqual(selection.integrations, []);
     strict_1.default.match(selection.rationale.at(-1) || '', /incompatible with flutter/);
 });
+(0, node_test_1.default)('GSAP animation prompts enable gsap-animation integration', () => {
+    const { intent, selection } = route('Build a web landing page with GSAP ScrollTrigger and SplitText animations.');
+    strict_1.default.equal(intent.constraints.requiresGSAPAnimation, true);
+    strict_1.default.ok(selection.integrations.includes('gsap-animation'));
+    strict_1.default.equal(selection.frontendRuntime, 'react-vite');
+});
+(0, node_test_1.default)('explicit GSAP request enables integration on Next.js', () => {
+    const { selection } = route('Create an SEO-friendly Next.js site with GSAP ScrollSmoother and MorphSVG.');
+    strict_1.default.deepEqual(selection.integrations, ['gsap-animation']);
+    strict_1.default.equal(selection.frontendRuntime, 'nextjs');
+});
+(0, node_test_1.default)('3D scroll frame-sequence prompts enable 3d-scroll-canvas integration', () => {
+    const { intent, selection } = route('Build a 3D scroll-animated landing page with a sticky canvas frame sequence and Lenis smooth scroll.');
+    strict_1.default.equal(intent.constraints.requires3DScrollCanvas, true);
+    strict_1.default.ok(selection.integrations.includes('3d-scroll-canvas'));
+    strict_1.default.equal(selection.frontendRuntime, 'react-vite');
+});
+(0, node_test_1.default)('video-to-site prompts enable video-to-site integration', () => {
+    const { intent, selection } = route('Convert this hero MP4 video into a video-to-site scroll animation.');
+    strict_1.default.equal(intent.constraints.requiresVideoToSite, true);
+    strict_1.default.ok(selection.integrations.includes('video-to-site'));
+    strict_1.default.equal(selection.frontendRuntime, 'react-vite');
+});
 (0, node_test_1.default)('image-to-Three.js prompts enable img2threejs', () => {
     const { intent, selection } = route('Rebuild this product reference image as a procedural Three.js model for a React product page.');
     strict_1.default.equal(intent.constraints.requiresImageToThreeJS, true);

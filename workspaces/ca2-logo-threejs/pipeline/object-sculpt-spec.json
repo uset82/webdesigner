@@ -1,7 +1,7 @@
 {
-  "targetName": "CA2MonogramLogo",
-  "targetId": "ca2monogramlogo",
-  "schemaVersion": "2.0",
+  "targetName": "CA2 Monogram Logo",
+  "targetId": "ca2-monogram-logo",
+  "schemaVersion": "2.1",
   "terminologyProfile": {
     "domain": "real-time procedural Three.js asset",
     "geometryTerms": [
@@ -72,22 +72,25 @@
       "formLanguage": [
         "serif-letterforms",
         "crescent-arc",
-        "embossed-relief"
+        "embossed-relief",
+        "heraldic-monogram"
       ],
       "structureKind": [
         "nested-letters",
         "open-crescent",
-        "superscript-mark"
+        "superscript-mark",
+        "optional-wordmark"
       ],
       "motionPotential": [
         "yaw-orbit",
-        "slow-spin"
+        "slow-spin",
+        "hover-float"
       ],
       "materialFamilies": [
         "brushed-gold-metal",
         "navy-matte-plate"
       ],
-      "notes": "Gold embossed CA2 monogram with Taurus glyph"
+      "notes": "Gold embossed CA2 monogram: crescent C, letter A, nested M, Taurus glyph, superscript 2 on navy field."
     },
     "complexity": {
       "tier": "complex",
@@ -109,29 +112,33 @@
         "repetitionSystems": 1
       },
       "reasoning": [
-        "Nested monogram with gold metal relief on navy field"
+        "Identity is the monogram silhouette plus nested M/Taurus/2.",
+        "Material is uniform gold metal with bevel highlights.",
+        "Depth is shallow relief (~0.08-0.14 units) not deep sculpture."
       ]
     },
     "specDepthDecision": {
       "requiredDepth": "complex",
       "minimumComponentLevels": [
-        "macro"
+        "macro",
+        "meso",
+        "micro"
       ],
-      "needsRepetitionSystems": false,
-      "needsMaterialLocalOverrides": false,
+      "needsRepetitionSystems": true,
+      "needsMaterialLocalOverrides": true,
       "needsMultipleReviewViews": true,
       "needsActionReadyHierarchy": true,
       "rationale": "Choose simple/moderate/complex/ultra-complex from observed structure, not from a hardcoded domain."
     },
     "unknownsToResolveBeforeImplementation": [],
     "detailInventory": {
-      "scanMethod": "agent-vision",
+      "scanMethod": "agent-vision+grid-3x3",
       "targetMinDetails": 10,
       "details": [
         {
-          "id": "d1",
+          "id": "crescent-c-stroke",
           "kind": "linework",
-          "description": "Crescent C stroke",
+          "description": "Thick open crescent/C stroke wrapping left of monogram with tapered terminals",
           "region": {
             "x": 0.18,
             "y": 0.12,
@@ -148,9 +155,9 @@
           "confidence": 0.95
         },
         {
-          "id": "d2",
+          "id": "letter-a-silhouette",
           "kind": "contour",
-          "description": "Letter A silhouette",
+          "description": "Tall serif letter A with pointed apex and wide base feet",
           "region": {
             "x": 0.28,
             "y": 0.14,
@@ -167,9 +174,9 @@
           "confidence": 0.96
         },
         {
-          "id": "d3",
+          "id": "letter-m-nested",
           "kind": "contour",
-          "description": "Nested M",
+          "description": "Serif M nested inside lower half of A",
           "region": {
             "x": 0.34,
             "y": 0.48,
@@ -186,9 +193,9 @@
           "confidence": 0.94
         },
         {
-          "id": "d4",
+          "id": "taurus-glyph",
           "kind": "linework",
-          "description": "Taurus glyph",
+          "description": "Taurus glyph (circle + horns) centered in upper A interior",
           "region": {
             "x": 0.42,
             "y": 0.34,
@@ -205,9 +212,9 @@
           "confidence": 0.93
         },
         {
-          "id": "d5",
+          "id": "superscript-2",
           "kind": "contour",
-          "description": "Superscript 2",
+          "description": "Small raised numeral 2 upper-right of crescent tip",
           "region": {
             "x": 0.62,
             "y": 0.12,
@@ -224,9 +231,9 @@
           "confidence": 0.95
         },
         {
-          "id": "d6",
+          "id": "gold-metal-gloss",
           "kind": "gloss",
-          "description": "Gold metal response",
+          "description": "Brushed gold metal with specular highlights and warm yellow albedo",
           "region": {
             "x": 0.25,
             "y": 0.15,
@@ -243,9 +250,9 @@
           "confidence": 0.97
         },
         {
-          "id": "d7",
+          "id": "edge-bevel-highlight",
           "kind": "bevel",
-          "description": "Edge bevel highlights",
+          "description": "Soft bevels on letter edges catching key light as bright gold rims",
           "region": {
             "x": 0.3,
             "y": 0.2,
@@ -262,14 +269,14 @@
           "confidence": 0.9
         },
         {
-          "id": "d8",
+          "id": "navy-backdrop",
           "kind": "stain",
-          "description": "Navy backdrop field",
+          "description": "Deep navy flat field behind embossed mark",
           "region": {
-            "x": 0,
-            "y": 0,
-            "width": 1,
-            "height": 1,
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1.0,
+            "height": 1.0,
             "units": "normalized"
           },
           "scale": "macro",
@@ -281,9 +288,9 @@
           "confidence": 0.99
         },
         {
-          "id": "d9",
+          "id": "wordmark-serif",
           "kind": "linework",
-          "description": "Wordmark caps",
+          "description": "Optional lower wordmark CARLOS ALFREDO CARPIO MEZA in gold caps",
           "region": {
             "x": 0.28,
             "y": 0.82,
@@ -300,9 +307,9 @@
           "confidence": 0.85
         },
         {
-          "id": "d10",
+          "id": "emboss-depth",
           "kind": "contour",
-          "description": "Relief extrusion depth",
+          "description": "Shallow relief extrusion depth giving cast micro-shadows under strokes",
           "region": {
             "x": 0.3,
             "y": 0.2,
@@ -344,20 +351,21 @@
       "features": [],
       "confidence": 0.0,
       "note": "Only meaningful when objectClass.primaryDomain is character or hybrid. Set applies=true and fill from forge/stage1_intake/extract_landmarks.py. See grimoire/character/reconstruction.md and grimoire/character/likeness_maximization.md."
-    }
+    },
+    "sourceImage": "e:\\PROYECTOS\\webdesigner\\workspaces\\ca2-logo-threejs\\ref\\logo-reference.png"
   },
   "qualityContract": {
-    "qualityBar": "unassessed",
+    "qualityBar": "complex",
     "definitionOfDone": [
       "The rendered model matches the reference silhouette, primary proportions, visible component hierarchy, material response, and most recognizable local features for the selected fidelity tier."
     ],
     "minimumSpecDepth": {
-      "macroComponents": 1,
-      "mesoComponents": 0,
-      "microFeatureGroups": 0,
-      "materialLayers": 1,
-      "repetitionSystems": 0,
-      "reviewViewpoints": 3
+      "macroComponents": 3,
+      "mesoComponents": 8,
+      "microFeatureGroups": 5,
+      "materialLayers": 3,
+      "repetitionSystems": 1,
+      "reviewViewpoints": 4
     },
     "featureGroups": [
       {
@@ -460,6 +468,29 @@
       "Do not pass material look-dev without macro, meso, and micro surface frequency bands for close-up materials.",
       "Do not pass reference-fidelity material look-dev from a source image without usable referencePbr maps or an explicit documented limitation.",
       "Do not patch a spec with extracted PBR maps when extraction confidence is below the target threshold unless the user explicitly accepts lower fidelity."
+    ],
+    "minimums": {
+      "macroComponents": 3,
+      "mesoComponents": 6,
+      "microFeatureGroups": 5,
+      "materialLayers": 3,
+      "repetitionSystems": 1,
+      "reviewViewpoints": 4
+    },
+    "mustPreserveIdentityFeatures": [
+      "crescent-C wrap",
+      "serif A apex and base feet",
+      "nested M",
+      "Taurus glyph",
+      "superscript 2",
+      "gold metal on navy"
+    ],
+    "acceptedApproximation": "Letterforms may be geometric reconstructions of the serif monogram, not font-matched outlines. Wordmark optional for hero mark.",
+    "failureConditions": [
+      "Missing superscript 2",
+      "Missing nested M",
+      "Plastic non-metal gold",
+      "Flat zero-depth logo"
     ]
   },
   "qualityTargets": {
@@ -476,9 +507,10 @@
     ],
     "fpsTarget": 60,
     "reviewViewpoints": [
-      "front",
+      "hero-front",
       "three-quarter",
-      "side"
+      "top-glint",
+      "side-relief"
     ]
   },
   "selfCorrectLoop": {
@@ -564,90 +596,52 @@
   "featureReviewTargets": [
     {
       "id": "monogram-silhouette",
-      "name": "Monogram silhouette CA2",
+      "name": "Monogram silhouette",
       "tier": "critical",
+      "description": "Crescent + A + 2 read as CA2 monogram at a glance",
       "passIds": [
         "blockout",
         "structural-pass",
         "form-refinement"
-      ],
-      "minimumScore": 0.8,
-      "mustPass": true,
-      "componentRefs": [
-        "crescent-c",
-        "letter-a",
-        "numeral-2"
-      ],
-      "evidenceRefs": [
-        "full-object"
       ]
     },
     {
       "id": "nested-m-taurus",
-      "name": "Nested M and Taurus glyph",
+      "name": "Nested M and Taurus",
       "tier": "critical",
+      "description": "M nested in A and Taurus glyph remain readable",
       "passIds": [
         "form-refinement",
         "material-pass"
-      ],
-      "minimumScore": 0.75,
-      "mustPass": true,
-      "componentRefs": [
-        "letter-m",
-        "taurus-symbol"
-      ],
-      "evidenceRefs": [
-        "full-object"
       ]
     },
     {
       "id": "gold-metal-response",
       "name": "Gold metal response",
       "tier": "critical",
+      "description": "Metalness high, warm gold albedo, soft bevel highlights",
       "passIds": [
         "material-pass",
         "lighting-pass"
-      ],
-      "minimumScore": 0.8,
-      "mustPass": true,
-      "componentRefs": [
-        "letter-a"
-      ],
-      "evidenceRefs": [
-        "full-object"
       ]
     },
     {
       "id": "relief-depth",
-      "name": "Relief extrusion depth",
+      "name": "Relief depth",
       "tier": "important",
+      "description": "Consistent extrusion depth with clean beveled edges",
       "passIds": [
-        "form-refinement"
-      ],
-      "minimumScore": 0.7,
-      "mustPass": false,
-      "componentRefs": [
-        "crescent-c",
-        "letter-a"
-      ],
-      "evidenceRefs": [
-        "full-object"
+        "form-refinement",
+        "surface-pass"
       ]
     },
     {
       "id": "navy-field",
-      "name": "Navy field contrast",
+      "name": "Navy field",
       "tier": "important",
+      "description": "Deep navy plate/environment contrast",
       "passIds": [
         "lighting-pass"
-      ],
-      "minimumScore": 0.7,
-      "mustPass": false,
-      "componentRefs": [
-        "backdrop-plate"
-      ],
-      "evidenceRefs": [
-        "full-object"
       ]
     }
   ],
@@ -673,73 +667,32 @@
       "AI vision score >= 0.7 with layer scores and mismatch critique",
       "critical semantic feature scores from the same image pair meeting their individual thresholds",
       "reviewHistory entry for blockout with action=continue"
-    ]
+    ],
+    "passNotes": {
+      "lighting-pass": "Studio lighting with ACES filmic tone mapping and exposure 1.12; key/fill/rim on navy field; contact shadow under monogram; ambient occlusion in cavities."
+    }
   },
   "lookDevTargets": {
-    "qualityPriority": "reference-fidelity",
-    "materialPass": {
-      "albedoPaletteRequired": true,
-      "roughnessVariationRequired": true,
-      "normalOrBumpRequired": true,
-      "localOverridesRequired": true,
-      "minimumTextureResolution": 1024,
-      "preferredTextureResolution": 2048,
-      "independentMapChannels": [
-        "albedo",
-        "roughness",
-        "height",
-        "normal",
-        "ambient-occlusion"
+    "primaryCamera": {
+      "position": [
+        0,
+        0.1,
+        3.2
       ],
-      "requiredSurfaceFrequencyBands": [
-        "macro",
-        "meso",
-        "micro"
+      "target": [
+        0,
+        0.05,
+        0
       ],
-      "geometryReliefRequiredWhenSilhouetteAffected": true,
-      "referencePbrExtraction": {
-        "requiredWhenSourceImagePresent": true,
-        "targetThreshold": 0.7,
-        "stopOnLowConfidence": true,
-        "script": "forge/stage1_intake/extract_pbr_evidence.py",
-        "acceptedLimitation": "single-image extraction is reference-derived inference, not exact photogrammetry"
-      },
-      "mustAvoid": [
-        "single flat albedo per material",
-        "uniform roughness",
-        "albedo texture reused as roughness/height/normal/AO",
-        "single-frequency random noise",
-        "plastic-looking smooth bark, stone, cloth, foliage, or aged material",
-        "local color/detail described only in prose without material masks",
-        "claiming exact PBR recovery when confidence is below the target threshold"
-      ]
+      "fov": 35
     },
-    "lightingPass": {
-      "requiredTerms": [
-        "key light",
-        "fill light",
-        "rim or environment light",
-        "exposure",
-        "tone mapping",
-        "background",
-        "contact shadow"
-      ],
-      "mustAvoid": [
-        "ambient-only lighting",
-        "flat value range",
-        "missing contact shadow",
-        "reference lighting copied without separating material readability"
-      ]
+    "exposure": 1.12,
+    "toneMapping": "ACESFilmic",
+    "contactShadow": {
+      "enabled": true,
+      "opacity": 0.35,
+      "blur": 2.5
     },
-    "screenshotReview": [
-      "Compare albedo palette and local color zones.",
-      "Compare roughness/normal/bump response under light.",
-      "Compare cavity dirt, edge wear, stains, moss, scratches, or other local masks.",
-      "Compare key/fill/rim structure, exposure, tone mapping, background, and contact shadows.",
-      "Capture a neutral-light render to verify material readability without reference lighting.",
-      "Capture a grazing-light close-up to expose flat normals, uniform roughness, tiling, and plastic highlights.",
-      "Capture a reference-matched render from the same camera framing as the source."
-    ],
     "reviewViewpoints": [
       {
         "name": "hero-front",
@@ -747,11 +700,6 @@
           0,
           0.1,
           3.2
-        ],
-        "target": [
-          0,
-          0,
-          0
         ]
       },
       {
@@ -760,11 +708,6 @@
           1.6,
           0.6,
           2.6
-        ],
-        "target": [
-          0,
-          0,
-          0
         ]
       },
       {
@@ -773,11 +716,6 @@
           0.3,
           2.2,
           1.8
-        ],
-        "target": [
-          0,
-          0,
-          0
         ]
       },
       {
@@ -786,11 +724,6 @@
           2.4,
           0.2,
           1.2
-        ],
-        "target": [
-          0,
-          0,
-          0
         ]
       }
     ]
@@ -859,51 +792,6 @@
       },
       "observations": [],
       "confidence": 0.5
-    },
-    {
-      "id": "view-1",
-      "view": "three-quarter",
-      "imageRegion": {
-        "x": 0,
-        "y": 0,
-        "width": 1,
-        "height": 1,
-        "units": "normalized"
-      },
-      "observations": [
-        "monogram"
-      ],
-      "confidence": 0.85
-    },
-    {
-      "id": "view-2",
-      "view": "top",
-      "imageRegion": {
-        "x": 0,
-        "y": 0,
-        "width": 1,
-        "height": 1,
-        "units": "normalized"
-      },
-      "observations": [
-        "monogram"
-      ],
-      "confidence": 0.85
-    },
-    {
-      "id": "view-3",
-      "view": "side",
-      "imageRegion": {
-        "x": 0,
-        "y": 0,
-        "width": 1,
-        "height": 1,
-        "units": "normalized"
-      },
-      "observations": [
-        "monogram"
-      ],
-      "confidence": 0.85
     }
   ],
   "componentTree": [
@@ -911,29 +799,15 @@
       "id": "root",
       "name": "CA2MonogramLogo",
       "level": "macro",
-      "role": "root",
-      "importance": 0.9,
-      "confidence": 0.9,
-      "primitive": "box",
-      "geometryDescriptor": {
-        "topologyIntent": "extruded letterform",
-        "edgeTreatment": {
-          "type": "bevel",
-          "bevelRadius": 0.02,
-          "segments": 3
-        },
-        "deformationStack": [],
-        "uvStrategy": "generated procedural coordinates",
-        "normalStrategy": "vertex normals from generated geometry"
-      },
       "parent": null,
-      "attachment": null,
-      "dimensions": {
-        "width": 0.1,
-        "height": 0.1,
-        "depth": 0.1,
-        "units": "relative",
-        "confidence": 1
+      "primitive": "box",
+      "role": "root",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "CA2MonogramLogo is a monogram relief part reconstructed as box",
+      "actionProfile": {
+        "role": "pivot",
+        "animatable": true,
+        "destructible": false
       },
       "transform": {
         "position": [
@@ -952,111 +826,36 @@
           1
         ]
       },
-      "actionProfile": {
-        "animationRole": "root",
-        "pivot": {
-          "mode": "center",
-          "localPosition": [
-            0,
-            0,
-            0
-          ],
-          "axis": [
-            0,
-            1,
-            0
-          ],
-          "confidence": 0.8
-        },
-        "transformChannels": {
-          "translate": true,
-          "rotate": true,
-          "scale": true,
-          "bend": false,
-          "twist": false,
-          "detach": false,
-          "visibility": true,
-          "materialState": true
-        },
-        "sockets": [],
-        "collider": {
-          "type": "box",
-          "offset": [
-            0,
-            0,
-            0
-          ],
-          "scale": [
-            1,
-            1,
-            1
-          ],
-          "isTrigger": false,
-          "notes": ""
-        },
-        "constraints": [],
-        "destruction": {
-          "breakable": false,
-          "fractureGroup": "root",
-          "seamRefs": [],
-          "detachableFragments": [],
-          "breakImpulse": 0.0,
-          "debrisMaterial": "polished-gold"
-        }
-      },
-      "material": "navy-plate",
-      "materialLayers": [
-        "navy-plate"
-      ],
-      "deformations": [],
-      "joints": [],
-      "seams": [],
       "localFeatures": [
-        "pivot"
+        "pivot-center"
       ],
-      "surfaceDetail": {
-        "macroRoughness": 0.28,
-        "microRoughness": 0.15,
-        "bumpAmplitude": 0.02,
-        "normalPattern": "brushed-metal",
-        "displacementPattern": "",
-        "occlusionPattern": "cavity",
-        "edgeWearPattern": "soft-bevel",
-        "notes": "gold relief"
+      "dimensions": {
+        "width": 0.01,
+        "height": 0.01,
+        "depth": 0.01
       },
-      "evidenceRefs": [
-        "full-object"
-      ],
-      "details": [],
-      "fidelityTier": "form-refinement"
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(212, 175, 55, 1)",
+        "secondaryAlbedo": "rgba(7, 16, 40, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.7,
+        "metalness": 0.5,
+        "roughness": 0.5
+      }
     },
     {
       "id": "backdrop-plate",
       "name": "NavyBackdrop",
       "level": "macro",
-      "role": "backdrop",
-      "importance": 0.9,
-      "confidence": 0.9,
-      "primitive": "plane-card",
-      "geometryDescriptor": {
-        "topologyIntent": "extruded letterform",
-        "edgeTreatment": {
-          "type": "bevel",
-          "bevelRadius": 0.02,
-          "segments": 3
-        },
-        "deformationStack": [],
-        "uvStrategy": "generated procedural coordinates",
-        "normalStrategy": "vertex normals from generated geometry"
-      },
       "parent": "root",
-      "attachment": null,
-      "dimensions": {
-        "width": 4.2,
-        "height": 3.2,
-        "depth": 0.02,
-        "units": "relative",
-        "confidence": 0.95
+      "primitive": "plane-card",
+      "role": "backdrop",
+      "topologyClass": "material-only",
+      "topologyRationale": "NavyBackdrop is a monogram relief part reconstructed as plane-card",
+      "actionProfile": {
+        "role": "static",
+        "animatable": false,
+        "destructible": false
       },
       "transform": {
         "position": [
@@ -1075,116 +874,42 @@
           1
         ]
       },
-      "actionProfile": {
-        "animationRole": "backdrop-plate",
-        "pivot": {
-          "mode": "center",
-          "localPosition": [
-            0,
-            0,
-            0
-          ],
-          "axis": [
-            0,
-            1,
-            0
-          ],
-          "confidence": 0.8
-        },
-        "transformChannels": {
-          "translate": true,
-          "rotate": true,
-          "scale": true,
-          "bend": false,
-          "twist": false,
-          "detach": false,
-          "visibility": true,
-          "materialState": true
-        },
-        "sockets": [],
-        "collider": {
-          "type": "box",
-          "offset": [
-            0,
-            0,
-            0
-          ],
-          "scale": [
-            1,
-            1,
-            1
-          ],
-          "isTrigger": false,
-          "notes": ""
-        },
-        "constraints": [],
-        "destruction": {
-          "breakable": false,
-          "fractureGroup": "root",
-          "seamRefs": [],
-          "detachableFragments": [],
-          "breakImpulse": 0.0,
-          "debrisMaterial": "polished-gold"
-        }
-      },
-      "material": "navy-plate",
-      "materialLayers": [
-        "navy-plate"
-      ],
-      "deformations": [],
-      "joints": [],
-      "seams": [],
       "localFeatures": [
         "matte-field"
       ],
-      "surfaceDetail": {
-        "macroRoughness": 0.28,
-        "microRoughness": 0.15,
-        "bumpAmplitude": 0.02,
-        "normalPattern": "brushed-metal",
-        "displacementPattern": "",
-        "occlusionPattern": "cavity",
-        "edgeWearPattern": "soft-bevel",
-        "notes": "gold relief"
+      "materialRef": "navy-plate",
+      "dimensions": {
+        "width": 4.2,
+        "height": 3.2,
+        "depth": 0.02
       },
-      "evidenceRefs": [
-        "full-object"
-      ],
-      "details": [],
-      "fidelityTier": "form-refinement"
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(7, 16, 40, 1)",
+        "secondaryAlbedo": "rgba(11, 24, 54, 1)",
+        "materialClass": "plastic",
+        "materialClassConfidence": 0.8,
+        "metalness": 0.05,
+        "roughness": 0.88
+      }
     },
     {
-      "id": "crescent-c",
-      "name": "CrescentC",
+      "id": "monogram-group",
+      "name": "MonogramGroup",
       "level": "macro",
-      "role": "letterform",
-      "importance": 0.9,
-      "confidence": 0.9,
-      "primitive": "extrude",
-      "geometryDescriptor": {
-        "topologyIntent": "extruded letterform",
-        "edgeTreatment": {
-          "type": "bevel",
-          "bevelRadius": 0.02,
-          "segments": 3
-        },
-        "deformationStack": [],
-        "uvStrategy": "generated procedural coordinates",
-        "normalStrategy": "vertex normals from generated geometry"
-      },
       "parent": "root",
-      "attachment": null,
-      "dimensions": {
-        "width": 1.6,
-        "height": 1.9,
-        "depth": 0.12,
-        "units": "relative",
-        "confidence": 0.9
+      "primitive": "box",
+      "role": "mark",
+      "topologyClass": "assembled-solid",
+      "topologyRationale": "MonogramGroup is a monogram relief part reconstructed as box",
+      "actionProfile": {
+        "role": "static",
+        "animatable": false,
+        "destructible": false
       },
       "transform": {
         "position": [
-          -0.05,
-          0.1,
+          0,
+          0.12,
           0
         ],
         "rotation": [
@@ -1198,117 +923,92 @@
           1
         ]
       },
-      "actionProfile": {
-        "animationRole": "crescent-c",
-        "pivot": {
-          "mode": "center",
-          "localPosition": [
-            0,
-            0,
-            0
-          ],
-          "axis": [
-            0,
-            1,
-            0
-          ],
-          "confidence": 0.8
-        },
-        "transformChannels": {
-          "translate": true,
-          "rotate": true,
-          "scale": true,
-          "bend": false,
-          "twist": false,
-          "detach": false,
-          "visibility": true,
-          "materialState": true
-        },
-        "sockets": [],
-        "collider": {
-          "type": "box",
-          "offset": [
-            0,
-            0,
-            0
-          ],
-          "scale": [
-            1,
-            1,
-            1
-          ],
-          "isTrigger": false,
-          "notes": ""
-        },
-        "constraints": [],
-        "destruction": {
-          "breakable": false,
-          "fractureGroup": "root",
-          "seamRefs": [],
-          "detachableFragments": [],
-          "breakImpulse": 0.0,
-          "debrisMaterial": "polished-gold"
-        }
-      },
-      "material": "polished-gold",
-      "materialLayers": [
-        "polished-gold"
+      "localFeatures": [
+        "relief-assembly"
       ],
-      "deformations": [],
-      "joints": [],
-      "seams": [],
+      "dimensions": {
+        "width": 0.01,
+        "height": 0.01,
+        "depth": 0.01
+      },
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(212, 175, 55, 1)",
+        "secondaryAlbedo": "rgba(7, 16, 40, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.7,
+        "metalness": 0.5,
+        "roughness": 0.5
+      }
+    },
+    {
+      "id": "crescent-c",
+      "name": "CrescentC",
+      "level": "macro",
+      "parent": "monogram-group",
+      "primitive": "extrude",
+      "role": "letterform",
+      "topologyClass": "surface-relief",
+      "topologyRationale": "CrescentC is a monogram relief part reconstructed as extrude",
+      "actionProfile": {
+        "role": "static",
+        "animatable": false,
+        "destructible": false
+      },
+      "transform": {
+        "position": [
+          -0.05,
+          0.05,
+          0
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
       "localFeatures": [
         "open-crescent",
+        "tapered-terminals",
         "relief-depth"
       ],
-      "surfaceDetail": {
-        "macroRoughness": 0.28,
-        "microRoughness": 0.15,
-        "bumpAmplitude": 0.02,
-        "normalPattern": "brushed-metal",
-        "displacementPattern": "",
-        "occlusionPattern": "cavity",
-        "edgeWearPattern": "soft-bevel",
-        "notes": "gold relief"
+      "materialRef": "polished-gold",
+      "dimensions": {
+        "width": 1.6,
+        "height": 1.9,
+        "depth": 0.12
       },
-      "evidenceRefs": [
-        "full-object"
-      ],
-      "details": [],
-      "fidelityTier": "form-refinement"
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(212, 175, 55, 1)",
+        "secondaryAlbedo": "rgba(240, 215, 140, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.95,
+        "metalness": 0.92,
+        "roughness": 0.28
+      }
     },
     {
       "id": "letter-a",
       "name": "LetterA",
       "level": "macro",
-      "role": "letterform",
-      "importance": 0.9,
-      "confidence": 0.9,
+      "parent": "monogram-group",
       "primitive": "extrude",
-      "geometryDescriptor": {
-        "topologyIntent": "extruded letterform",
-        "edgeTreatment": {
-          "type": "bevel",
-          "bevelRadius": 0.02,
-          "segments": 3
-        },
-        "deformationStack": [],
-        "uvStrategy": "generated procedural coordinates",
-        "normalStrategy": "vertex normals from generated geometry"
-      },
-      "parent": "root",
-      "attachment": null,
-      "dimensions": {
-        "width": 1.35,
-        "height": 1.85,
-        "depth": 0.13,
-        "units": "relative",
-        "confidence": 0.92
+      "role": "letterform",
+      "topologyClass": "surface-relief",
+      "topologyRationale": "LetterA is a monogram relief part reconstructed as extrude",
+      "actionProfile": {
+        "role": "static",
+        "animatable": false,
+        "destructible": false
       },
       "transform": {
         "position": [
           0.02,
-          0.02,
+          -0.02,
           0.01
         ],
         "rotation": [
@@ -1322,112 +1022,40 @@
           1
         ]
       },
-      "actionProfile": {
-        "animationRole": "letter-a",
-        "pivot": {
-          "mode": "center",
-          "localPosition": [
-            0,
-            0,
-            0
-          ],
-          "axis": [
-            0,
-            1,
-            0
-          ],
-          "confidence": 0.8
-        },
-        "transformChannels": {
-          "translate": true,
-          "rotate": true,
-          "scale": true,
-          "bend": false,
-          "twist": false,
-          "detach": false,
-          "visibility": true,
-          "materialState": true
-        },
-        "sockets": [],
-        "collider": {
-          "type": "box",
-          "offset": [
-            0,
-            0,
-            0
-          ],
-          "scale": [
-            1,
-            1,
-            1
-          ],
-          "isTrigger": false,
-          "notes": ""
-        },
-        "constraints": [],
-        "destruction": {
-          "breakable": false,
-          "fractureGroup": "root",
-          "seamRefs": [],
-          "detachableFragments": [],
-          "breakImpulse": 0.0,
-          "debrisMaterial": "polished-gold"
-        }
-      },
-      "material": "polished-gold",
-      "materialLayers": [
-        "polished-gold"
-      ],
-      "deformations": [],
-      "joints": [],
-      "seams": [],
       "localFeatures": [
-        "serif-a",
+        "serif-feet",
+        "pointed-apex",
+        "inner-voids",
         "relief-depth"
       ],
-      "surfaceDetail": {
-        "macroRoughness": 0.28,
-        "microRoughness": 0.15,
-        "bumpAmplitude": 0.02,
-        "normalPattern": "brushed-metal",
-        "displacementPattern": "",
-        "occlusionPattern": "cavity",
-        "edgeWearPattern": "soft-bevel",
-        "notes": "gold relief"
+      "materialRef": "polished-gold",
+      "dimensions": {
+        "width": 1.35,
+        "height": 1.85,
+        "depth": 0.13
       },
-      "evidenceRefs": [
-        "full-object"
-      ],
-      "details": [],
-      "fidelityTier": "form-refinement"
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(212, 175, 55, 1)",
+        "secondaryAlbedo": "rgba(240, 215, 140, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.95,
+        "metalness": 0.92,
+        "roughness": 0.28
+      }
     },
     {
       "id": "letter-m",
       "name": "LetterM",
       "level": "meso",
-      "role": "letterform",
-      "importance": 0.7,
-      "confidence": 0.9,
+      "parent": "monogram-group",
       "primitive": "extrude",
-      "geometryDescriptor": {
-        "topologyIntent": "extruded letterform",
-        "edgeTreatment": {
-          "type": "bevel",
-          "bevelRadius": 0.02,
-          "segments": 3
-        },
-        "deformationStack": [],
-        "uvStrategy": "generated procedural coordinates",
-        "normalStrategy": "vertex normals from generated geometry"
-      },
-      "parent": "root",
-      "attachment": null,
-      "dimensions": {
-        "width": 0.72,
-        "height": 0.55,
-        "depth": 0.11,
-        "units": "relative",
-        "confidence": 0.9
+      "role": "letterform",
+      "topologyClass": "surface-relief",
+      "topologyRationale": "LetterM is a monogram relief part reconstructed as extrude",
+      "actionProfile": {
+        "role": "static",
+        "animatable": false,
+        "destructible": false
       },
       "transform": {
         "position": [
@@ -1446,111 +1074,38 @@
           1
         ]
       },
-      "actionProfile": {
-        "animationRole": "letter-m",
-        "pivot": {
-          "mode": "center",
-          "localPosition": [
-            0,
-            0,
-            0
-          ],
-          "axis": [
-            0,
-            1,
-            0
-          ],
-          "confidence": 0.8
-        },
-        "transformChannels": {
-          "translate": true,
-          "rotate": true,
-          "scale": true,
-          "bend": false,
-          "twist": false,
-          "detach": false,
-          "visibility": true,
-          "materialState": true
-        },
-        "sockets": [],
-        "collider": {
-          "type": "box",
-          "offset": [
-            0,
-            0,
-            0
-          ],
-          "scale": [
-            1,
-            1,
-            1
-          ],
-          "isTrigger": false,
-          "notes": ""
-        },
-        "constraints": [],
-        "destruction": {
-          "breakable": false,
-          "fractureGroup": "root",
-          "seamRefs": [],
-          "detachableFragments": [],
-          "breakImpulse": 0.0,
-          "debrisMaterial": "polished-gold"
-        }
-      },
-      "material": "polished-gold",
-      "materialLayers": [
-        "polished-gold"
-      ],
-      "deformations": [],
-      "joints": [],
-      "seams": [],
       "localFeatures": [
-        "nested-m"
+        "serif-m",
+        "nested-in-a"
       ],
-      "surfaceDetail": {
-        "macroRoughness": 0.28,
-        "microRoughness": 0.15,
-        "bumpAmplitude": 0.02,
-        "normalPattern": "brushed-metal",
-        "displacementPattern": "",
-        "occlusionPattern": "cavity",
-        "edgeWearPattern": "soft-bevel",
-        "notes": "gold relief"
+      "materialRef": "polished-gold",
+      "dimensions": {
+        "width": 0.72,
+        "height": 0.55,
+        "depth": 0.11
       },
-      "evidenceRefs": [
-        "full-object"
-      ],
-      "details": [],
-      "fidelityTier": "form-refinement"
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(212, 175, 55, 1)",
+        "secondaryAlbedo": "rgba(240, 215, 140, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.95,
+        "metalness": 0.92,
+        "roughness": 0.28
+      }
     },
     {
       "id": "taurus-symbol",
       "name": "TaurusGlyph",
       "level": "micro",
-      "role": "glyph",
-      "importance": 0.7,
-      "confidence": 0.9,
+      "parent": "monogram-group",
       "primitive": "extrude",
-      "geometryDescriptor": {
-        "topologyIntent": "extruded letterform",
-        "edgeTreatment": {
-          "type": "bevel",
-          "bevelRadius": 0.02,
-          "segments": 3
-        },
-        "deformationStack": [],
-        "uvStrategy": "generated procedural coordinates",
-        "normalStrategy": "vertex normals from generated geometry"
-      },
-      "parent": "root",
-      "attachment": null,
-      "dimensions": {
-        "width": 0.28,
-        "height": 0.3,
-        "depth": 0.09,
-        "units": "relative",
-        "confidence": 0.9
+      "role": "glyph",
+      "topologyClass": "surface-relief",
+      "topologyRationale": "TaurusGlyph is a monogram relief part reconstructed as extrude",
+      "actionProfile": {
+        "role": "static",
+        "animatable": false,
+        "destructible": false
       },
       "transform": {
         "position": [
@@ -1569,111 +1124,38 @@
           1
         ]
       },
-      "actionProfile": {
-        "animationRole": "taurus-symbol",
-        "pivot": {
-          "mode": "center",
-          "localPosition": [
-            0,
-            0,
-            0
-          ],
-          "axis": [
-            0,
-            1,
-            0
-          ],
-          "confidence": 0.8
-        },
-        "transformChannels": {
-          "translate": true,
-          "rotate": true,
-          "scale": true,
-          "bend": false,
-          "twist": false,
-          "detach": false,
-          "visibility": true,
-          "materialState": true
-        },
-        "sockets": [],
-        "collider": {
-          "type": "box",
-          "offset": [
-            0,
-            0,
-            0
-          ],
-          "scale": [
-            1,
-            1,
-            1
-          ],
-          "isTrigger": false,
-          "notes": ""
-        },
-        "constraints": [],
-        "destruction": {
-          "breakable": false,
-          "fractureGroup": "root",
-          "seamRefs": [],
-          "detachableFragments": [],
-          "breakImpulse": 0.0,
-          "debrisMaterial": "polished-gold"
-        }
-      },
-      "material": "polished-gold",
-      "materialLayers": [
-        "polished-gold"
-      ],
-      "deformations": [],
-      "joints": [],
-      "seams": [],
       "localFeatures": [
-        "glyph"
+        "circle-body",
+        "horns"
       ],
-      "surfaceDetail": {
-        "macroRoughness": 0.28,
-        "microRoughness": 0.15,
-        "bumpAmplitude": 0.02,
-        "normalPattern": "brushed-metal",
-        "displacementPattern": "",
-        "occlusionPattern": "cavity",
-        "edgeWearPattern": "soft-bevel",
-        "notes": "gold relief"
+      "materialRef": "polished-gold",
+      "dimensions": {
+        "width": 0.28,
+        "height": 0.3,
+        "depth": 0.09
       },
-      "evidenceRefs": [
-        "full-object"
-      ],
-      "details": [],
-      "fidelityTier": "form-refinement"
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(212, 175, 55, 1)",
+        "secondaryAlbedo": "rgba(240, 215, 140, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.95,
+        "metalness": 0.92,
+        "roughness": 0.28
+      }
     },
     {
       "id": "numeral-2",
       "name": "Superscript2",
       "level": "meso",
-      "role": "letterform",
-      "importance": 0.7,
-      "confidence": 0.9,
+      "parent": "monogram-group",
       "primitive": "extrude",
-      "geometryDescriptor": {
-        "topologyIntent": "extruded letterform",
-        "edgeTreatment": {
-          "type": "bevel",
-          "bevelRadius": 0.02,
-          "segments": 3
-        },
-        "deformationStack": [],
-        "uvStrategy": "generated procedural coordinates",
-        "normalStrategy": "vertex normals from generated geometry"
-      },
-      "parent": "root",
-      "attachment": null,
-      "dimensions": {
-        "width": 0.28,
-        "height": 0.36,
-        "depth": 0.1,
-        "units": "relative",
-        "confidence": 0.92
+      "role": "letterform",
+      "topologyClass": "surface-relief",
+      "topologyRationale": "Superscript2 is a monogram relief part reconstructed as extrude",
+      "actionProfile": {
+        "role": "static",
+        "animatable": false,
+        "destructible": false
       },
       "transform": {
         "position": [
@@ -1692,111 +1174,37 @@
           1
         ]
       },
-      "actionProfile": {
-        "animationRole": "numeral-2",
-        "pivot": {
-          "mode": "center",
-          "localPosition": [
-            0,
-            0,
-            0
-          ],
-          "axis": [
-            0,
-            1,
-            0
-          ],
-          "confidence": 0.8
-        },
-        "transformChannels": {
-          "translate": true,
-          "rotate": true,
-          "scale": true,
-          "bend": false,
-          "twist": false,
-          "detach": false,
-          "visibility": true,
-          "materialState": true
-        },
-        "sockets": [],
-        "collider": {
-          "type": "box",
-          "offset": [
-            0,
-            0,
-            0
-          ],
-          "scale": [
-            1,
-            1,
-            1
-          ],
-          "isTrigger": false,
-          "notes": ""
-        },
-        "constraints": [],
-        "destruction": {
-          "breakable": false,
-          "fractureGroup": "root",
-          "seamRefs": [],
-          "detachableFragments": [],
-          "breakImpulse": 0.0,
-          "debrisMaterial": "polished-gold"
-        }
-      },
-      "material": "polished-gold",
-      "materialLayers": [
-        "polished-gold"
-      ],
-      "deformations": [],
-      "joints": [],
-      "seams": [],
       "localFeatures": [
-        "raised-2"
+        "raised-numeral"
       ],
-      "surfaceDetail": {
-        "macroRoughness": 0.28,
-        "microRoughness": 0.15,
-        "bumpAmplitude": 0.02,
-        "normalPattern": "brushed-metal",
-        "displacementPattern": "",
-        "occlusionPattern": "cavity",
-        "edgeWearPattern": "soft-bevel",
-        "notes": "gold relief"
+      "materialRef": "polished-gold",
+      "dimensions": {
+        "width": 0.28,
+        "height": 0.36,
+        "depth": 0.1
       },
-      "evidenceRefs": [
-        "full-object"
-      ],
-      "details": [],
-      "fidelityTier": "form-refinement"
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(212, 175, 55, 1)",
+        "secondaryAlbedo": "rgba(240, 215, 140, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.95,
+        "metalness": 0.92,
+        "roughness": 0.28
+      }
     },
     {
       "id": "wordmark",
       "name": "Wordmark",
       "level": "meso",
+      "parent": "root",
+      "primitive": "plane-card",
       "role": "typography",
-      "importance": 0.7,
-      "confidence": 0.9,
-      "primitive": "extrude",
-      "geometryDescriptor": {
-        "topologyIntent": "extruded letterform",
-        "edgeTreatment": {
-          "type": "bevel",
-          "bevelRadius": 0.02,
-          "segments": 3
-        },
-        "deformationStack": [],
-        "uvStrategy": "generated procedural coordinates",
-        "normalStrategy": "vertex normals from generated geometry"
-      },
-      "parent": "root",
-      "attachment": null,
-      "dimensions": {
-        "width": 2.8,
-        "height": 0.12,
-        "depth": 0.06,
-        "units": "relative",
-        "confidence": 0.7
+      "topologyClass": "surface-relief",
+      "topologyRationale": "Wordmark is a monogram relief part reconstructed as plane-card",
+      "actionProfile": {
+        "role": "static",
+        "animatable": false,
+        "destructible": false
       },
       "transform": {
         "position": [
@@ -1815,1224 +1223,44 @@
           1
         ]
       },
-      "actionProfile": {
-        "animationRole": "wordmark",
-        "pivot": {
-          "mode": "center",
-          "localPosition": [
-            0,
-            0,
-            0
-          ],
-          "axis": [
-            0,
-            1,
-            0
-          ],
-          "confidence": 0.8
-        },
-        "transformChannels": {
-          "translate": true,
-          "rotate": true,
-          "scale": true,
-          "bend": false,
-          "twist": false,
-          "detach": false,
-          "visibility": true,
-          "materialState": true
-        },
-        "sockets": [],
-        "collider": {
-          "type": "box",
-          "offset": [
-            0,
-            0,
-            0
-          ],
-          "scale": [
-            1,
-            1,
-            1
-          ],
-          "isTrigger": false,
-          "notes": ""
-        },
-        "constraints": [],
-        "destruction": {
-          "breakable": false,
-          "fractureGroup": "root",
-          "seamRefs": [],
-          "detachableFragments": [],
-          "breakImpulse": 0.0,
-          "debrisMaterial": "polished-gold"
-        }
-      },
-      "material": "polished-gold",
-      "materialLayers": [
-        "polished-gold"
-      ],
-      "deformations": [],
-      "joints": [],
-      "seams": [],
       "localFeatures": [
-        "caps"
+        "optional-caps",
+        "divider-dot"
       ],
-      "surfaceDetail": {
-        "macroRoughness": 0.28,
-        "microRoughness": 0.15,
-        "bumpAmplitude": 0.02,
-        "normalPattern": "brushed-metal",
-        "displacementPattern": "",
-        "occlusionPattern": "cavity",
-        "edgeWearPattern": "soft-bevel",
-        "notes": "gold relief"
-      },
-      "evidenceRefs": [
-        "full-object"
-      ],
-      "details": [],
-      "fidelityTier": "form-refinement"
-    },
-    {
-      "id": "meso-a-left",
-      "name": "ALeftStroke",
-      "level": "meso",
-      "role": "structure",
-      "importance": 0.7,
-      "confidence": 0.9,
-      "primitive": "extrude",
-      "geometryDescriptor": {
-        "topologyIntent": "extruded letterform",
-        "edgeTreatment": {
-          "type": "bevel",
-          "bevelRadius": 0.02,
-          "segments": 3
-        },
-        "deformationStack": [],
-        "uvStrategy": "generated procedural coordinates",
-        "normalStrategy": "vertex normals from generated geometry"
-      },
-      "parent": "root",
-      "attachment": null,
+      "materialRef": "polished-gold",
       "dimensions": {
-        "width": 0.18,
-        "height": 1.6,
-        "depth": 0.12,
-        "units": "relative",
-        "confidence": 0.85
-      },
-      "transform": {
-        "position": [
-          -0.28,
-          0.05,
-          0.01
-        ],
-        "rotation": [
-          0,
-          0,
-          0
-        ],
-        "scale": [
-          1,
-          1,
-          1
-        ]
-      },
-      "actionProfile": {
-        "animationRole": "meso-a-left",
-        "pivot": {
-          "mode": "center",
-          "localPosition": [
-            0,
-            0,
-            0
-          ],
-          "axis": [
-            0,
-            1,
-            0
-          ],
-          "confidence": 0.8
-        },
-        "transformChannels": {
-          "translate": true,
-          "rotate": true,
-          "scale": true,
-          "bend": false,
-          "twist": false,
-          "detach": false,
-          "visibility": true,
-          "materialState": true
-        },
-        "sockets": [],
-        "collider": {
-          "type": "box",
-          "offset": [
-            0,
-            0,
-            0
-          ],
-          "scale": [
-            1,
-            1,
-            1
-          ],
-          "isTrigger": false,
-          "notes": ""
-        },
-        "constraints": [],
-        "destruction": {
-          "breakable": false,
-          "fractureGroup": "root",
-          "seamRefs": [],
-          "detachableFragments": [],
-          "breakImpulse": 0.0,
-          "debrisMaterial": "polished-gold"
-        }
-      },
-      "material": "polished-gold",
-      "materialLayers": [
-        "polished-gold"
-      ],
-      "deformations": [],
-      "joints": [],
-      "seams": [],
-      "localFeatures": [
-        "stroke"
-      ],
-      "surfaceDetail": {
-        "macroRoughness": 0.28,
-        "microRoughness": 0.15,
-        "bumpAmplitude": 0.02,
-        "normalPattern": "brushed-metal",
-        "displacementPattern": "",
-        "occlusionPattern": "cavity",
-        "edgeWearPattern": "soft-bevel",
-        "notes": "gold relief"
-      },
-      "evidenceRefs": [
-        "full-object"
-      ],
-      "details": [],
-      "fidelityTier": "form-refinement"
-    },
-    {
-      "id": "meso-a-right",
-      "name": "ARightStroke",
-      "level": "meso",
-      "role": "structure",
-      "importance": 0.7,
-      "confidence": 0.9,
-      "primitive": "extrude",
-      "geometryDescriptor": {
-        "topologyIntent": "extruded letterform",
-        "edgeTreatment": {
-          "type": "bevel",
-          "bevelRadius": 0.02,
-          "segments": 3
-        },
-        "deformationStack": [],
-        "uvStrategy": "generated procedural coordinates",
-        "normalStrategy": "vertex normals from generated geometry"
-      },
-      "parent": "root",
-      "attachment": null,
-      "dimensions": {
-        "width": 0.18,
-        "height": 1.6,
-        "depth": 0.12,
-        "units": "relative",
-        "confidence": 0.85
-      },
-      "transform": {
-        "position": [
-          0.32,
-          0.05,
-          0.01
-        ],
-        "rotation": [
-          0,
-          0,
-          0
-        ],
-        "scale": [
-          1,
-          1,
-          1
-        ]
-      },
-      "actionProfile": {
-        "animationRole": "meso-a-right",
-        "pivot": {
-          "mode": "center",
-          "localPosition": [
-            0,
-            0,
-            0
-          ],
-          "axis": [
-            0,
-            1,
-            0
-          ],
-          "confidence": 0.8
-        },
-        "transformChannels": {
-          "translate": true,
-          "rotate": true,
-          "scale": true,
-          "bend": false,
-          "twist": false,
-          "detach": false,
-          "visibility": true,
-          "materialState": true
-        },
-        "sockets": [],
-        "collider": {
-          "type": "box",
-          "offset": [
-            0,
-            0,
-            0
-          ],
-          "scale": [
-            1,
-            1,
-            1
-          ],
-          "isTrigger": false,
-          "notes": ""
-        },
-        "constraints": [],
-        "destruction": {
-          "breakable": false,
-          "fractureGroup": "root",
-          "seamRefs": [],
-          "detachableFragments": [],
-          "breakImpulse": 0.0,
-          "debrisMaterial": "polished-gold"
-        }
-      },
-      "material": "polished-gold",
-      "materialLayers": [
-        "polished-gold"
-      ],
-      "deformations": [],
-      "joints": [],
-      "seams": [],
-      "localFeatures": [
-        "stroke"
-      ],
-      "surfaceDetail": {
-        "macroRoughness": 0.28,
-        "microRoughness": 0.15,
-        "bumpAmplitude": 0.02,
-        "normalPattern": "brushed-metal",
-        "displacementPattern": "",
-        "occlusionPattern": "cavity",
-        "edgeWearPattern": "soft-bevel",
-        "notes": "gold relief"
-      },
-      "evidenceRefs": [
-        "full-object"
-      ],
-      "details": [],
-      "fidelityTier": "form-refinement"
-    },
-    {
-      "id": "meso-divider",
-      "name": "DividerRule",
-      "level": "meso",
-      "role": "structure",
-      "importance": 0.7,
-      "confidence": 0.9,
-      "primitive": "box",
-      "geometryDescriptor": {
-        "topologyIntent": "extruded letterform",
-        "edgeTreatment": {
-          "type": "bevel",
-          "bevelRadius": 0.02,
-          "segments": 3
-        },
-        "deformationStack": [],
-        "uvStrategy": "generated procedural coordinates",
-        "normalStrategy": "vertex normals from generated geometry"
-      },
-      "parent": "root",
-      "attachment": null,
-      "dimensions": {
-        "width": 0.02,
+        "width": 3.2,
         "height": 0.28,
-        "depth": 0.04,
-        "units": "relative",
-        "confidence": 0.8
+        "depth": 0.04
       },
-      "transform": {
-        "position": [
-          -0.55,
-          -1.05,
-          0.02
-        ],
-        "rotation": [
-          0,
-          0,
-          0
-        ],
-        "scale": [
-          1,
-          1,
-          1
-        ]
-      },
-      "actionProfile": {
-        "animationRole": "meso-divider",
-        "pivot": {
-          "mode": "center",
-          "localPosition": [
-            0,
-            0,
-            0
-          ],
-          "axis": [
-            0,
-            1,
-            0
-          ],
-          "confidence": 0.8
-        },
-        "transformChannels": {
-          "translate": true,
-          "rotate": true,
-          "scale": true,
-          "bend": false,
-          "twist": false,
-          "detach": false,
-          "visibility": true,
-          "materialState": true
-        },
-        "sockets": [],
-        "collider": {
-          "type": "box",
-          "offset": [
-            0,
-            0,
-            0
-          ],
-          "scale": [
-            1,
-            1,
-            1
-          ],
-          "isTrigger": false,
-          "notes": ""
-        },
-        "constraints": [],
-        "destruction": {
-          "breakable": false,
-          "fractureGroup": "root",
-          "seamRefs": [],
-          "detachableFragments": [],
-          "breakImpulse": 0.0,
-          "debrisMaterial": "polished-gold"
-        }
-      },
-      "material": "polished-gold",
-      "materialLayers": [
-        "polished-gold"
-      ],
-      "deformations": [],
-      "joints": [],
-      "seams": [],
-      "localFeatures": [
-        "divider"
-      ],
-      "surfaceDetail": {
-        "macroRoughness": 0.28,
-        "microRoughness": 0.15,
-        "bumpAmplitude": 0.02,
-        "normalPattern": "brushed-metal",
-        "displacementPattern": "",
-        "occlusionPattern": "cavity",
-        "edgeWearPattern": "soft-bevel",
-        "notes": "gold relief"
-      },
-      "evidenceRefs": [
-        "full-object"
-      ],
-      "details": [],
-      "fidelityTier": "form-refinement"
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(212, 175, 55, 1)",
+        "secondaryAlbedo": "rgba(240, 215, 140, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.95,
+        "metalness": 0.92,
+        "roughness": 0.28
+      }
     },
     {
-      "id": "meso-word-gap",
-      "name": "WordmarkGapDot",
-      "level": "meso",
-      "role": "structure",
-      "importance": 0.7,
-      "confidence": 0.9,
-      "primitive": "cylinder",
-      "geometryDescriptor": {
-        "topologyIntent": "extruded letterform",
-        "edgeTreatment": {
-          "type": "bevel",
-          "bevelRadius": 0.02,
-          "segments": 3
-        },
-        "deformationStack": [],
-        "uvStrategy": "generated procedural coordinates",
-        "normalStrategy": "vertex normals from generated geometry"
-      },
-      "parent": "root",
-      "attachment": null,
-      "dimensions": {
-        "width": 0.04,
-        "height": 0.04,
-        "depth": 0.04,
-        "units": "relative",
-        "confidence": 0.8
-      },
-      "transform": {
-        "position": [
-          -0.35,
-          -1.15,
-          0.02
-        ],
-        "rotation": [
-          0,
-          0,
-          0
-        ],
-        "scale": [
-          1,
-          1,
-          1
-        ]
-      },
-      "actionProfile": {
-        "animationRole": "meso-word-gap",
-        "pivot": {
-          "mode": "center",
-          "localPosition": [
-            0,
-            0,
-            0
-          ],
-          "axis": [
-            0,
-            1,
-            0
-          ],
-          "confidence": 0.8
-        },
-        "transformChannels": {
-          "translate": true,
-          "rotate": true,
-          "scale": true,
-          "bend": false,
-          "twist": false,
-          "detach": false,
-          "visibility": true,
-          "materialState": true
-        },
-        "sockets": [],
-        "collider": {
-          "type": "box",
-          "offset": [
-            0,
-            0,
-            0
-          ],
-          "scale": [
-            1,
-            1,
-            1
-          ],
-          "isTrigger": false,
-          "notes": ""
-        },
-        "constraints": [],
-        "destruction": {
-          "breakable": false,
-          "fractureGroup": "root",
-          "seamRefs": [],
-          "detachableFragments": [],
-          "breakImpulse": 0.0,
-          "debrisMaterial": "polished-gold"
-        }
-      },
-      "material": "polished-gold",
-      "materialLayers": [
-        "polished-gold"
-      ],
-      "deformations": [],
-      "joints": [],
-      "seams": [],
-      "localFeatures": [
-        "dot"
-      ],
-      "surfaceDetail": {
-        "macroRoughness": 0.28,
-        "microRoughness": 0.15,
-        "bumpAmplitude": 0.02,
-        "normalPattern": "brushed-metal",
-        "displacementPattern": "",
-        "occlusionPattern": "cavity",
-        "edgeWearPattern": "soft-bevel",
-        "notes": "gold relief"
-      },
-      "evidenceRefs": [
-        "full-object"
-      ],
-      "details": [],
-      "fidelityTier": "form-refinement"
-    },
-    {
-      "id": "micro-apex",
-      "name": "ApexSerif",
+      "id": "edge-bevel-micro",
+      "name": "EdgeBevelGroup",
       "level": "micro",
-      "role": "detail",
-      "importance": 0.7,
-      "confidence": 0.9,
-      "primitive": "extrude",
-      "geometryDescriptor": {
-        "topologyIntent": "extruded letterform",
-        "edgeTreatment": {
-          "type": "bevel",
-          "bevelRadius": 0.02,
-          "segments": 3
-        },
-        "deformationStack": [],
-        "uvStrategy": "generated procedural coordinates",
-        "normalStrategy": "vertex normals from generated geometry"
-      },
-      "parent": "root",
-      "attachment": null,
-      "dimensions": {
-        "width": 0.12,
-        "height": 0.1,
-        "depth": 0.08,
-        "units": "relative",
-        "confidence": 0.8
-      },
-      "transform": {
-        "position": [
-          0.02,
-          0.9,
-          0.03
-        ],
-        "rotation": [
-          0,
-          0,
-          0
-        ],
-        "scale": [
-          1,
-          1,
-          1
-        ]
-      },
-      "actionProfile": {
-        "animationRole": "micro-apex",
-        "pivot": {
-          "mode": "center",
-          "localPosition": [
-            0,
-            0,
-            0
-          ],
-          "axis": [
-            0,
-            1,
-            0
-          ],
-          "confidence": 0.8
-        },
-        "transformChannels": {
-          "translate": true,
-          "rotate": true,
-          "scale": true,
-          "bend": false,
-          "twist": false,
-          "detach": false,
-          "visibility": true,
-          "materialState": true
-        },
-        "sockets": [],
-        "collider": {
-          "type": "box",
-          "offset": [
-            0,
-            0,
-            0
-          ],
-          "scale": [
-            1,
-            1,
-            1
-          ],
-          "isTrigger": false,
-          "notes": ""
-        },
-        "constraints": [],
-        "destruction": {
-          "breakable": false,
-          "fractureGroup": "root",
-          "seamRefs": [],
-          "detachableFragments": [],
-          "breakImpulse": 0.0,
-          "debrisMaterial": "polished-gold"
-        }
-      },
-      "material": "polished-gold",
-      "materialLayers": [
-        "polished-gold"
-      ],
-      "deformations": [],
-      "joints": [],
-      "seams": [],
-      "localFeatures": [
-        "serif"
-      ],
-      "surfaceDetail": {
-        "macroRoughness": 0.28,
-        "microRoughness": 0.15,
-        "bumpAmplitude": 0.02,
-        "normalPattern": "brushed-metal",
-        "displacementPattern": "",
-        "occlusionPattern": "cavity",
-        "edgeWearPattern": "soft-bevel",
-        "notes": "gold relief"
-      },
-      "evidenceRefs": [
-        "full-object"
-      ],
-      "details": [],
-      "fidelityTier": "form-refinement"
-    },
-    {
-      "id": "micro-left-foot",
-      "name": "LeftFootSerif",
-      "level": "micro",
-      "role": "detail",
-      "importance": 0.7,
-      "confidence": 0.9,
-      "primitive": "extrude",
-      "geometryDescriptor": {
-        "topologyIntent": "extruded letterform",
-        "edgeTreatment": {
-          "type": "bevel",
-          "bevelRadius": 0.02,
-          "segments": 3
-        },
-        "deformationStack": [],
-        "uvStrategy": "generated procedural coordinates",
-        "normalStrategy": "vertex normals from generated geometry"
-      },
-      "parent": "root",
-      "attachment": null,
-      "dimensions": {
-        "width": 0.2,
-        "height": 0.08,
-        "depth": 0.08,
-        "units": "relative",
-        "confidence": 0.8
-      },
-      "transform": {
-        "position": [
-          -0.55,
-          -0.85,
-          0.03
-        ],
-        "rotation": [
-          0,
-          0,
-          0
-        ],
-        "scale": [
-          1,
-          1,
-          1
-        ]
-      },
-      "actionProfile": {
-        "animationRole": "micro-left-foot",
-        "pivot": {
-          "mode": "center",
-          "localPosition": [
-            0,
-            0,
-            0
-          ],
-          "axis": [
-            0,
-            1,
-            0
-          ],
-          "confidence": 0.8
-        },
-        "transformChannels": {
-          "translate": true,
-          "rotate": true,
-          "scale": true,
-          "bend": false,
-          "twist": false,
-          "detach": false,
-          "visibility": true,
-          "materialState": true
-        },
-        "sockets": [],
-        "collider": {
-          "type": "box",
-          "offset": [
-            0,
-            0,
-            0
-          ],
-          "scale": [
-            1,
-            1,
-            1
-          ],
-          "isTrigger": false,
-          "notes": ""
-        },
-        "constraints": [],
-        "destruction": {
-          "breakable": false,
-          "fractureGroup": "root",
-          "seamRefs": [],
-          "detachableFragments": [],
-          "breakImpulse": 0.0,
-          "debrisMaterial": "polished-gold"
-        }
-      },
-      "material": "polished-gold",
-      "materialLayers": [
-        "polished-gold"
-      ],
-      "deformations": [],
-      "joints": [],
-      "seams": [],
-      "localFeatures": [
-        "serif"
-      ],
-      "surfaceDetail": {
-        "macroRoughness": 0.28,
-        "microRoughness": 0.15,
-        "bumpAmplitude": 0.02,
-        "normalPattern": "brushed-metal",
-        "displacementPattern": "",
-        "occlusionPattern": "cavity",
-        "edgeWearPattern": "soft-bevel",
-        "notes": "gold relief"
-      },
-      "evidenceRefs": [
-        "full-object"
-      ],
-      "details": [],
-      "fidelityTier": "form-refinement"
-    },
-    {
-      "id": "micro-right-foot",
-      "name": "RightFootSerif",
-      "level": "micro",
-      "role": "detail",
-      "importance": 0.7,
-      "confidence": 0.9,
-      "primitive": "extrude",
-      "geometryDescriptor": {
-        "topologyIntent": "extruded letterform",
-        "edgeTreatment": {
-          "type": "bevel",
-          "bevelRadius": 0.02,
-          "segments": 3
-        },
-        "deformationStack": [],
-        "uvStrategy": "generated procedural coordinates",
-        "normalStrategy": "vertex normals from generated geometry"
-      },
-      "parent": "root",
-      "attachment": null,
-      "dimensions": {
-        "width": 0.2,
-        "height": 0.08,
-        "depth": 0.08,
-        "units": "relative",
-        "confidence": 0.8
-      },
-      "transform": {
-        "position": [
-          0.55,
-          -0.85,
-          0.03
-        ],
-        "rotation": [
-          0,
-          0,
-          0
-        ],
-        "scale": [
-          1,
-          1,
-          1
-        ]
-      },
-      "actionProfile": {
-        "animationRole": "micro-right-foot",
-        "pivot": {
-          "mode": "center",
-          "localPosition": [
-            0,
-            0,
-            0
-          ],
-          "axis": [
-            0,
-            1,
-            0
-          ],
-          "confidence": 0.8
-        },
-        "transformChannels": {
-          "translate": true,
-          "rotate": true,
-          "scale": true,
-          "bend": false,
-          "twist": false,
-          "detach": false,
-          "visibility": true,
-          "materialState": true
-        },
-        "sockets": [],
-        "collider": {
-          "type": "box",
-          "offset": [
-            0,
-            0,
-            0
-          ],
-          "scale": [
-            1,
-            1,
-            1
-          ],
-          "isTrigger": false,
-          "notes": ""
-        },
-        "constraints": [],
-        "destruction": {
-          "breakable": false,
-          "fractureGroup": "root",
-          "seamRefs": [],
-          "detachableFragments": [],
-          "breakImpulse": 0.0,
-          "debrisMaterial": "polished-gold"
-        }
-      },
-      "material": "polished-gold",
-      "materialLayers": [
-        "polished-gold"
-      ],
-      "deformations": [],
-      "joints": [],
-      "seams": [],
-      "localFeatures": [
-        "serif"
-      ],
-      "surfaceDetail": {
-        "macroRoughness": 0.28,
-        "microRoughness": 0.15,
-        "bumpAmplitude": 0.02,
-        "normalPattern": "brushed-metal",
-        "displacementPattern": "",
-        "occlusionPattern": "cavity",
-        "edgeWearPattern": "soft-bevel",
-        "notes": "gold relief"
-      },
-      "evidenceRefs": [
-        "full-object"
-      ],
-      "details": [],
-      "fidelityTier": "form-refinement"
-    },
-    {
-      "id": "micro-crescent-top",
-      "name": "CrescentUpperTip",
-      "level": "micro",
-      "role": "detail",
-      "importance": 0.7,
-      "confidence": 0.9,
-      "primitive": "extrude",
-      "geometryDescriptor": {
-        "topologyIntent": "extruded letterform",
-        "edgeTreatment": {
-          "type": "bevel",
-          "bevelRadius": 0.02,
-          "segments": 3
-        },
-        "deformationStack": [],
-        "uvStrategy": "generated procedural coordinates",
-        "normalStrategy": "vertex normals from generated geometry"
-      },
-      "parent": "root",
-      "attachment": null,
-      "dimensions": {
-        "width": 0.15,
-        "height": 0.12,
-        "depth": 0.08,
-        "units": "relative",
-        "confidence": 0.8
-      },
-      "transform": {
-        "position": [
-          0.35,
-          0.85,
-          0.02
-        ],
-        "rotation": [
-          0,
-          0,
-          0
-        ],
-        "scale": [
-          1,
-          1,
-          1
-        ]
-      },
-      "actionProfile": {
-        "animationRole": "micro-crescent-top",
-        "pivot": {
-          "mode": "center",
-          "localPosition": [
-            0,
-            0,
-            0
-          ],
-          "axis": [
-            0,
-            1,
-            0
-          ],
-          "confidence": 0.8
-        },
-        "transformChannels": {
-          "translate": true,
-          "rotate": true,
-          "scale": true,
-          "bend": false,
-          "twist": false,
-          "detach": false,
-          "visibility": true,
-          "materialState": true
-        },
-        "sockets": [],
-        "collider": {
-          "type": "box",
-          "offset": [
-            0,
-            0,
-            0
-          ],
-          "scale": [
-            1,
-            1,
-            1
-          ],
-          "isTrigger": false,
-          "notes": ""
-        },
-        "constraints": [],
-        "destruction": {
-          "breakable": false,
-          "fractureGroup": "root",
-          "seamRefs": [],
-          "detachableFragments": [],
-          "breakImpulse": 0.0,
-          "debrisMaterial": "polished-gold"
-        }
-      },
-      "material": "polished-gold",
-      "materialLayers": [
-        "polished-gold"
-      ],
-      "deformations": [],
-      "joints": [],
-      "seams": [],
-      "localFeatures": [
-        "tip"
-      ],
-      "surfaceDetail": {
-        "macroRoughness": 0.28,
-        "microRoughness": 0.15,
-        "bumpAmplitude": 0.02,
-        "normalPattern": "brushed-metal",
-        "displacementPattern": "",
-        "occlusionPattern": "cavity",
-        "edgeWearPattern": "soft-bevel",
-        "notes": "gold relief"
-      },
-      "evidenceRefs": [
-        "full-object"
-      ],
-      "details": [],
-      "fidelityTier": "form-refinement"
-    },
-    {
-      "id": "micro-crescent-bot",
-      "name": "CrescentLowerTip",
-      "level": "micro",
-      "role": "detail",
-      "importance": 0.7,
-      "confidence": 0.9,
-      "primitive": "extrude",
-      "geometryDescriptor": {
-        "topologyIntent": "extruded letterform",
-        "edgeTreatment": {
-          "type": "bevel",
-          "bevelRadius": 0.02,
-          "segments": 3
-        },
-        "deformationStack": [],
-        "uvStrategy": "generated procedural coordinates",
-        "normalStrategy": "vertex normals from generated geometry"
-      },
-      "parent": "root",
-      "attachment": null,
-      "dimensions": {
-        "width": 0.15,
-        "height": 0.12,
-        "depth": 0.08,
-        "units": "relative",
-        "confidence": 0.8
-      },
-      "transform": {
-        "position": [
-          0.25,
-          -0.75,
-          0.02
-        ],
-        "rotation": [
-          0,
-          0,
-          0
-        ],
-        "scale": [
-          1,
-          1,
-          1
-        ]
-      },
-      "actionProfile": {
-        "animationRole": "micro-crescent-bot",
-        "pivot": {
-          "mode": "center",
-          "localPosition": [
-            0,
-            0,
-            0
-          ],
-          "axis": [
-            0,
-            1,
-            0
-          ],
-          "confidence": 0.8
-        },
-        "transformChannels": {
-          "translate": true,
-          "rotate": true,
-          "scale": true,
-          "bend": false,
-          "twist": false,
-          "detach": false,
-          "visibility": true,
-          "materialState": true
-        },
-        "sockets": [],
-        "collider": {
-          "type": "box",
-          "offset": [
-            0,
-            0,
-            0
-          ],
-          "scale": [
-            1,
-            1,
-            1
-          ],
-          "isTrigger": false,
-          "notes": ""
-        },
-        "constraints": [],
-        "destruction": {
-          "breakable": false,
-          "fractureGroup": "root",
-          "seamRefs": [],
-          "detachableFragments": [],
-          "breakImpulse": 0.0,
-          "debrisMaterial": "polished-gold"
-        }
-      },
-      "material": "polished-gold",
-      "materialLayers": [
-        "polished-gold"
-      ],
-      "deformations": [],
-      "joints": [],
-      "seams": [],
-      "localFeatures": [
-        "tip"
-      ],
-      "surfaceDetail": {
-        "macroRoughness": 0.28,
-        "microRoughness": 0.15,
-        "bumpAmplitude": 0.02,
-        "normalPattern": "brushed-metal",
-        "displacementPattern": "",
-        "occlusionPattern": "cavity",
-        "edgeWearPattern": "soft-bevel",
-        "notes": "gold relief"
-      },
-      "evidenceRefs": [
-        "full-object"
-      ],
-      "details": [],
-      "fidelityTier": "form-refinement"
-    },
-    {
-      "id": "micro-bevel",
-      "name": "EdgeBevelCatch",
-      "level": "micro",
+      "parent": "monogram-group",
+      "primitive": "plane-card",
       "role": "surface",
-      "importance": 0.7,
-      "confidence": 0.9,
-      "primitive": "torus",
-      "geometryDescriptor": {
-        "topologyIntent": "extruded letterform",
-        "edgeTreatment": {
-          "type": "bevel",
-          "bevelRadius": 0.02,
-          "segments": 3
-        },
-        "deformationStack": [],
-        "uvStrategy": "generated procedural coordinates",
-        "normalStrategy": "vertex normals from generated geometry"
-      },
-      "parent": "root",
-      "attachment": null,
-      "dimensions": {
-        "width": 1.2,
-        "height": 1.2,
-        "depth": 0.05,
-        "units": "relative",
-        "confidence": 0.7
+      "topologyClass": "surface-relief",
+      "topologyRationale": "EdgeBevelGroup is a monogram relief part reconstructed as plane-card",
+      "actionProfile": {
+        "role": "static",
+        "animatable": false,
+        "destructible": false
       },
       "transform": {
         "position": [
           0,
-          0.1,
-          0.06
+          0,
+          0.05
         ],
         "rotation": [
           0,
@@ -3045,83 +1273,468 @@
           1
         ]
       },
-      "actionProfile": {
-        "animationRole": "micro-bevel",
-        "pivot": {
-          "mode": "center",
-          "localPosition": [
-            0,
-            0,
-            0
-          ],
-          "axis": [
-            0,
-            1,
-            0
-          ],
-          "confidence": 0.8
-        },
-        "transformChannels": {
-          "translate": true,
-          "rotate": true,
-          "scale": true,
-          "bend": false,
-          "twist": false,
-          "detach": false,
-          "visibility": true,
-          "materialState": true
-        },
-        "sockets": [],
-        "collider": {
-          "type": "box",
-          "offset": [
-            0,
-            0,
-            0
-          ],
-          "scale": [
-            1,
-            1,
-            1
-          ],
-          "isTrigger": false,
-          "notes": ""
-        },
-        "constraints": [],
-        "destruction": {
-          "breakable": false,
-          "fractureGroup": "root",
-          "seamRefs": [],
-          "detachableFragments": [],
-          "breakImpulse": 0.0,
-          "debrisMaterial": "polished-gold"
-        }
-      },
-      "material": "gold-highlight",
-      "materialLayers": [
-        "gold-highlight"
-      ],
-      "deformations": [],
-      "joints": [],
-      "seams": [],
       "localFeatures": [
-        "bevel"
+        "bevel-catchlight"
       ],
-      "surfaceDetail": {
-        "macroRoughness": 0.28,
-        "microRoughness": 0.15,
-        "bumpAmplitude": 0.02,
-        "normalPattern": "brushed-metal",
-        "displacementPattern": "",
-        "occlusionPattern": "cavity",
-        "edgeWearPattern": "soft-bevel",
-        "notes": "gold relief"
+      "materialRef": "gold-highlight",
+      "dimensions": {
+        "width": 0.2,
+        "height": 0.2,
+        "depth": 0.02
       },
-      "evidenceRefs": [
-        "full-object"
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(245, 230, 163, 1)",
+        "secondaryAlbedo": "rgba(212, 175, 55, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.9,
+        "metalness": 1.0,
+        "roughness": 0.16
+      }
+    },
+    {
+      "id": "micro-apex-serif",
+      "name": "apex-serif",
+      "level": "micro",
+      "parent": "monogram-group",
+      "primitive": "extrude",
+      "role": "detail",
+      "topologyClass": "surface-relief",
+      "topologyRationale": "apex-serif is a monogram relief part reconstructed as extrude",
+      "actionProfile": {
+        "role": "static",
+        "animatable": false,
+        "destructible": false
+      },
+      "transform": {
+        "position": [
+          0,
+          0,
+          0.04
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "localFeatures": [
+        "apex-serif",
+        "relief-depth"
       ],
-      "details": [],
-      "fidelityTier": "form-refinement"
+      "materialRef": "polished-gold",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(212, 175, 55, 1)",
+        "secondaryAlbedo": "rgba(240, 215, 140, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.95,
+        "metalness": 0.92,
+        "roughness": 0.28
+      }
+    },
+    {
+      "id": "micro-left-foot-serif",
+      "name": "left-foot-serif",
+      "level": "micro",
+      "parent": "monogram-group",
+      "primitive": "extrude",
+      "role": "detail",
+      "topologyClass": "surface-relief",
+      "topologyRationale": "left-foot-serif is a monogram relief part reconstructed as extrude",
+      "actionProfile": {
+        "role": "static",
+        "animatable": false,
+        "destructible": false
+      },
+      "transform": {
+        "position": [
+          0,
+          0,
+          0.04
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "localFeatures": [
+        "left-foot-serif",
+        "relief-depth"
+      ],
+      "materialRef": "polished-gold",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(212, 175, 55, 1)",
+        "secondaryAlbedo": "rgba(240, 215, 140, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.95,
+        "metalness": 0.92,
+        "roughness": 0.28
+      }
+    },
+    {
+      "id": "micro-right-foot-serif",
+      "name": "right-foot-serif",
+      "level": "micro",
+      "parent": "monogram-group",
+      "primitive": "extrude",
+      "role": "detail",
+      "topologyClass": "surface-relief",
+      "topologyRationale": "right-foot-serif is a monogram relief part reconstructed as extrude",
+      "actionProfile": {
+        "role": "static",
+        "animatable": false,
+        "destructible": false
+      },
+      "transform": {
+        "position": [
+          0,
+          0,
+          0.04
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "localFeatures": [
+        "right-foot-serif",
+        "relief-depth"
+      ],
+      "materialRef": "polished-gold",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(212, 175, 55, 1)",
+        "secondaryAlbedo": "rgba(240, 215, 140, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.95,
+        "metalness": 0.92,
+        "roughness": 0.28
+      }
+    },
+    {
+      "id": "micro-crescent-upper-tip",
+      "name": "crescent-upper-tip",
+      "level": "micro",
+      "parent": "monogram-group",
+      "primitive": "extrude",
+      "role": "detail",
+      "topologyClass": "surface-relief",
+      "topologyRationale": "crescent-upper-tip is a monogram relief part reconstructed as extrude",
+      "actionProfile": {
+        "role": "static",
+        "animatable": false,
+        "destructible": false
+      },
+      "transform": {
+        "position": [
+          0,
+          0,
+          0.04
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "localFeatures": [
+        "crescent-upper-tip",
+        "relief-depth"
+      ],
+      "materialRef": "polished-gold",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(212, 175, 55, 1)",
+        "secondaryAlbedo": "rgba(240, 215, 140, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.95,
+        "metalness": 0.92,
+        "roughness": 0.28
+      }
+    },
+    {
+      "id": "micro-crescent-lower-tip",
+      "name": "crescent-lower-tip",
+      "level": "micro",
+      "parent": "monogram-group",
+      "primitive": "extrude",
+      "role": "detail",
+      "topologyClass": "surface-relief",
+      "topologyRationale": "crescent-lower-tip is a monogram relief part reconstructed as extrude",
+      "actionProfile": {
+        "role": "static",
+        "animatable": false,
+        "destructible": false
+      },
+      "transform": {
+        "position": [
+          0,
+          0,
+          0.04
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "localFeatures": [
+        "crescent-lower-tip",
+        "relief-depth"
+      ],
+      "materialRef": "polished-gold",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(212, 175, 55, 1)",
+        "secondaryAlbedo": "rgba(240, 215, 140, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.95,
+        "metalness": 0.92,
+        "roughness": 0.28
+      }
+    },
+    {
+      "id": "meso-a-left-stroke",
+      "name": "a-left-stroke",
+      "level": "meso",
+      "parent": "monogram-group",
+      "primitive": "extrude",
+      "role": "structure",
+      "topologyClass": "surface-relief",
+      "topologyRationale": "a-left-stroke is a monogram relief part reconstructed as extrude",
+      "actionProfile": {
+        "role": "static",
+        "animatable": false,
+        "destructible": false
+      },
+      "transform": {
+        "position": [
+          0,
+          0,
+          0.02
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "localFeatures": [
+        "a-left-stroke"
+      ],
+      "materialRef": "polished-gold",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(212, 175, 55, 1)",
+        "secondaryAlbedo": "rgba(240, 215, 140, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.95,
+        "metalness": 0.92,
+        "roughness": 0.28
+      }
+    },
+    {
+      "id": "meso-a-right-stroke",
+      "name": "a-right-stroke",
+      "level": "meso",
+      "parent": "monogram-group",
+      "primitive": "extrude",
+      "role": "structure",
+      "topologyClass": "surface-relief",
+      "topologyRationale": "a-right-stroke is a monogram relief part reconstructed as extrude",
+      "actionProfile": {
+        "role": "static",
+        "animatable": false,
+        "destructible": false
+      },
+      "transform": {
+        "position": [
+          0,
+          0,
+          0.02
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "localFeatures": [
+        "a-right-stroke"
+      ],
+      "materialRef": "polished-gold",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(212, 175, 55, 1)",
+        "secondaryAlbedo": "rgba(240, 215, 140, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.95,
+        "metalness": 0.92,
+        "roughness": 0.28
+      }
+    },
+    {
+      "id": "meso-a-crossbar-void",
+      "name": "a-crossbar-void",
+      "level": "meso",
+      "parent": "monogram-group",
+      "primitive": "extrude",
+      "role": "structure",
+      "topologyClass": "surface-relief",
+      "topologyRationale": "a-crossbar-void is a monogram relief part reconstructed as extrude",
+      "actionProfile": {
+        "role": "static",
+        "animatable": false,
+        "destructible": false
+      },
+      "transform": {
+        "position": [
+          0,
+          0,
+          0.02
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "localFeatures": [
+        "a-crossbar-void"
+      ],
+      "materialRef": "polished-gold",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(212, 175, 55, 1)",
+        "secondaryAlbedo": "rgba(240, 215, 140, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.95,
+        "metalness": 0.92,
+        "roughness": 0.28
+      }
+    },
+    {
+      "id": "meso-divider-rule",
+      "name": "divider-rule",
+      "level": "meso",
+      "parent": "root",
+      "primitive": "extrude",
+      "role": "structure",
+      "topologyClass": "surface-relief",
+      "topologyRationale": "divider-rule is a monogram relief part reconstructed as extrude",
+      "actionProfile": {
+        "role": "static",
+        "animatable": false,
+        "destructible": false
+      },
+      "transform": {
+        "position": [
+          0,
+          0,
+          0.02
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "localFeatures": [
+        "divider-rule"
+      ],
+      "materialRef": "polished-gold",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(212, 175, 55, 1)",
+        "secondaryAlbedo": "rgba(240, 215, 140, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.95,
+        "metalness": 0.92,
+        "roughness": 0.28
+      }
+    },
+    {
+      "id": "meso-lockup-bar",
+      "name": "lockup-bar",
+      "level": "meso",
+      "parent": "root",
+      "primitive": "extrude",
+      "role": "structure",
+      "topologyClass": "surface-relief",
+      "topologyRationale": "lockup-bar is a monogram relief part reconstructed as extrude",
+      "actionProfile": {
+        "role": "static",
+        "animatable": false,
+        "destructible": false
+      },
+      "transform": {
+        "position": [
+          0,
+          0,
+          0.02
+        ],
+        "rotation": [
+          0,
+          0,
+          0
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ]
+      },
+      "localFeatures": [
+        "lockup-bar"
+      ],
+      "materialRef": "polished-gold",
+      "colorMaterialRecipe": {
+        "dominantAlbedo": "rgba(212, 175, 55, 1)",
+        "secondaryAlbedo": "rgba(240, 215, 140, 1)",
+        "materialClass": "metal",
+        "materialClassConfidence": 0.95,
+        "metalness": 0.92,
+        "roughness": 0.28
+      }
     }
   ],
   "materials": [
@@ -3133,7 +1746,8 @@
         "dominant": "#D4AF37",
         "secondary": [
           "#F0D78C",
-          "#B8860B"
+          "#B8860B",
+          "#8A6A1F"
         ]
       },
       "colorVariation": {
@@ -3145,7 +1759,7 @@
         ]
       },
       "metalness": {
-        "base": 1.0
+        "base": 0.92
       },
       "roughness": {
         "base": 0.28
@@ -3153,12 +1767,14 @@
       "clearcoat": {
         "base": 0.35
       },
+      "finishClass": "gem-metal",
       "localOverrides": [
         {
           "id": "edge-bevel",
           "kind": "edge-wear",
           "params": {
-            "roughness": 0.18
+            "roughness": 0.18,
+            "metalness": 1.0
           }
         },
         {
@@ -3169,7 +1785,7 @@
           }
         },
         {
-          "id": "brush",
+          "id": "brush-lines",
           "kind": "scratches",
           "params": {
             "anisotropy": 0.2
@@ -3178,15 +1794,40 @@
       ],
       "referencePbr": {
         "source": "logo-reference.png",
-        "confidence": 0.82,
+        "confidence": 0.86,
         "maps": {
-          "albedo": "ref/logo-reference.png",
-          "roughness": "inferred",
-          "normal": "inferred",
-          "ao": "inferred",
-          "height": "inferred"
+          "albedo": {
+            "path": "E:\\PROYECTOS\\webdesigner\\workspaces\\ca2-logo-threejs\\pipeline\\pbr\\gold_albedo.png",
+            "url": "gold_albedo.png",
+            "channel": "albedo",
+            "source": "reference-pixel-extraction"
+          },
+          "roughness": {
+            "path": "E:\\PROYECTOS\\webdesigner\\workspaces\\ca2-logo-threejs\\pipeline\\pbr\\gold_roughness.png",
+            "url": "gold_roughness.png",
+            "channel": "roughness",
+            "source": "reference-pixel-extraction"
+          },
+          "height": {
+            "path": "E:\\PROYECTOS\\webdesigner\\workspaces\\ca2-logo-threejs\\pipeline\\pbr\\gold_height.png",
+            "url": "gold_height.png",
+            "channel": "height",
+            "source": "reference-pixel-extraction"
+          },
+          "normal": {
+            "path": "E:\\PROYECTOS\\webdesigner\\workspaces\\ca2-logo-threejs\\pipeline\\pbr\\gold_normal.png",
+            "url": "gold_normal.png",
+            "channel": "normal",
+            "source": "reference-pixel-extraction"
+          },
+          "ao": {
+            "path": "E:\\PROYECTOS\\webdesigner\\workspaces\\ca2-logo-threejs\\pipeline\\pbr\\gold_ao.png",
+            "url": "gold_ao.png",
+            "channel": "ao",
+            "source": "reference-pixel-extraction"
+          }
         },
-        "notes": "Warm gold emboss from reference midtones/highlights"
+        "notes": "v1.3 extract_pbr_evidence + analyze_texture path for warm gold emboss"
       }
     },
     {
@@ -3199,6 +1840,7 @@
       "roughness": {
         "base": 0.16
       },
+      "finishClass": "gem-metal",
       "localOverrides": [
         {
           "id": "specular-rim",
@@ -3207,15 +1849,7 @@
             "roughness": 0.12
           }
         }
-      ],
-      "referencePbr": {
-        "source": "logo-reference.png",
-        "confidence": 0.75,
-        "maps": {
-          "albedo": "ref/logo-reference.png"
-        },
-        "notes": "highlight gold"
-      }
+      ]
     },
     {
       "id": "navy-plate",
@@ -3224,7 +1858,8 @@
       "albedo": {
         "dominant": "#071028",
         "secondary": [
-          "#0B1836"
+          "#0B1836",
+          "#040812"
         ]
       },
       "metalness": {
@@ -3233,30 +1868,23 @@
       "roughness": {
         "base": 0.88
       },
+      "finishClass": "plastic",
       "localOverrides": [
         {
-          "id": "vignette",
+          "id": "soft-vignette",
           "kind": "stain",
           "params": {
             "darken": 0.15
           }
         }
-      ],
-      "referencePbr": {
-        "source": "logo-reference.png",
-        "confidence": 0.9,
-        "maps": {
-          "albedo": "ref/logo-reference.png"
-        },
-        "notes": "navy field"
-      }
+      ]
     }
   ],
   "repetitionSystems": [
     {
       "id": "serif-stroke-profile",
       "kind": "shared-profile",
-      "description": "Shared extrusion depth and bevel across letter strokes",
+      "description": "Shared extrusion depth and bevel profile across letter strokes",
       "appliesTo": [
         "crescent-c",
         "letter-a",
@@ -3273,6 +1901,7 @@
       "componentRefs": [
         "root",
         "backdrop-plate",
+        "monogram-group",
         "crescent-c",
         "letter-a",
         "numeral-2"
@@ -3290,8 +1919,8 @@
         "letter-m",
         "taurus-symbol",
         "wordmark",
-        "meso-a-left",
-        "meso-a-right"
+        "meso-a-left-stroke",
+        "meso-a-right-stroke"
       ],
       "acceptance": [
         "Macro, meso, and repeated structures meet qualityContract.minimumSpecDepth.",
@@ -3308,10 +1937,7 @@
         "letter-a",
         "letter-m",
         "numeral-2",
-        "taurus-symbol",
-        "micro-apex",
-        "micro-left-foot",
-        "micro-right-foot"
+        "taurus-symbol"
       ],
       "acceptance": [
         "Important visible forms are represented in component geometryDescriptor, deformations, localFeatures, or repetitionSystems.",
@@ -3323,7 +1949,7 @@
       "id": "material-pass",
       "goal": "Match material color, roughness, bump, and local variation.",
       "componentRefs": [
-        "micro-bevel"
+        "edge-bevel-micro"
       ],
       "acceptance": [
         "Reference-derived albedo palette records dominant, secondary, and accent colors per visible material.",
@@ -3341,7 +1967,7 @@
       "id": "surface-pass",
       "goal": "Add procedural surface locality such as normal/bump/displacement, AO, dirt, stains, chips, grain, moss, scratches, and wear.",
       "componentRefs": [
-        "micro-bevel"
+        "edge-bevel-micro"
       ],
       "acceptance": [
         "Every required material feature group has local overrides or surfaceDetail tied to evidenceRefs.",
@@ -3356,18 +1982,19 @@
         "backdrop-plate"
       ],
       "acceptance": [
-        "lightingFromPhoto identifies key light direction/color/intensity, fill light, rim or environment light, and ambient color.",
-        "Exposure, tone mapping, background color/gradient, shadow softness, and contact shadow behavior are specified.",
-        "Lighting does not hide geometry/material gaps and screenshots can be compared fairly to the reference.",
-        "Neutral, grazing, and reference-matched lighting checks distinguish material errors from lighting errors.",
-        "AI vision comparison score meets selfCorrectLoop.visualAcceptance.threshold."
-      ]
+        "ACES filmic tone mapping with exposure 1.12",
+        "contact shadow under monogram base",
+        "ambient occlusion in letter cavities",
+        "key/fill/rim balance matches gold-on-navy product shot"
+      ],
+      "notes": "Studio look-dev: ACES filmic, exposure 1.12, contact shadow + AO."
     },
     {
       "id": "interaction-pass",
       "goal": "Make the model ready for future animation, transformation, physics, or destruction.",
       "componentRefs": [
-        "root"
+        "root",
+        "monogram-group"
       ],
       "acceptance": [
         "Macro and movable meso components have stable pivot nodes.",
@@ -3413,7 +2040,6 @@
     {
       "id": "key",
       "type": "directional",
-      "role": "key",
       "direction": [
         0.55,
         0.75,
@@ -3425,7 +2051,6 @@
     {
       "id": "fill",
       "type": "directional",
-      "role": "fill",
       "direction": [
         -0.7,
         0.2,
@@ -3437,7 +2062,6 @@
     {
       "id": "rim",
       "type": "directional",
-      "role": "rim",
       "direction": [
         -0.4,
         0.3,
@@ -3449,9 +2073,13 @@
     {
       "id": "ambient",
       "type": "ambient",
-      "role": "ambient",
       "intensity": 0.35,
       "color": "#1a2744"
+    },
+    {
+      "id": "lookdev",
+      "type": "notes",
+      "notes": "ACES filmic tone mapping, exposure 1.12, contact shadow and AO under relief."
     }
   ],
   "proceduralStrategy": [
@@ -3470,5 +2098,39 @@
     "actionProfile.destruction.fractureGroup marks detachable or breakable component sets",
     "component seams and sockets define plausible break points instead of random explosions"
   ],
-  "risks": []
+  "risks": [],
+  "reviewViewpoints": [
+    {
+      "name": "hero-front",
+      "position": [
+        0,
+        0.1,
+        3.2
+      ]
+    },
+    {
+      "name": "three-quarter",
+      "position": [
+        1.6,
+        0.6,
+        2.6
+      ]
+    },
+    {
+      "name": "top-glint",
+      "position": [
+        0.3,
+        2.2,
+        1.8
+      ]
+    },
+    {
+      "name": "side-relief",
+      "position": [
+        2.4,
+        0.2,
+        1.2
+      ]
+    }
+  ]
 }

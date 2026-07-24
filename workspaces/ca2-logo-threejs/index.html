@@ -3,35 +3,75 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CA² Monogram — img2threejs</title>
+    <title>CA² Monogram — solid 3D · img2threejs v1.3</title>
     <style>
       * { box-sizing: border-box; margin: 0; padding: 0; }
       html, body, #app { width: 100%; height: 100%; overflow: hidden; background: #050d1a; }
-      body { background: #050d1a; }
       canvas { display: block; width: 100%; height: 100%; cursor: grab; touch-action: none; }
       canvas:active { cursor: grabbing; }
 
-      .hud {
+      .panel {
         position: fixed;
-        left: 1.25rem;
-        bottom: 1.25rem;
-        color: #f0d78c;
-        font: 500 12px/1.45 "Segoe UI", system-ui, sans-serif;
+        left: 1rem;
+        top: 1rem;
+        width: min(22rem, calc(100vw - 2rem));
+        padding: 1rem 1.1rem 1.15rem;
+        border-radius: 0.9rem;
+        background: rgba(8, 14, 28, 0.9);
+        border: 1px solid rgba(212, 175, 55, 0.28);
+        color: #e8d5a0;
+        font: 400 13px/1.5 "Segoe UI", system-ui, sans-serif;
+        backdrop-filter: blur(12px);
+        z-index: 3;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+      }
+      .panel .eyebrow {
+        font-size: 11px;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        opacity: 0.95;
-        pointer-events: none;
-        text-shadow: 0 1px 12px rgba(0,0,0,0.85);
-        z-index: 2;
+        color: #b89a4a;
+        margin-bottom: 0.25rem;
       }
-      .hud strong {
-        display: block;
-        font-size: 14px;
-        letter-spacing: 0.18em;
-        margin-bottom: 0.35rem;
+      .panel h1 {
+        font: 650 1.05rem/1.25 "Segoe UI", system-ui, sans-serif;
         color: #ffd978;
+        margin-bottom: 0.2rem;
       }
-      .hud span { opacity: 0.8; font-size: 11px; letter-spacing: 0.06em; }
+      .panel .by { color: #8a7a50; font-size: 12px; margin-bottom: 0.75rem; }
+      .ref-card {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        padding: 0.55rem;
+        border-radius: 0.65rem;
+        background: rgba(255, 217, 120, 0.06);
+        border: 1px solid rgba(212, 175, 55, 0.18);
+        margin-bottom: 0.75rem;
+      }
+      .ref-card img {
+        width: 5.5rem;
+        height: 3.6rem;
+        object-fit: cover;
+        background: #050d1a;
+        border-radius: 0.4rem;
+      }
+      .ref-card span { font-size: 11px; color: #c4a86a; }
+      .tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.75rem; }
+      .tag {
+        font-size: 10px;
+        letter-spacing: 0.04em;
+        padding: 0.2rem 0.5rem;
+        border-radius: 999px;
+        border: 1px solid rgba(120, 180, 120, 0.35);
+        color: #9fd89f;
+        background: rgba(60, 120, 70, 0.12);
+      }
+      .tag.muted {
+        border-color: rgba(212, 175, 55, 0.35);
+        color: #e0c070;
+        background: rgba(120, 90, 20, 0.15);
+      }
+      .panel p { color: #c9b88a; font-size: 12.5px; line-height: 1.55; }
 
       .zoom-panel {
         position: fixed;
@@ -53,15 +93,6 @@
         font: 600 1.15rem/1 "Segoe UI", system-ui, sans-serif;
         cursor: pointer;
         backdrop-filter: blur(8px);
-        transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
-        user-select: none;
-      }
-      .zoom-panel button:hover {
-        background: rgba(30, 42, 72, 0.95);
-        border-color: rgba(255, 217, 120, 0.75);
-      }
-      .zoom-panel button:active {
-        transform: scale(0.96);
       }
       .zoom-panel button.reset {
         font-size: 0.62rem;
@@ -74,22 +105,47 @@
         font: 600 0.68rem/1 "Segoe UI", system-ui, sans-serif;
         letter-spacing: 0.06em;
         opacity: 0.85;
-        text-shadow: 0 1px 8px rgba(0,0,0,0.7);
-        min-height: 1rem;
+      }
+      .hint {
+        position: fixed;
+        left: 1rem;
+        bottom: 1rem;
+        color: #a89050;
+        font: 500 11px/1.4 "Segoe UI", system-ui, sans-serif;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        opacity: 0.9;
+        pointer-events: none;
+        z-index: 2;
       }
     </style>
   </head>
   <body>
     <div id="app"></div>
-    <div class="hud">
-      <strong>CA² · img2threejs</strong>
-      <span>Drag orbit · Scroll / pinch zoom · + − buttons</span>
-    </div>
+    <aside class="panel">
+      <div class="eyebrow">img2threejs · reconstruction</div>
+      <h1>CA² Monogram · solid gold</h1>
+      <div class="by">Carlos Alfredo Carpio Meza · img2threejs v1.3</div>
+      <div class="ref-card">
+        <img src="/ref/logo-reference.png" alt="Source logo" />
+        <span>source reference<br />extruded solid 3D</span>
+      </div>
+      <div class="tags">
+        <span class="tag">object</span>
+        <span class="tag muted">solid extrude</span>
+        <span class="tag muted">turntable</span>
+      </div>
+      <p>
+        True solid 3D: silhouette extruded from your PNG with beveled gold metal.
+        Free orbit any angle · auto studio turntable · scroll zoom.
+      </p>
+    </aside>
+    <div class="hint">Drag free orbit · Auto spin · Scroll zoom · Full 3D</div>
     <div class="zoom-panel" aria-label="Zoom controls">
-      <button type="button" id="zoom-in" title="Zoom in (+)" aria-label="Zoom in">+</button>
+      <button type="button" id="zoom-in" title="Zoom in" aria-label="Zoom in">+</button>
       <div class="zoom-readout" id="zoom-level">100%</div>
-      <button type="button" id="zoom-out" title="Zoom out (−)" aria-label="Zoom out">−</button>
-      <button type="button" id="zoom-reset" class="reset" title="Reset view (0)" aria-label="Reset zoom">Rst</button>
+      <button type="button" id="zoom-out" title="Zoom out" aria-label="Zoom out">−</button>
+      <button type="button" id="zoom-reset" class="reset" title="Reset" aria-label="Reset">Rst</button>
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>

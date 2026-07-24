@@ -60,6 +60,27 @@ WebDesigner skills are stage contracts, not vendor-specific prompt bundles. Each
 - **Outputs**: installed component map and normal/reduced-motion verification log
 - **Notes**: Activates through the `requiresAnimatedUI` constraint and `animate-ui` stack integration; it is not used for video, Flutter, or WebGL-only animation.
 
+### `gsap-animation`
+- **Stages**: `design`, `build`
+- **Role**: Integrates GSAP core and bonus plugins (`ScrollTrigger`, `ScrollSmoother`, `SplitText`, `Draggable`, `DrawSVGPlugin`, `Flip`, `InertiaPlugin`, `MorphSVGPlugin`, `MotionPathPlugin`, `Observer`, `CustomEase`, `CustomBounce`, `CustomWiggle`, `ScrambleTextPlugin`, etc.) for timeline-based, scroll-driven, SVG, text, or physics-based web animations
+- **Inputs**: `TaskIntent`, `StackSelection`, design artifacts, motion plan, generated workspace
+- **Outputs**: GSAP animation configuration, plugin registration setup, and timeline/reduced-motion verification log
+- **Notes**: Activates through `requiresGSAPAnimation` constraint or explicit motion requirements. Supports standard npm dependencies (`gsap`, `@gsap/react`) or local bonus plugins from `gsap-public`.
+
+### `3d-scroll-website`
+- **Stages**: `design`, `build`
+- **Role**: Builds high-end 3D scroll-animated websites using pre-rendered canvas image sequences (Blender/After Effects exports or video-to-frames), sticky viewports, Lenis smooth scrolling, neumorphic design system, and RAF performance hardening
+- **Inputs**: `TaskIntent`, `StackSelection`, design artifacts, frame sequence path or video assets, generated Next.js or React/Vite workspace
+- **Outputs**: Sticky canvas frame-sequence component, Lenis smooth scroll provider, preloading progress overlay, neumorphic design tokens, and performance verification log
+- **Notes**: Activates through `requires3DScrollCanvas` constraint or explicit 3D scroll/frame-sequence requests.
+
+### `video-to-site`
+- **Stages**: `design`, `build`
+- **Role**: Converts video files (MP4, MOV, WebM) into interactive web scroll animations, sticky canvas frame sequences, background video controllers, or video-driven landing pages
+- **Inputs**: `TaskIntent`, `StackSelection`, video file path (`.mp4`, `.mov`), generated Next.js or React/Vite workspace
+- **Outputs**: Frame extraction manifest, canvas video controller component, preloading overlay, and helper script (`extract_frames.py`)
+- **Notes**: Activates through `requiresVideoToSite` constraint or explicit video-to-scroll requests (`videotoside`).
+
 ### `img2threejs` (v1.3.0)
 - **Stage**: `build`
 - **Role**: Rebuilds a reference object or character image as a quality-gated, animation-ready procedural Three.js model using staged sculpt passes, Divine Eye deterministic review, and vision review

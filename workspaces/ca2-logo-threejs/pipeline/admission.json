@@ -1,0 +1,16 @@
+{
+  "admitted": false,
+  "reasons": [
+    "foreground coverage 0.998 > 0.97 (no background to segment against ù silhouette not isolable)"
+  ],
+  "provenance": {
+    "viewpoint": "reference",
+    "sourcePath": "E:\\PROYECTOS\\webdesigner\\workspaces\\ca2-logo-threejs\\ref\\logo-reference.png",
+    "width": 1448,
+    "height": 1086,
+    "foregroundCoverage": 0.9977,
+    "largestComponentFraction": 1.0,
+    "pHash": 14739841997382821833,
+    "duplicateOfHash": null
+  }
+}

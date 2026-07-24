@@ -1,12 +1,13 @@
 {
   "name": "ca2-logo-threejs",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host --port 5178",
+    "dev": "vite --host --port 5180",
+    "dev:free": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/free-port.ps1 -Port 5180 && vite --host --port 5180",
     "build": "tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview --host --port 5180"
   },
   "dependencies": {
     "three": "^0.172.0"

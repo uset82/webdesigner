@@ -46,6 +46,9 @@ WebDesigner uses stable workflow roles, but model assignment is dynamic. Agents 
 - Convert approved design artifacts into framework-idiomatic code
 - Preserve brand hierarchy, restrained section structure, dominant imagery, and intentional motion from the design artifacts
 - Apply the `animate-ui` skill when the stack selection includes that integration; keep registry installs scoped to the generated React workspace
+- Apply the `gsap-animation` skill when the stack selection includes that integration or when timeline/scroll/SVG motion is required; register plugins and use `useGSAP` or local bonus plugins from `gsap-public`
+- Apply the `3d-scroll-website` skill when the stack selection includes that integration or when 3D frame-sequence / video-to-canvas scroll animations, Lenis smooth scroll, or neumorphic design are requested
+- Apply the `video-to-site` skill when video asset conversion (`.mp4`, `.mov`), video frame extraction, or video scroll controllers (`videotoside`) are requested
 - Apply the `img2threejs` skill when the stack selection includes that integration; run forge scripts from the skill root and emit the Three.js factory only into the generated workspace
 - Inspect rendered frontend work across desktop and mobile viewports when browser tooling is available
 - Keep the control plane separate from the generated project

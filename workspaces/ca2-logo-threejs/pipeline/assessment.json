@@ -1,5 +1,5 @@
 {
-  "targetName": "CA2MonogramLogo",
+  "targetName": "CA2 Monogram Logo",
   "sourceImage": "e:\\PROYECTOS\\webdesigner\\workspaces\\ca2-logo-threejs\\ref\\logo-reference.png",
   "preSpecAssessment": {
     "objectClass": {
@@ -31,7 +31,7 @@
         "repetitionSystems": 0
       },
       "reasoning": [
-        "Assess 'CA2MonogramLogo' from the image before finalizing componentTree/materials."
+        "Assess 'CA2 Monogram Logo' from the image before finalizing componentTree/materials."
       ]
     },
     "specDepthDecision": {

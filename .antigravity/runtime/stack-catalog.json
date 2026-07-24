@@ -91,6 +91,24 @@
       "activationConstraint": "requiresAnimatedUI"
     },
     {
+      "id": "gsap-animation",
+      "classification": "animation-engine",
+      "supportedFrontends": ["nextjs", "react-vite"],
+      "activationConstraint": "requiresGSAPAnimation"
+    },
+    {
+      "id": "3d-scroll-canvas",
+      "classification": "canvas-frame-sequence",
+      "supportedFrontends": ["nextjs", "react-vite"],
+      "activationConstraint": "requires3DScrollCanvas"
+    },
+    {
+      "id": "video-to-site",
+      "classification": "video-scroll-engine",
+      "supportedFrontends": ["nextjs", "react-vite"],
+      "activationConstraint": "requiresVideoToSite"
+    },
+    {
       "id": "img2threejs",
       "classification": "image-to-3d",
       "supportedFrontends": ["nextjs", "react-vite"],

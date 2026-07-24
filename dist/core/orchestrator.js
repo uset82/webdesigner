@@ -68,6 +68,12 @@ class WebDesignerOrchestrator {
         const hasUiSurface = /\b(ui|user interface|interface|website|web site|landing page|portfolio|storefront|web app|dashboard|component|menu|navigation|navbar|button|dialog|modal|tab|tabs|accordion|tooltip|carousel|form|icon|text|hero|section|page)\b/.test(lp);
         const isMediaOnlyAnimation = /\b(video|film|clip|mp4|gif|webp|remotion|animation asset|animated illustration)\b/.test(lp) && !hasUiSurface;
         const requiresAnimatedUI = options?.requiresAnimatedUI ?? (supportsReactUi && hasAnimationIntent && !isMediaOnlyAnimation);
+        const hasGSAPIntent = /\b(gsap|scrolltrigger|scrollsmoother|splittext|morphsvg|drawsvg|greensock|inertia|flip[-\s]?plugin|custombounce|customwiggle|scrambletext)\b/.test(lp);
+        const requiresGSAPAnimation = options?.requiresGSAPAnimation ?? (supportsReactUi && hasGSAPIntent);
+        const has3DScrollCanvasIntent = /\b(3d[-\s]?scroll|frame[-\s]?sequence|sticky[-\s]?canvas|canvas[-\s]?frame|video[-\s]?to[-\s]?(?:frame|scroll)|lenis|apple[-\s]?(?:style|like)?\s*scroll|scroll[-\s]?canvas|pre[-\s]?rendered scroll)\b/.test(lp);
+        const requires3DScrollCanvas = options?.requires3DScrollCanvas ?? (supportsReactUi && has3DScrollCanvasIntent);
+        const hasVideoToSiteIntent = /\b(video[-\s]?to[-\s]?(?:site|scroll|canvas|web)|videotoside|extract[-\s]?frames|convert video|video[-\s]?driven)\b/.test(lp);
+        const requiresVideoToSite = options?.requiresVideoToSite ?? (supportsReactUi && hasVideoToSiteIntent);
         const hasImageToThreeIntent = /\b(img2threejs|image[-\s]?to[-\s]?(?:3d|three(?:\.?js)?|threejs)|photo[-\s]?to[-\s]?(?:3d|three(?:\.?js)?|threejs)|reference image.*(?:three(?:\.?js)?|threejs|3d model)|(?:three(?:\.?js)?|threejs).*(?:from|via|using).*(?:image|photo|reference)|procedural (?:three(?:\.?js)?|threejs) model|rebuild (?:this |the )?(?:object|image).*(?:three(?:\.?js)?|threejs|3d)|sculpt(?:ing)? (?:spec|from (?:image|photo)))\b/.test(lp)
             || (/\b(three(?:\.?js)?|threejs|webgl|procedural 3d|3d model|object sculpt)\b/.test(lp)
                 && /\b(image|photo|reference|screenshot|picture|pic)\b/.test(lp));
@@ -85,6 +91,9 @@ class WebDesignerOrchestrator {
                 requiresVision: lp.includes('image') || lp.includes('screenshot') || lp.includes('figma') || requiresImageToThreeJS,
                 requiresImageGeneration: lp.includes('generate image') || lp.includes('illustration'),
                 requiresAnimatedUI,
+                requiresGSAPAnimation,
+                requires3DScrollCanvas,
+                requiresVideoToSite,
                 requiresImageToThreeJS,
                 latencyPreference: options?.latencyPreference || "balanced",
                 budgetPreference: options?.budgetPreference || "balanced",
@@ -137,6 +146,36 @@ class WebDesignerOrchestrator {
             }
             else {
                 selection.rationale.push(`Animated UI requested, but Animate UI is incompatible with ${selection.frontendRuntime}; use a framework-native motion solution.`);
+            }
+        }
+        if (intent.constraints.requiresGSAPAnimation) {
+            const supportsGSAP = selection.frontendRuntime === 'nextjs' || selection.frontendRuntime === 'react-vite';
+            if (supportsGSAP) {
+                selection.integrations = Array.from(new Set([...selection.integrations, 'gsap-animation']));
+                selection.rationale.push('GSAP animation requested; enabled the gsap-animation engine for the build stage.');
+            }
+            else {
+                selection.rationale.push(`GSAP animation requested, but GSAP integration is incompatible with ${selection.frontendRuntime}; use a framework-native motion solution.`);
+            }
+        }
+        if (intent.constraints.requires3DScrollCanvas) {
+            const supports3DScroll = selection.frontendRuntime === 'nextjs' || selection.frontendRuntime === 'react-vite';
+            if (supports3DScroll) {
+                selection.integrations = Array.from(new Set([...selection.integrations, '3d-scroll-canvas']));
+                selection.rationale.push('3D scroll frame-sequence animation requested; enabled the 3d-scroll-website skill pipeline for the build stage.');
+            }
+            else {
+                selection.rationale.push(`3D scroll canvas requested, but 3d-scroll-canvas is incompatible with ${selection.frontendRuntime}; use a React web frontend.`);
+            }
+        }
+        if (intent.constraints.requiresVideoToSite) {
+            const supportsVideoToSite = selection.frontendRuntime === 'nextjs' || selection.frontendRuntime === 'react-vite';
+            if (supportsVideoToSite) {
+                selection.integrations = Array.from(new Set([...selection.integrations, 'video-to-site']));
+                selection.rationale.push('Video-to-site conversion requested; enabled the video-to-site frame controller pipeline for the build stage.');
+            }
+            else {
+                selection.rationale.push(`Video-to-site requested, but video-to-site is incompatible with ${selection.frontendRuntime}; use a React web frontend.`);
             }
         }
         if (intent.constraints.requiresImageToThreeJS) {

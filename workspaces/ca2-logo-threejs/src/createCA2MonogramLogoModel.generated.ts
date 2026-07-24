@@ -1,4 +1,9 @@
 import * as THREE from 'three';
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { BokehPass } from 'three/examples/jsm/postprocessing/BokehPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 export type ProceduralModelOptions = {
   wireframe?: boolean;
@@ -18,6 +23,51 @@ export type ProceduralModelRuntime = {
 };
 
 type SculptMaterialSpec = Record<string, any>;
+
+// bevelEnabled defaults to true on THREE.ExtrudeGeometry and rounds every
+// corner — sharp/pointed profiles (blades, fork tines, spikes) need
+// bevelEnabled: false plus lineTo()-only path segments near the tip, since a
+// curve command cannot produce a true converging point.
+function buildExtrudeShape(points: [number, number][], holes?: [number, number][][]): THREE.Shape {
+  const shape = new THREE.Shape();
+  if (points.length > 0) {
+    shape.moveTo(points[0][0], points[0][1]);
+    for (let i = 1; i < points.length; i += 1) {
+      shape.lineTo(points[i][0], points[i][1]);
+    }
+  }
+  // Cutouts (e.g. an oval wire-cutter hole) as THREE.Path added to shape.holes —
+  // dep-free boolean subtraction via the tessellator, no CSG library needed.
+  for (const loop of holes ?? []) {
+    if (loop.length < 3) continue;
+    const path = new THREE.Path();
+    path.moveTo(loop[0][0], loop[0][1]);
+    for (let i = 1; i < loop.length; i += 1) path.lineTo(loop[i][0], loop[i][1]);
+    path.closePath();
+    shape.holes.push(path);
+  }
+  return shape;
+}
+
+// Build an N-gon oval loop (for hole authoring from a compact {cx,cy,rx,ry} descriptor).
+function ovalLoop(cx: number, cy: number, rx: number, ry: number, seg = 24): [number, number][] {
+  const loop: [number, number][] = [];
+  for (let i = 0; i < seg; i += 1) {
+    const a = (i / seg) * Math.PI * 2;
+    loop.push([cx + Math.cos(a) * rx, cy + Math.sin(a) * ry]);
+  }
+  return loop;
+}
+
+function buildExtrudeGeometry(profile: { points: [number, number][]; depth: number; holes?: [number, number][][]; ovalHoles?: { cx: number; cy: number; rx: number; ry: number }[] }): THREE.ExtrudeGeometry {
+  const holes = [...(profile.holes ?? []), ...((profile.ovalHoles ?? []).map((o) => ovalLoop(o.cx, o.cy, o.rx, o.ry)))];
+  const shape = buildExtrudeShape(profile.points, holes);
+  return new THREE.ExtrudeGeometry(shape, {
+    depth: profile.depth,
+    bevelEnabled: false,
+    steps: 1,
+  });
+}
 
 function hashString(value: string): number {
   let hash = 2166136261;
@@ -144,6 +194,51 @@ function mixPalette(colors: [number, number, number][], value: number): [number,
     Math.round(THREE.MathUtils.lerp(a[0], b[0], mix)),
     Math.round(THREE.MathUtils.lerp(a[1], b[1], mix)),
     Math.round(THREE.MathUtils.lerp(a[2], b[2], mix)),
+  ];
+}
+
+type ColorGradientStop = { offset: number; color: string };
+type ColorGradientSpec = {
+  type: 'linear' | 'radial';
+  axis: [number, number];
+  stops: ColorGradientStop[];
+};
+
+function parseRgba(value: string): [number, number, number] {
+  const match = /rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/.exec(value);
+  if (!match) return [138, 122, 95];
+  return [Number(match[1]), Number(match[2]), Number(match[3])];
+}
+
+// Analytical per-pixel gradient sample. The extraction schema's colorGradient carries
+// exact rgba(...) stop colors (see extract_part_color_recipe.py), so this samples the
+// same trend directly in JS math rather than round-tripping through a Canvas 2D
+// createLinearGradient/createRadialGradient object — same visual result, and it composes
+// directly with the existing noise/height-correlated colorVariation blend below.
+function sampleColorGradient(gradient: ColorGradientSpec, u: number, v: number): [number, number, number] {
+  const stops = gradient.stops.length >= 2 ? gradient.stops : [{ offset: 0, color: 'rgba(138,122,95,1)' }, { offset: 1, color: 'rgba(138,122,95,1)' }];
+  let t: number;
+  if (gradient.type === 'radial') {
+    const [cx, cy] = gradient.axis;
+    const dx = u - cx;
+    const dy = v - cy;
+    const maxRadius = Math.max(0.001, Math.hypot(Math.max(cx, 1 - cx), Math.max(cy, 1 - cy)));
+    t = clamp01(Math.hypot(dx, dy) / maxRadius);
+  } else {
+    const [ax, ay] = gradient.axis;
+    const projection = (u - 0.5) * ax + (v - 0.5) * ay;
+    const maxProjection = 0.5 * (Math.abs(ax) + Math.abs(ay)) || 0.5;
+    t = clamp01(projection / maxProjection + 0.5);
+  }
+  const scaled = t * (stops.length - 1);
+  const index = Math.min(stops.length - 2, Math.max(0, Math.floor(scaled)));
+  const mix = scaled - index;
+  const a = parseRgba(stops[index].color);
+  const b = parseRgba(stops[index + 1].color);
+  return [
+    THREE.MathUtils.lerp(a[0], b[0], mix),
+    THREE.MathUtils.lerp(a[1], b[1], mix),
+    THREE.MathUtils.lerp(a[2], b[2], mix),
   ];
 }
 
@@ -292,6 +387,7 @@ function makeProceduralTextureSet(
   const roughnessVariation = clamp01(readLayerNumber(spec.roughness, ['variation'], 0.18));
   const colorAmplitude = clamp01(readLayerNumber(spec.colorVariation, ['amplitude', 'variation'], 0.18));
   const heightCorrelation = clamp01(readLayerNumber(spec.colorVariation, ['heightCorrelation'], 0.3));
+  const colorGradient: ColorGradientSpec | undefined = spec.colorGradient;
   for (let y = 0; y < size; y += 1) {
     const v = y / size;
     for (let x = 0; x < size; x += 1) {
@@ -302,10 +398,17 @@ function makeProceduralTextureSet(
       const colorNoise = sampleSurface(u, v, bands, seed + 15013);
       heightField[index] = height;
       roughnessField[index] = clamp01(baseRoughness + (roughNoise - 0.5) * roughnessVariation * 2);
-      const paletteValue = clamp01(
-        0.5 + (colorNoise - 0.5) * colorAmplitude * 2 + (height - 0.5) * heightCorrelation
-      );
-      const color = mixPalette(colors, paletteValue);
+      let color: [number, number, number];
+      if (colorGradient) {
+        // Evidence-derived spatial gradient (Plan 1.3 Workstream C) takes priority
+        // over the noise-based palette blend below — it is a measured trend, not a guess.
+        color = sampleColorGradient(colorGradient, u, v);
+      } else {
+        const paletteValue = clamp01(
+          0.5 + (colorNoise - 0.5) * colorAmplitude * 2 + (height - 0.5) * heightCorrelation
+        );
+        color = mixPalette(colors, paletteValue);
+      }
       writePixel(images.albedo.data, index * 4, color[0], color[1], color[2]);
     }
   }
@@ -369,6 +472,21 @@ function createSculptMaterial(id: string, spec: SculptMaterialSpec, options: Pro
     clearcoat: clamp01(readLayerNumber(spec.clearcoat, ['base', 'amount'], 0)),
     clearcoatRoughness: clamp01(readLayerNumber(spec.clearcoatRoughness, ['base'], 0.25)),
     transmission: clamp01(readLayerNumber(spec.transmission, ['base', 'amount'], 0)),
+    ior: Math.max(1, readLayerNumber(spec.ior, ['base', 'value'], 1.5)),
+    thickness: Math.max(0, readLayerNumber(spec.thickness, ['base', 'amount'], 0)),
+    attenuationDistance: Math.max(0.001, readLayerNumber(spec.attenuationDistance, ['base', 'value'], Infinity)),
+    attenuationColor: new THREE.Color(typeof spec.attenuationColor === 'string' ? spec.attenuationColor : '#ffffff'),
+    sheen: clamp01(readLayerNumber(spec.sheen, ['base', 'amount'], 0)),
+    sheenColor: new THREE.Color(typeof spec.sheenColor === 'string' ? spec.sheenColor : '#ffffff'),
+    sheenRoughness: clamp01(readLayerNumber(spec.sheenRoughness, ['base'], 1.0)),
+    iridescence: clamp01(readLayerNumber(spec.iridescence, ['base', 'amount'], 0)),
+    iridescenceIOR: Math.max(1, readLayerNumber(spec.iridescenceIOR, ['base', 'value'], 1.3)),
+    anisotropy: clamp01(readLayerNumber(spec.anisotropy, ['base', 'amount'], 0)),
+    anisotropyRotation: readLayerNumber(spec.anisotropy, ['rotation'], 0),
+    specularIntensity: clamp01(readLayerNumber(spec.specularIntensity, ['base'], 1.0)),
+    specularColor: new THREE.Color(typeof spec.specularColor === 'string' ? spec.specularColor : '#ffffff'),
+    emissive: new THREE.Color(typeof spec.emissive === 'string' ? spec.emissive : '#000000'),
+    emissiveIntensity: Math.max(0, readLayerNumber(spec.emissiveIntensity, ['base'], 1.0)),
     opacity: clamp01(readLayerNumber(spec.opacity, ['base'], 1)),
     transparent: readLayerNumber(spec.transmission, ['base', 'amount'], 0) > 0 || readLayerNumber(spec.opacity, ['base'], 1) < 1,
     alphaTest: Math.max(0, readLayerNumber(spec.alpha, ['cutoff', 'alphaTest'], 0)),
@@ -446,27 +564,27 @@ function makeAttachmentEndpoint(attachment: unknown): AttachmentEndpoint | null 
   };
 }
 
-// Generated from ObjectSculptSpec target: CA2MonogramLogo
+// Generated from ObjectSculptSpec target: CA2 Monogram Logo
 // Sculpt build pass: blockout
 // This factory is intentionally pass-gated. Finish browser screenshot review before unlocking deeper passes.
 export function createCA2MonogramLogoModel(options: ProceduralModelOptions = {}): THREE.Group {
   const root = new THREE.Group();
-  root.name = "CA2MonogramLogo";
+  root.name = "CA2 Monogram Logo";
 
   const materialMap: Record<string, THREE.Material> = {};
   materialMap["polished-gold"] = createSculptMaterial(
     "polished-gold",
-    {"id": "polished-gold", "name": "PolishedGold", "baseColor": "#D4AF37", "albedo": {"dominant": "#D4AF37", "secondary": ["#F0D78C", "#B8860B"]}, "colorVariation": {"palette": ["#F5E6A3", "#D4AF37", "#C9A227", "#A67C00"]}, "metalness": {"base": 1.0}, "roughness": {"base": 0.28}, "clearcoat": {"base": 0.35}, "localOverrides": [{"id": "edge-bevel", "kind": "edge-wear", "params": {"roughness": 0.18}}, {"id": "cavity-shade", "kind": "ao", "params": {"intensity": 0.35}}, {"id": "brush", "kind": "scratches", "params": {"anisotropy": 0.2}}], "referencePbr": {"source": "logo-reference.png", "confidence": 0.82, "maps": {"albedo": "ref/logo-reference.png", "roughness": "inferred", "normal": "inferred", "ao": "inferred", "height": "inferred"}, "notes": "Warm gold emboss from reference midtones/highlights"}},
+    {"id": "polished-gold", "name": "PolishedGold", "baseColor": "#D4AF37", "albedo": {"dominant": "#D4AF37", "secondary": ["#F0D78C", "#B8860B", "#8A6A1F"]}, "colorVariation": {"palette": ["#F5E6A3", "#D4AF37", "#C9A227", "#A67C00"]}, "metalness": {"base": 0.92}, "roughness": {"base": 0.28}, "clearcoat": {"base": 0.35}, "finishClass": "gem-metal", "localOverrides": [{"id": "edge-bevel", "kind": "edge-wear", "params": {"roughness": 0.18, "metalness": 1.0}}, {"id": "cavity-shade", "kind": "ao", "params": {"intensity": 0.35}}, {"id": "brush-lines", "kind": "scratches", "params": {"anisotropy": 0.2}}], "referencePbr": {"source": "logo-reference.png", "confidence": 0.86, "maps": {"albedo": "E:\\PROYECTOS\\webdesigner\\workspaces\\ca2-logo-threejs\\pipeline\\pbr\\gold_albedo.png", "roughness": "E:\\PROYECTOS\\webdesigner\\workspaces\\ca2-logo-threejs\\pipeline\\pbr\\gold_roughness.png", "height": "E:\\PROYECTOS\\webdesigner\\workspaces\\ca2-logo-threejs\\pipeline\\pbr\\gold_height.png", "normal": "E:\\PROYECTOS\\webdesigner\\workspaces\\ca2-logo-threejs\\pipeline\\pbr\\gold_normal.png", "ao": "E:\\PROYECTOS\\webdesigner\\workspaces\\ca2-logo-threejs\\pipeline\\pbr\\gold_ao.png"}, "notes": "v1.3 extract_pbr_evidence + analyze_texture path for warm gold emboss"}, "envMapIntensity": 1.65},
     options
   );
   materialMap["gold-highlight"] = createSculptMaterial(
     "gold-highlight",
-    {"id": "gold-highlight", "name": "GoldHighlight", "baseColor": "#F5E6A3", "metalness": {"base": 1.0}, "roughness": {"base": 0.16}, "localOverrides": [{"id": "specular-rim", "kind": "gloss", "params": {"roughness": 0.12}}], "referencePbr": {"source": "logo-reference.png", "confidence": 0.75, "maps": {"albedo": "ref/logo-reference.png"}, "notes": "highlight gold"}},
+    {"id": "gold-highlight", "name": "GoldHighlight", "baseColor": "#F5E6A3", "metalness": {"base": 1.0}, "roughness": {"base": 0.16}, "finishClass": "gem-metal", "localOverrides": [{"id": "specular-rim", "kind": "gloss", "params": {"roughness": 0.12}}]},
     options
   );
   materialMap["navy-plate"] = createSculptMaterial(
     "navy-plate",
-    {"id": "navy-plate", "name": "NavyPlate", "baseColor": "#071028", "albedo": {"dominant": "#071028", "secondary": ["#0B1836"]}, "metalness": {"base": 0.05}, "roughness": {"base": 0.88}, "localOverrides": [{"id": "vignette", "kind": "stain", "params": {"darken": 0.15}}], "referencePbr": {"source": "logo-reference.png", "confidence": 0.9, "maps": {"albedo": "ref/logo-reference.png"}, "notes": "navy field"}},
+    {"id": "navy-plate", "name": "NavyPlate", "baseColor": "#071028", "albedo": {"dominant": "#071028", "secondary": ["#0B1836", "#040812"]}, "metalness": {"base": 0.05}, "roughness": {"base": 0.88}, "finishClass": "plastic", "localOverrides": [{"id": "soft-vignette", "kind": "stain", "params": {"darken": 0.15}}]},
     options
   );
 
@@ -489,8 +607,8 @@ export function createCA2MonogramLogoModel(options: ProceduralModelOptions = {})
     node_root_0.rotation.set(0.0, 0.0, 0.0);
     node_root_0.scale.set(1.0, 1.0, 1.0);
   }
-  node_root_0.userData.sculptComponent = {"id": "root", "name": "CA2MonogramLogo", "level": "macro", "role": "root", "importance": 0.9, "confidence": 0.9, "primitive": "box", "geometryDescriptor": {"topologyIntent": "extruded letterform", "edgeTreatment": {"type": "bevel", "bevelRadius": 0.02, "segments": 3}, "deformationStack": [], "uvStrategy": "generated procedural coordinates", "normalStrategy": "vertex normals from generated geometry"}, "parent": null, "attachment": null, "dimensions": {"width": 0.1, "height": 0.1, "depth": 0.1, "units": "relative", "confidence": 1}, "transform": {"position": [0, 0, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]}, "actionProfile": {"animationRole": "root", "pivot": {"mode": "center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.8}, "transformChannels": {"translate": true, "rotate": true, "scale": true, "bend": false, "twist": false, "detach": false, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false, "notes": ""}, "constraints": [], "destruction": {"breakable": false, "fractureGroup": "root", "seamRefs": [], "detachableFragments": [], "breakImpulse": 0.0, "debrisMaterial": "polished-gold"}}, "material": "navy-plate", "materialLayers": ["navy-plate"], "deformations": [], "joints": [], "seams": [], "localFeatures": ["pivot"], "surfaceDetail": {"macroRoughness": 0.28, "microRoughness": 0.15, "bumpAmplitude": 0.02, "normalPattern": "brushed-metal", "displacementPattern": "", "occlusionPattern": "cavity", "edgeWearPattern": "soft-bevel", "notes": "gold relief"}, "evidenceRefs": ["full-object"], "details": [], "fidelityTier": "form-refinement"};
-  node_root_0.userData.actionProfile = {"animationRole": "root", "pivot": {"mode": "center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.8}, "transformChannels": {"translate": true, "rotate": true, "scale": true, "bend": false, "twist": false, "detach": false, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false, "notes": ""}, "constraints": [], "destruction": {"breakable": false, "fractureGroup": "root", "seamRefs": [], "detachableFragments": [], "breakImpulse": 0.0, "debrisMaterial": "polished-gold"}};
+  node_root_0.userData.sculptComponent = {"id": "root", "name": "CA2MonogramLogo", "level": "macro", "parent": null, "primitive": "box", "role": "root", "topologyClass": "assembled-solid", "topologyRationale": "CA2MonogramLogo is a monogram relief part reconstructed as box", "actionProfile": {"role": "pivot", "animatable": true, "destructible": false}, "transform": {"position": [0, 0, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]}, "localFeatures": ["pivot-center"], "dimensions": {"width": 0.01, "height": 0.01, "depth": 0.01}, "colorMaterialRecipe": {"dominantAlbedo": "rgba(212, 175, 55, 1)", "secondaryAlbedo": "rgba(7, 16, 40, 1)", "materialClass": "metal", "materialClassConfidence": 0.7, "metalness": 0.5, "roughness": 0.5}};
+  node_root_0.userData.actionProfile = {"role": "pivot", "animatable": true, "destructible": false};
   (nodes["root"] ?? root).add(node_root_0);
   nodes["root"] = node_root_0;
   const mesh_root_0Geometry = endpoint_root_0
@@ -498,7 +616,7 @@ export function createCA2MonogramLogoModel(options: ProceduralModelOptions = {})
     : new THREE.BoxGeometry(1, 1, 1, 12, 12, 12);
   const mesh_root_0 = new THREE.Mesh(
     mesh_root_0Geometry,
-    materialMap["navy-plate"] ?? new THREE.MeshStandardMaterial({ color: 0x888888 })
+    materialMap["polished-gold"] ?? new THREE.MeshStandardMaterial({ color: 0x888888 })
   );
   mesh_root_0.name = "CA2MonogramLogo";
   if (endpoint_root_0) {
@@ -507,12 +625,10 @@ export function createCA2MonogramLogoModel(options: ProceduralModelOptions = {})
   }
   mesh_root_0.castShadow = options.castShadow ?? true;
   mesh_root_0.receiveShadow = options.receiveShadow ?? true;
-  mesh_root_0.userData.sculptComponent = {"id": "root", "name": "CA2MonogramLogo", "level": "macro", "role": "root", "importance": 0.9, "confidence": 0.9, "primitive": "box", "geometryDescriptor": {"topologyIntent": "extruded letterform", "edgeTreatment": {"type": "bevel", "bevelRadius": 0.02, "segments": 3}, "deformationStack": [], "uvStrategy": "generated procedural coordinates", "normalStrategy": "vertex normals from generated geometry"}, "parent": null, "attachment": null, "dimensions": {"width": 0.1, "height": 0.1, "depth": 0.1, "units": "relative", "confidence": 1}, "transform": {"position": [0, 0, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]}, "actionProfile": {"animationRole": "root", "pivot": {"mode": "center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.8}, "transformChannels": {"translate": true, "rotate": true, "scale": true, "bend": false, "twist": false, "detach": false, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false, "notes": ""}, "constraints": [], "destruction": {"breakable": false, "fractureGroup": "root", "seamRefs": [], "detachableFragments": [], "breakImpulse": 0.0, "debrisMaterial": "polished-gold"}}, "material": "navy-plate", "materialLayers": ["navy-plate"], "deformations": [], "joints": [], "seams": [], "localFeatures": ["pivot"], "surfaceDetail": {"macroRoughness": 0.28, "microRoughness": 0.15, "bumpAmplitude": 0.02, "normalPattern": "brushed-metal", "displacementPattern": "", "occlusionPattern": "cavity", "edgeWearPattern": "soft-bevel", "notes": "gold relief"}, "evidenceRefs": ["full-object"], "details": [], "fidelityTier": "form-refinement"};
+  mesh_root_0.userData.sculptComponent = {"id": "root", "name": "CA2MonogramLogo", "level": "macro", "parent": null, "primitive": "box", "role": "root", "topologyClass": "assembled-solid", "topologyRationale": "CA2MonogramLogo is a monogram relief part reconstructed as box", "actionProfile": {"role": "pivot", "animatable": true, "destructible": false}, "transform": {"position": [0, 0, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]}, "localFeatures": ["pivot-center"], "dimensions": {"width": 0.01, "height": 0.01, "depth": 0.01}, "colorMaterialRecipe": {"dominantAlbedo": "rgba(212, 175, 55, 1)", "secondaryAlbedo": "rgba(7, 16, 40, 1)", "materialClass": "metal", "materialClassConfidence": 0.7, "metalness": 0.5, "roughness": 0.5}};
   node_root_0.add(mesh_root_0);
   meshes["root"] = mesh_root_0;
-  colliders["root"] = {"type": "box", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false, "notes": ""};
-  destructionGroups["root"] ??= [];
-  destructionGroups["root"].push(node_root_0);
+  colliders["root"] = {};
 
   const attachment_backdrop_plate_1 = null;
   const endpoint_backdrop_plate_1 = makeAttachmentEndpoint(attachment_backdrop_plate_1);
@@ -527,8 +643,8 @@ export function createCA2MonogramLogoModel(options: ProceduralModelOptions = {})
     node_backdrop_plate_1.rotation.set(0.0, 0.0, 0.0);
     node_backdrop_plate_1.scale.set(1.0, 1.0, 1.0);
   }
-  node_backdrop_plate_1.userData.sculptComponent = {"id": "backdrop-plate", "name": "NavyBackdrop", "level": "macro", "role": "backdrop", "importance": 0.9, "confidence": 0.9, "primitive": "plane-card", "geometryDescriptor": {"topologyIntent": "extruded letterform", "edgeTreatment": {"type": "bevel", "bevelRadius": 0.02, "segments": 3}, "deformationStack": [], "uvStrategy": "generated procedural coordinates", "normalStrategy": "vertex normals from generated geometry"}, "parent": "root", "attachment": null, "dimensions": {"width": 4.2, "height": 3.2, "depth": 0.02, "units": "relative", "confidence": 0.95}, "transform": {"position": [0, 0, -0.08], "rotation": [0, 0, 0], "scale": [1, 1, 1]}, "actionProfile": {"animationRole": "backdrop-plate", "pivot": {"mode": "center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.8}, "transformChannels": {"translate": true, "rotate": true, "scale": true, "bend": false, "twist": false, "detach": false, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false, "notes": ""}, "constraints": [], "destruction": {"breakable": false, "fractureGroup": "root", "seamRefs": [], "detachableFragments": [], "breakImpulse": 0.0, "debrisMaterial": "polished-gold"}}, "material": "navy-plate", "materialLayers": ["navy-plate"], "deformations": [], "joints": [], "seams": [], "localFeatures": ["matte-field"], "surfaceDetail": {"macroRoughness": 0.28, "microRoughness": 0.15, "bumpAmplitude": 0.02, "normalPattern": "brushed-metal", "displacementPattern": "", "occlusionPattern": "cavity", "edgeWearPattern": "soft-bevel", "notes": "gold relief"}, "evidenceRefs": ["full-object"], "details": [], "fidelityTier": "form-refinement"};
-  node_backdrop_plate_1.userData.actionProfile = {"animationRole": "backdrop-plate", "pivot": {"mode": "center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.8}, "transformChannels": {"translate": true, "rotate": true, "scale": true, "bend": false, "twist": false, "detach": false, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false, "notes": ""}, "constraints": [], "destruction": {"breakable": false, "fractureGroup": "root", "seamRefs": [], "detachableFragments": [], "breakImpulse": 0.0, "debrisMaterial": "polished-gold"}};
+  node_backdrop_plate_1.userData.sculptComponent = {"id": "backdrop-plate", "name": "NavyBackdrop", "level": "macro", "parent": "root", "primitive": "plane-card", "role": "backdrop", "topologyClass": "material-only", "topologyRationale": "NavyBackdrop is a monogram relief part reconstructed as plane-card", "actionProfile": {"role": "static", "animatable": false, "destructible": false}, "transform": {"position": [0, 0, -0.08], "rotation": [0, 0, 0], "scale": [1, 1, 1]}, "localFeatures": ["matte-field"], "materialRef": "navy-plate", "dimensions": {"width": 4.2, "height": 3.2, "depth": 0.02}, "colorMaterialRecipe": {"dominantAlbedo": "rgba(7, 16, 40, 1)", "secondaryAlbedo": "rgba(11, 24, 54, 1)", "materialClass": "plastic", "materialClassConfidence": 0.8, "metalness": 0.05, "roughness": 0.88}};
+  node_backdrop_plate_1.userData.actionProfile = {"role": "static", "animatable": false, "destructible": false};
   (nodes["root"] ?? root).add(node_backdrop_plate_1);
   nodes["backdrop-plate"] = node_backdrop_plate_1;
   const mesh_backdrop_plate_1Geometry = endpoint_backdrop_plate_1
@@ -536,7 +652,7 @@ export function createCA2MonogramLogoModel(options: ProceduralModelOptions = {})
     : new THREE.PlaneGeometry(1, 1, 24, 24);
   const mesh_backdrop_plate_1 = new THREE.Mesh(
     mesh_backdrop_plate_1Geometry,
-    materialMap["navy-plate"] ?? new THREE.MeshStandardMaterial({ color: 0x888888 })
+    materialMap["polished-gold"] ?? new THREE.MeshStandardMaterial({ color: 0x888888 })
   );
   mesh_backdrop_plate_1.name = "NavyBackdrop";
   if (endpoint_backdrop_plate_1) {
@@ -545,132 +661,157 @@ export function createCA2MonogramLogoModel(options: ProceduralModelOptions = {})
   }
   mesh_backdrop_plate_1.castShadow = options.castShadow ?? true;
   mesh_backdrop_plate_1.receiveShadow = options.receiveShadow ?? true;
-  mesh_backdrop_plate_1.userData.sculptComponent = {"id": "backdrop-plate", "name": "NavyBackdrop", "level": "macro", "role": "backdrop", "importance": 0.9, "confidence": 0.9, "primitive": "plane-card", "geometryDescriptor": {"topologyIntent": "extruded letterform", "edgeTreatment": {"type": "bevel", "bevelRadius": 0.02, "segments": 3}, "deformationStack": [], "uvStrategy": "generated procedural coordinates", "normalStrategy": "vertex normals from generated geometry"}, "parent": "root", "attachment": null, "dimensions": {"width": 4.2, "height": 3.2, "depth": 0.02, "units": "relative", "confidence": 0.95}, "transform": {"position": [0, 0, -0.08], "rotation": [0, 0, 0], "scale": [1, 1, 1]}, "actionProfile": {"animationRole": "backdrop-plate", "pivot": {"mode": "center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.8}, "transformChannels": {"translate": true, "rotate": true, "scale": true, "bend": false, "twist": false, "detach": false, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false, "notes": ""}, "constraints": [], "destruction": {"breakable": false, "fractureGroup": "root", "seamRefs": [], "detachableFragments": [], "breakImpulse": 0.0, "debrisMaterial": "polished-gold"}}, "material": "navy-plate", "materialLayers": ["navy-plate"], "deformations": [], "joints": [], "seams": [], "localFeatures": ["matte-field"], "surfaceDetail": {"macroRoughness": 0.28, "microRoughness": 0.15, "bumpAmplitude": 0.02, "normalPattern": "brushed-metal", "displacementPattern": "", "occlusionPattern": "cavity", "edgeWearPattern": "soft-bevel", "notes": "gold relief"}, "evidenceRefs": ["full-object"], "details": [], "fidelityTier": "form-refinement"};
+  mesh_backdrop_plate_1.userData.sculptComponent = {"id": "backdrop-plate", "name": "NavyBackdrop", "level": "macro", "parent": "root", "primitive": "plane-card", "role": "backdrop", "topologyClass": "material-only", "topologyRationale": "NavyBackdrop is a monogram relief part reconstructed as plane-card", "actionProfile": {"role": "static", "animatable": false, "destructible": false}, "transform": {"position": [0, 0, -0.08], "rotation": [0, 0, 0], "scale": [1, 1, 1]}, "localFeatures": ["matte-field"], "materialRef": "navy-plate", "dimensions": {"width": 4.2, "height": 3.2, "depth": 0.02}, "colorMaterialRecipe": {"dominantAlbedo": "rgba(7, 16, 40, 1)", "secondaryAlbedo": "rgba(11, 24, 54, 1)", "materialClass": "plastic", "materialClassConfidence": 0.8, "metalness": 0.05, "roughness": 0.88}};
   node_backdrop_plate_1.add(mesh_backdrop_plate_1);
   meshes["backdrop-plate"] = mesh_backdrop_plate_1;
-  colliders["backdrop-plate"] = {"type": "box", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false, "notes": ""};
-  destructionGroups["root"] ??= [];
-  destructionGroups["root"].push(node_backdrop_plate_1);
+  colliders["backdrop-plate"] = {};
 
-  const attachment_crescent_c_2 = null;
-  const endpoint_crescent_c_2 = makeAttachmentEndpoint(attachment_crescent_c_2);
-  const node_crescent_c_2 = new THREE.Group();
-  node_crescent_c_2.name = "CrescentC__pivot";
-  if (endpoint_crescent_c_2) {
-    node_crescent_c_2.position.copy(endpoint_crescent_c_2.start);
-    node_crescent_c_2.rotation.set(0, 0, 0);
-    node_crescent_c_2.scale.set(1, 1, 1);
+  const attachment_monogram_group_2 = null;
+  const endpoint_monogram_group_2 = makeAttachmentEndpoint(attachment_monogram_group_2);
+  const node_monogram_group_2 = new THREE.Group();
+  node_monogram_group_2.name = "MonogramGroup__pivot";
+  if (endpoint_monogram_group_2) {
+    node_monogram_group_2.position.copy(endpoint_monogram_group_2.start);
+    node_monogram_group_2.rotation.set(0, 0, 0);
+    node_monogram_group_2.scale.set(1, 1, 1);
   } else {
-    node_crescent_c_2.position.set(-0.05, 0.1, 0.0);
-    node_crescent_c_2.rotation.set(0.0, 0.0, 0.0);
-    node_crescent_c_2.scale.set(1.0, 1.0, 1.0);
+    node_monogram_group_2.position.set(0.0, 0.12, 0.0);
+    node_monogram_group_2.rotation.set(0.0, 0.0, 0.0);
+    node_monogram_group_2.scale.set(1.0, 1.0, 1.0);
   }
-  node_crescent_c_2.userData.sculptComponent = {"id": "crescent-c", "name": "CrescentC", "level": "macro", "role": "letterform", "importance": 0.9, "confidence": 0.9, "primitive": "extrude", "geometryDescriptor": {"topologyIntent": "extruded letterform", "edgeTreatment": {"type": "bevel", "bevelRadius": 0.02, "segments": 3}, "deformationStack": [], "uvStrategy": "generated procedural coordinates", "normalStrategy": "vertex normals from generated geometry"}, "parent": "root", "attachment": null, "dimensions": {"width": 1.6, "height": 1.9, "depth": 0.12, "units": "relative", "confidence": 0.9}, "transform": {"position": [-0.05, 0.1, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]}, "actionProfile": {"animationRole": "crescent-c", "pivot": {"mode": "center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.8}, "transformChannels": {"translate": true, "rotate": true, "scale": true, "bend": false, "twist": false, "detach": false, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false, "notes": ""}, "constraints": [], "destruction": {"breakable": false, "fractureGroup": "root", "seamRefs": [], "detachableFragments": [], "breakImpulse": 0.0, "debrisMaterial": "polished-gold"}}, "material": "polished-gold", "materialLayers": ["polished-gold"], "deformations": [], "joints": [], "seams": [], "localFeatures": ["open-crescent", "relief-depth"], "surfaceDetail": {"macroRoughness": 0.28, "microRoughness": 0.15, "bumpAmplitude": 0.02, "normalPattern": "brushed-metal", "displacementPattern": "", "occlusionPattern": "cavity", "edgeWearPattern": "soft-bevel", "notes": "gold relief"}, "evidenceRefs": ["full-object"], "details": [], "fidelityTier": "form-refinement"};
-  node_crescent_c_2.userData.actionProfile = {"animationRole": "crescent-c", "pivot": {"mode": "center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.8}, "transformChannels": {"translate": true, "rotate": true, "scale": true, "bend": false, "twist": false, "detach": false, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false, "notes": ""}, "constraints": [], "destruction": {"breakable": false, "fractureGroup": "root", "seamRefs": [], "detachableFragments": [], "breakImpulse": 0.0, "debrisMaterial": "polished-gold"}};
-  (nodes["root"] ?? root).add(node_crescent_c_2);
-  nodes["crescent-c"] = node_crescent_c_2;
-  const mesh_crescent_c_2Geometry = endpoint_crescent_c_2
-    ? new THREE.CylinderGeometry(endpoint_crescent_c_2.endRadius, endpoint_crescent_c_2.baseRadius, endpoint_crescent_c_2.length, 32, 12)
-    : new THREE.BoxGeometry(1, 1, 1, 8, 8, 8);
-  const mesh_crescent_c_2 = new THREE.Mesh(
-    mesh_crescent_c_2Geometry,
+  node_monogram_group_2.userData.sculptComponent = {"id": "monogram-group", "name": "MonogramGroup", "level": "macro", "parent": "root", "primitive": "box", "role": "mark", "topologyClass": "assembled-solid", "topologyRationale": "MonogramGroup is a monogram relief part reconstructed as box", "actionProfile": {"role": "static", "animatable": false, "destructible": false}, "transform": {"position": [0, 0.12, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]}, "localFeatures": ["relief-assembly"], "dimensions": {"width": 0.01, "height": 0.01, "depth": 0.01}, "colorMaterialRecipe": {"dominantAlbedo": "rgba(212, 175, 55, 1)", "secondaryAlbedo": "rgba(7, 16, 40, 1)", "materialClass": "metal", "materialClassConfidence": 0.7, "metalness": 0.5, "roughness": 0.5}};
+  node_monogram_group_2.userData.actionProfile = {"role": "static", "animatable": false, "destructible": false};
+  (nodes["root"] ?? root).add(node_monogram_group_2);
+  nodes["monogram-group"] = node_monogram_group_2;
+  const mesh_monogram_group_2Geometry = endpoint_monogram_group_2
+    ? new THREE.CylinderGeometry(endpoint_monogram_group_2.endRadius, endpoint_monogram_group_2.baseRadius, endpoint_monogram_group_2.length, 32, 12)
+    : new THREE.BoxGeometry(1, 1, 1, 12, 12, 12);
+  const mesh_monogram_group_2 = new THREE.Mesh(
+    mesh_monogram_group_2Geometry,
     materialMap["polished-gold"] ?? new THREE.MeshStandardMaterial({ color: 0x888888 })
   );
-  mesh_crescent_c_2.name = "CrescentC";
-  if (endpoint_crescent_c_2) {
-    mesh_crescent_c_2.position.copy(endpoint_crescent_c_2.midpoint);
-    mesh_crescent_c_2.quaternion.copy(endpoint_crescent_c_2.quaternion);
+  mesh_monogram_group_2.name = "MonogramGroup";
+  if (endpoint_monogram_group_2) {
+    mesh_monogram_group_2.position.copy(endpoint_monogram_group_2.midpoint);
+    mesh_monogram_group_2.quaternion.copy(endpoint_monogram_group_2.quaternion);
   }
-  mesh_crescent_c_2.castShadow = options.castShadow ?? true;
-  mesh_crescent_c_2.receiveShadow = options.receiveShadow ?? true;
-  mesh_crescent_c_2.userData.sculptComponent = {"id": "crescent-c", "name": "CrescentC", "level": "macro", "role": "letterform", "importance": 0.9, "confidence": 0.9, "primitive": "extrude", "geometryDescriptor": {"topologyIntent": "extruded letterform", "edgeTreatment": {"type": "bevel", "bevelRadius": 0.02, "segments": 3}, "deformationStack": [], "uvStrategy": "generated procedural coordinates", "normalStrategy": "vertex normals from generated geometry"}, "parent": "root", "attachment": null, "dimensions": {"width": 1.6, "height": 1.9, "depth": 0.12, "units": "relative", "confidence": 0.9}, "transform": {"position": [-0.05, 0.1, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]}, "actionProfile": {"animationRole": "crescent-c", "pivot": {"mode": "center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.8}, "transformChannels": {"translate": true, "rotate": true, "scale": true, "bend": false, "twist": false, "detach": false, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false, "notes": ""}, "constraints": [], "destruction": {"breakable": false, "fractureGroup": "root", "seamRefs": [], "detachableFragments": [], "breakImpulse": 0.0, "debrisMaterial": "polished-gold"}}, "material": "polished-gold", "materialLayers": ["polished-gold"], "deformations": [], "joints": [], "seams": [], "localFeatures": ["open-crescent", "relief-depth"], "surfaceDetail": {"macroRoughness": 0.28, "microRoughness": 0.15, "bumpAmplitude": 0.02, "normalPattern": "brushed-metal", "displacementPattern": "", "occlusionPattern": "cavity", "edgeWearPattern": "soft-bevel", "notes": "gold relief"}, "evidenceRefs": ["full-object"], "details": [], "fidelityTier": "form-refinement"};
-  node_crescent_c_2.add(mesh_crescent_c_2);
-  meshes["crescent-c"] = mesh_crescent_c_2;
-  colliders["crescent-c"] = {"type": "box", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false, "notes": ""};
-  destructionGroups["root"] ??= [];
-  destructionGroups["root"].push(node_crescent_c_2);
-  // TODO: replace 'crescent-c' box fallback with extrude procedural geometry.
+  mesh_monogram_group_2.castShadow = options.castShadow ?? true;
+  mesh_monogram_group_2.receiveShadow = options.receiveShadow ?? true;
+  mesh_monogram_group_2.userData.sculptComponent = {"id": "monogram-group", "name": "MonogramGroup", "level": "macro", "parent": "root", "primitive": "box", "role": "mark", "topologyClass": "assembled-solid", "topologyRationale": "MonogramGroup is a monogram relief part reconstructed as box", "actionProfile": {"role": "static", "animatable": false, "destructible": false}, "transform": {"position": [0, 0.12, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]}, "localFeatures": ["relief-assembly"], "dimensions": {"width": 0.01, "height": 0.01, "depth": 0.01}, "colorMaterialRecipe": {"dominantAlbedo": "rgba(212, 175, 55, 1)", "secondaryAlbedo": "rgba(7, 16, 40, 1)", "materialClass": "metal", "materialClassConfidence": 0.7, "metalness": 0.5, "roughness": 0.5}};
+  node_monogram_group_2.add(mesh_monogram_group_2);
+  meshes["monogram-group"] = mesh_monogram_group_2;
+  colliders["monogram-group"] = {};
 
-  const attachment_letter_a_3 = null;
-  const endpoint_letter_a_3 = makeAttachmentEndpoint(attachment_letter_a_3);
-  const node_letter_a_3 = new THREE.Group();
-  node_letter_a_3.name = "LetterA__pivot";
-  if (endpoint_letter_a_3) {
-    node_letter_a_3.position.copy(endpoint_letter_a_3.start);
-    node_letter_a_3.rotation.set(0, 0, 0);
-    node_letter_a_3.scale.set(1, 1, 1);
+  const attachment_crescent_c_3 = null;
+  const endpoint_crescent_c_3 = makeAttachmentEndpoint(attachment_crescent_c_3);
+  const node_crescent_c_3 = new THREE.Group();
+  node_crescent_c_3.name = "CrescentC__pivot";
+  if (endpoint_crescent_c_3) {
+    node_crescent_c_3.position.copy(endpoint_crescent_c_3.start);
+    node_crescent_c_3.rotation.set(0, 0, 0);
+    node_crescent_c_3.scale.set(1, 1, 1);
   } else {
-    node_letter_a_3.position.set(0.02, 0.02, 0.01);
-    node_letter_a_3.rotation.set(0.0, 0.0, 0.0);
-    node_letter_a_3.scale.set(1.0, 1.0, 1.0);
+    node_crescent_c_3.position.set(-0.05, 0.05, 0.0);
+    node_crescent_c_3.rotation.set(0.0, 0.0, 0.0);
+    node_crescent_c_3.scale.set(1.0, 1.0, 1.0);
   }
-  node_letter_a_3.userData.sculptComponent = {"id": "letter-a", "name": "LetterA", "level": "macro", "role": "letterform", "importance": 0.9, "confidence": 0.9, "primitive": "extrude", "geometryDescriptor": {"topologyIntent": "extruded letterform", "edgeTreatment": {"type": "bevel", "bevelRadius": 0.02, "segments": 3}, "deformationStack": [], "uvStrategy": "generated procedural coordinates", "normalStrategy": "vertex normals from generated geometry"}, "parent": "root", "attachment": null, "dimensions": {"width": 1.35, "height": 1.85, "depth": 0.13, "units": "relative", "confidence": 0.92}, "transform": {"position": [0.02, 0.02, 0.01], "rotation": [0, 0, 0], "scale": [1, 1, 1]}, "actionProfile": {"animationRole": "letter-a", "pivot": {"mode": "center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.8}, "transformChannels": {"translate": true, "rotate": true, "scale": true, "bend": false, "twist": false, "detach": false, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false, "notes": ""}, "constraints": [], "destruction": {"breakable": false, "fractureGroup": "root", "seamRefs": [], "detachableFragments": [], "breakImpulse": 0.0, "debrisMaterial": "polished-gold"}}, "material": "polished-gold", "materialLayers": ["polished-gold"], "deformations": [], "joints": [], "seams": [], "localFeatures": ["serif-a", "relief-depth"], "surfaceDetail": {"macroRoughness": 0.28, "microRoughness": 0.15, "bumpAmplitude": 0.02, "normalPattern": "brushed-metal", "displacementPattern": "", "occlusionPattern": "cavity", "edgeWearPattern": "soft-bevel", "notes": "gold relief"}, "evidenceRefs": ["full-object"], "details": [], "fidelityTier": "form-refinement"};
-  node_letter_a_3.userData.actionProfile = {"animationRole": "letter-a", "pivot": {"mode": "center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.8}, "transformChannels": {"translate": true, "rotate": true, "scale": true, "bend": false, "twist": false, "detach": false, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false, "notes": ""}, "constraints": [], "destruction": {"breakable": false, "fractureGroup": "root", "seamRefs": [], "detachableFragments": [], "breakImpulse": 0.0, "debrisMaterial": "polished-gold"}};
-  (nodes["root"] ?? root).add(node_letter_a_3);
-  nodes["letter-a"] = node_letter_a_3;
-  const mesh_letter_a_3Geometry = endpoint_letter_a_3
-    ? new THREE.CylinderGeometry(endpoint_letter_a_3.endRadius, endpoint_letter_a_3.baseRadius, endpoint_letter_a_3.length, 32, 12)
-    : new THREE.BoxGeometry(1, 1, 1, 8, 8, 8);
-  const mesh_letter_a_3 = new THREE.Mesh(
-    mesh_letter_a_3Geometry,
+  node_crescent_c_3.userData.sculptComponent = {"id": "crescent-c", "name": "CrescentC", "level": "macro", "parent": "monogram-group", "primitive": "extrude", "role": "letterform", "topologyClass": "surface-relief", "topologyRationale": "CrescentC is a monogram relief part reconstructed as extrude", "actionProfile": {"role": "static", "animatable": false, "destructible": false}, "transform": {"position": [-0.05, 0.05, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]}, "localFeatures": ["open-crescent", "tapered-terminals", "relief-depth"], "materialRef": "polished-gold", "dimensions": {"width": 1.6, "height": 1.9, "depth": 0.12}, "colorMaterialRecipe": {"dominantAlbedo": "rgba(212, 175, 55, 1)", "secondaryAlbedo": "rgba(240, 215, 140, 1)", "materialClass": "metal", "materialClassConfidence": 0.95, "metalness": 0.92, "roughness": 0.28}};
+  node_crescent_c_3.userData.actionProfile = {"role": "static", "animatable": false, "destructible": false};
+  (nodes["monogram-group"] ?? root).add(node_crescent_c_3);
+  nodes["crescent-c"] = node_crescent_c_3;
+  const mesh_crescent_c_3Geometry = endpoint_crescent_c_3
+    ? new THREE.CylinderGeometry(endpoint_crescent_c_3.endRadius, endpoint_crescent_c_3.baseRadius, endpoint_crescent_c_3.length, 32, 12)
+    : buildExtrudeGeometry({"points": [[-0.3, -0.3], [0.3, -0.3], [0.3, 0.3], [-0.3, 0.3]], "depth": 0.1});
+  const mesh_crescent_c_3 = new THREE.Mesh(
+    mesh_crescent_c_3Geometry,
     materialMap["polished-gold"] ?? new THREE.MeshStandardMaterial({ color: 0x888888 })
   );
-  mesh_letter_a_3.name = "LetterA";
-  if (endpoint_letter_a_3) {
-    mesh_letter_a_3.position.copy(endpoint_letter_a_3.midpoint);
-    mesh_letter_a_3.quaternion.copy(endpoint_letter_a_3.quaternion);
+  mesh_crescent_c_3.name = "CrescentC";
+  if (endpoint_crescent_c_3) {
+    mesh_crescent_c_3.position.copy(endpoint_crescent_c_3.midpoint);
+    mesh_crescent_c_3.quaternion.copy(endpoint_crescent_c_3.quaternion);
   }
-  mesh_letter_a_3.castShadow = options.castShadow ?? true;
-  mesh_letter_a_3.receiveShadow = options.receiveShadow ?? true;
-  mesh_letter_a_3.userData.sculptComponent = {"id": "letter-a", "name": "LetterA", "level": "macro", "role": "letterform", "importance": 0.9, "confidence": 0.9, "primitive": "extrude", "geometryDescriptor": {"topologyIntent": "extruded letterform", "edgeTreatment": {"type": "bevel", "bevelRadius": 0.02, "segments": 3}, "deformationStack": [], "uvStrategy": "generated procedural coordinates", "normalStrategy": "vertex normals from generated geometry"}, "parent": "root", "attachment": null, "dimensions": {"width": 1.35, "height": 1.85, "depth": 0.13, "units": "relative", "confidence": 0.92}, "transform": {"position": [0.02, 0.02, 0.01], "rotation": [0, 0, 0], "scale": [1, 1, 1]}, "actionProfile": {"animationRole": "letter-a", "pivot": {"mode": "center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.8}, "transformChannels": {"translate": true, "rotate": true, "scale": true, "bend": false, "twist": false, "detach": false, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false, "notes": ""}, "constraints": [], "destruction": {"breakable": false, "fractureGroup": "root", "seamRefs": [], "detachableFragments": [], "breakImpulse": 0.0, "debrisMaterial": "polished-gold"}}, "material": "polished-gold", "materialLayers": ["polished-gold"], "deformations": [], "joints": [], "seams": [], "localFeatures": ["serif-a", "relief-depth"], "surfaceDetail": {"macroRoughness": 0.28, "microRoughness": 0.15, "bumpAmplitude": 0.02, "normalPattern": "brushed-metal", "displacementPattern": "", "occlusionPattern": "cavity", "edgeWearPattern": "soft-bevel", "notes": "gold relief"}, "evidenceRefs": ["full-object"], "details": [], "fidelityTier": "form-refinement"};
-  node_letter_a_3.add(mesh_letter_a_3);
-  meshes["letter-a"] = mesh_letter_a_3;
-  colliders["letter-a"] = {"type": "box", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false, "notes": ""};
-  destructionGroups["root"] ??= [];
-  destructionGroups["root"].push(node_letter_a_3);
-  // TODO: replace 'letter-a' box fallback with extrude procedural geometry.
+  mesh_crescent_c_3.castShadow = options.castShadow ?? true;
+  mesh_crescent_c_3.receiveShadow = options.receiveShadow ?? true;
+  mesh_crescent_c_3.userData.sculptComponent = {"id": "crescent-c", "name": "CrescentC", "level": "macro", "parent": "monogram-group", "primitive": "extrude", "role": "letterform", "topologyClass": "surface-relief", "topologyRationale": "CrescentC is a monogram relief part reconstructed as extrude", "actionProfile": {"role": "static", "animatable": false, "destructible": false}, "transform": {"position": [-0.05, 0.05, 0], "rotation": [0, 0, 0], "scale": [1, 1, 1]}, "localFeatures": ["open-crescent", "tapered-terminals", "relief-depth"], "materialRef": "polished-gold", "dimensions": {"width": 1.6, "height": 1.9, "depth": 0.12}, "colorMaterialRecipe": {"dominantAlbedo": "rgba(212, 175, 55, 1)", "secondaryAlbedo": "rgba(240, 215, 140, 1)", "materialClass": "metal", "materialClassConfidence": 0.95, "metalness": 0.92, "roughness": 0.28}};
+  node_crescent_c_3.add(mesh_crescent_c_3);
+  meshes["crescent-c"] = mesh_crescent_c_3;
+  colliders["crescent-c"] = {};
 
-  const attachment_numeral_2_4 = null;
-  const endpoint_numeral_2_4 = makeAttachmentEndpoint(attachment_numeral_2_4);
-  const node_numeral_2_4 = new THREE.Group();
-  node_numeral_2_4.name = "Superscript2__pivot";
-  if (endpoint_numeral_2_4) {
-    node_numeral_2_4.position.copy(endpoint_numeral_2_4.start);
-    node_numeral_2_4.rotation.set(0, 0, 0);
-    node_numeral_2_4.scale.set(1, 1, 1);
+  const attachment_letter_a_4 = null;
+  const endpoint_letter_a_4 = makeAttachmentEndpoint(attachment_letter_a_4);
+  const node_letter_a_4 = new THREE.Group();
+  node_letter_a_4.name = "LetterA__pivot";
+  if (endpoint_letter_a_4) {
+    node_letter_a_4.position.copy(endpoint_letter_a_4.start);
+    node_letter_a_4.rotation.set(0, 0, 0);
+    node_letter_a_4.scale.set(1, 1, 1);
   } else {
-    node_numeral_2_4.position.set(0.78, 0.72, 0.02);
-    node_numeral_2_4.rotation.set(0.0, 0.0, 0.0);
-    node_numeral_2_4.scale.set(1.0, 1.0, 1.0);
+    node_letter_a_4.position.set(0.02, -0.02, 0.01);
+    node_letter_a_4.rotation.set(0.0, 0.0, 0.0);
+    node_letter_a_4.scale.set(1.0, 1.0, 1.0);
   }
-  node_numeral_2_4.userData.sculptComponent = {"id": "numeral-2", "name": "Superscript2", "level": "meso", "role": "letterform", "importance": 0.7, "confidence": 0.9, "primitive": "extrude", "geometryDescriptor": {"topologyIntent": "extruded letterform", "edgeTreatment": {"type": "bevel", "bevelRadius": 0.02, "segments": 3}, "deformationStack": [], "uvStrategy": "generated procedural coordinates", "normalStrategy": "vertex normals from generated geometry"}, "parent": "root", "attachment": null, "dimensions": {"width": 0.28, "height": 0.36, "depth": 0.1, "units": "relative", "confidence": 0.92}, "transform": {"position": [0.78, 0.72, 0.02], "rotation": [0, 0, 0], "scale": [1, 1, 1]}, "actionProfile": {"animationRole": "numeral-2", "pivot": {"mode": "center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.8}, "transformChannels": {"translate": true, "rotate": true, "scale": true, "bend": false, "twist": false, "detach": false, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false, "notes": ""}, "constraints": [], "destruction": {"breakable": false, "fractureGroup": "root", "seamRefs": [], "detachableFragments": [], "breakImpulse": 0.0, "debrisMaterial": "polished-gold"}}, "material": "polished-gold", "materialLayers": ["polished-gold"], "deformations": [], "joints": [], "seams": [], "localFeatures": ["raised-2"], "surfaceDetail": {"macroRoughness": 0.28, "microRoughness": 0.15, "bumpAmplitude": 0.02, "normalPattern": "brushed-metal", "displacementPattern": "", "occlusionPattern": "cavity", "edgeWearPattern": "soft-bevel", "notes": "gold relief"}, "evidenceRefs": ["full-object"], "details": [], "fidelityTier": "form-refinement"};
-  node_numeral_2_4.userData.actionProfile = {"animationRole": "numeral-2", "pivot": {"mode": "center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.8}, "transformChannels": {"translate": true, "rotate": true, "scale": true, "bend": false, "twist": false, "detach": false, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false, "notes": ""}, "constraints": [], "destruction": {"breakable": false, "fractureGroup": "root", "seamRefs": [], "detachableFragments": [], "breakImpulse": 0.0, "debrisMaterial": "polished-gold"}};
-  (nodes["root"] ?? root).add(node_numeral_2_4);
-  nodes["numeral-2"] = node_numeral_2_4;
-  const mesh_numeral_2_4Geometry = endpoint_numeral_2_4
-    ? new THREE.CylinderGeometry(endpoint_numeral_2_4.endRadius, endpoint_numeral_2_4.baseRadius, endpoint_numeral_2_4.length, 32, 12)
-    : new THREE.BoxGeometry(1, 1, 1, 8, 8, 8);
-  const mesh_numeral_2_4 = new THREE.Mesh(
-    mesh_numeral_2_4Geometry,
+  node_letter_a_4.userData.sculptComponent = {"id": "letter-a", "name": "LetterA", "level": "macro", "parent": "monogram-group", "primitive": "extrude", "role": "letterform", "topologyClass": "surface-relief", "topologyRationale": "LetterA is a monogram relief part reconstructed as extrude", "actionProfile": {"role": "static", "animatable": false, "destructible": false}, "transform": {"position": [0.02, -0.02, 0.01], "rotation": [0, 0, 0], "scale": [1, 1, 1]}, "localFeatures": ["serif-feet", "pointed-apex", "inner-voids", "relief-depth"], "materialRef": "polished-gold", "dimensions": {"width": 1.35, "height": 1.85, "depth": 0.13}, "colorMaterialRecipe": {"dominantAlbedo": "rgba(212, 175, 55, 1)", "secondaryAlbedo": "rgba(240, 215, 140, 1)", "materialClass": "metal", "materialClassConfidence": 0.95, "metalness": 0.92, "roughness": 0.28}};
+  node_letter_a_4.userData.actionProfile = {"role": "static", "animatable": false, "destructible": false};
+  (nodes["monogram-group"] ?? root).add(node_letter_a_4);
+  nodes["letter-a"] = node_letter_a_4;
+  const mesh_letter_a_4Geometry = endpoint_letter_a_4
+    ? new THREE.CylinderGeometry(endpoint_letter_a_4.endRadius, endpoint_letter_a_4.baseRadius, endpoint_letter_a_4.length, 32, 12)
+    : buildExtrudeGeometry({"points": [[-0.3, -0.3], [0.3, -0.3], [0.3, 0.3], [-0.3, 0.3]], "depth": 0.1});
+  const mesh_letter_a_4 = new THREE.Mesh(
+    mesh_letter_a_4Geometry,
     materialMap["polished-gold"] ?? new THREE.MeshStandardMaterial({ color: 0x888888 })
   );
-  mesh_numeral_2_4.name = "Superscript2";
-  if (endpoint_numeral_2_4) {
-    mesh_numeral_2_4.position.copy(endpoint_numeral_2_4.midpoint);
-    mesh_numeral_2_4.quaternion.copy(endpoint_numeral_2_4.quaternion);
+  mesh_letter_a_4.name = "LetterA";
+  if (endpoint_letter_a_4) {
+    mesh_letter_a_4.position.copy(endpoint_letter_a_4.midpoint);
+    mesh_letter_a_4.quaternion.copy(endpoint_letter_a_4.quaternion);
   }
-  mesh_numeral_2_4.castShadow = options.castShadow ?? true;
-  mesh_numeral_2_4.receiveShadow = options.receiveShadow ?? true;
-  mesh_numeral_2_4.userData.sculptComponent = {"id": "numeral-2", "name": "Superscript2", "level": "meso", "role": "letterform", "importance": 0.7, "confidence": 0.9, "primitive": "extrude", "geometryDescriptor": {"topologyIntent": "extruded letterform", "edgeTreatment": {"type": "bevel", "bevelRadius": 0.02, "segments": 3}, "deformationStack": [], "uvStrategy": "generated procedural coordinates", "normalStrategy": "vertex normals from generated geometry"}, "parent": "root", "attachment": null, "dimensions": {"width": 0.28, "height": 0.36, "depth": 0.1, "units": "relative", "confidence": 0.92}, "transform": {"position": [0.78, 0.72, 0.02], "rotation": [0, 0, 0], "scale": [1, 1, 1]}, "actionProfile": {"animationRole": "numeral-2", "pivot": {"mode": "center", "localPosition": [0, 0, 0], "axis": [0, 1, 0], "confidence": 0.8}, "transformChannels": {"translate": true, "rotate": true, "scale": true, "bend": false, "twist": false, "detach": false, "visibility": true, "materialState": true}, "sockets": [], "collider": {"type": "box", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false, "notes": ""}, "constraints": [], "destruction": {"breakable": false, "fractureGroup": "root", "seamRefs": [], "detachableFragments": [], "breakImpulse": 0.0, "debrisMaterial": "polished-gold"}}, "material": "polished-gold", "materialLayers": ["polished-gold"], "deformations": [], "joints": [], "seams": [], "localFeatures": ["raised-2"], "surfaceDetail": {"macroRoughness": 0.28, "microRoughness": 0.15, "bumpAmplitude": 0.02, "normalPattern": "brushed-metal", "displacementPattern": "", "occlusionPattern": "cavity", "edgeWearPattern": "soft-bevel", "notes": "gold relief"}, "evidenceRefs": ["full-object"], "details": [], "fidelityTier": "form-refinement"};
-  node_numeral_2_4.add(mesh_numeral_2_4);
-  meshes["numeral-2"] = mesh_numeral_2_4;
-  colliders["numeral-2"] = {"type": "box", "offset": [0, 0, 0], "scale": [1, 1, 1], "isTrigger": false, "notes": ""};
-  destructionGroups["root"] ??= [];
-  destructionGroups["root"].push(node_numeral_2_4);
-  // TODO: replace 'numeral-2' box fallback with extrude procedural geometry.
+  mesh_letter_a_4.castShadow = options.castShadow ?? true;
+  mesh_letter_a_4.receiveShadow = options.receiveShadow ?? true;
+  mesh_letter_a_4.userData.sculptComponent = {"id": "letter-a", "name": "LetterA", "level": "macro", "parent": "monogram-group", "primitive": "extrude", "role": "letterform", "topologyClass": "surface-relief", "topologyRationale": "LetterA is a monogram relief part reconstructed as extrude", "actionProfile": {"role": "static", "animatable": false, "destructible": false}, "transform": {"position": [0.02, -0.02, 0.01], "rotation": [0, 0, 0], "scale": [1, 1, 1]}, "localFeatures": ["serif-feet", "pointed-apex", "inner-voids", "relief-depth"], "materialRef": "polished-gold", "dimensions": {"width": 1.35, "height": 1.85, "depth": 0.13}, "colorMaterialRecipe": {"dominantAlbedo": "rgba(212, 175, 55, 1)", "secondaryAlbedo": "rgba(240, 215, 140, 1)", "materialClass": "metal", "materialClassConfidence": 0.95, "metalness": 0.92, "roughness": 0.28}};
+  node_letter_a_4.add(mesh_letter_a_4);
+  meshes["letter-a"] = mesh_letter_a_4;
+  colliders["letter-a"] = {};
+
+  const attachment_numeral_2_5 = null;
+  const endpoint_numeral_2_5 = makeAttachmentEndpoint(attachment_numeral_2_5);
+  const node_numeral_2_5 = new THREE.Group();
+  node_numeral_2_5.name = "Superscript2__pivot";
+  if (endpoint_numeral_2_5) {
+    node_numeral_2_5.position.copy(endpoint_numeral_2_5.start);
+    node_numeral_2_5.rotation.set(0, 0, 0);
+    node_numeral_2_5.scale.set(1, 1, 1);
+  } else {
+    node_numeral_2_5.position.set(0.78, 0.72, 0.02);
+    node_numeral_2_5.rotation.set(0.0, 0.0, 0.0);
+    node_numeral_2_5.scale.set(1.0, 1.0, 1.0);
+  }
+  node_numeral_2_5.userData.sculptComponent = {"id": "numeral-2", "name": "Superscript2", "level": "meso", "parent": "monogram-group", "primitive": "extrude", "role": "letterform", "topologyClass": "surface-relief", "topologyRationale": "Superscript2 is a monogram relief part reconstructed as extrude", "actionProfile": {"role": "static", "animatable": false, "destructible": false}, "transform": {"position": [0.78, 0.72, 0.02], "rotation": [0, 0, 0], "scale": [1, 1, 1]}, "localFeatures": ["raised-numeral"], "materialRef": "polished-gold", "dimensions": {"width": 0.28, "height": 0.36, "depth": 0.1}, "colorMaterialRecipe": {"dominantAlbedo": "rgba(212, 175, 55, 1)", "secondaryAlbedo": "rgba(240, 215, 140, 1)", "materialClass": "metal", "materialClassConfidence": 0.95, "metalness": 0.92, "roughness": 0.28}};
+  node_numeral_2_5.userData.actionProfile = {"role": "static", "animatable": false, "destructible": false};
+  (nodes["monogram-group"] ?? root).add(node_numeral_2_5);
+  nodes["numeral-2"] = node_numeral_2_5;
+  const mesh_numeral_2_5Geometry = endpoint_numeral_2_5
+    ? new THREE.CylinderGeometry(endpoint_numeral_2_5.endRadius, endpoint_numeral_2_5.baseRadius, endpoint_numeral_2_5.length, 32, 12)
+    : buildExtrudeGeometry({"points": [[-0.3, -0.3], [0.3, -0.3], [0.3, 0.3], [-0.3, 0.3]], "depth": 0.1});
+  const mesh_numeral_2_5 = new THREE.Mesh(
+    mesh_numeral_2_5Geometry,
+    materialMap["polished-gold"] ?? new THREE.MeshStandardMaterial({ color: 0x888888 })
+  );
+  mesh_numeral_2_5.name = "Superscript2";
+  if (endpoint_numeral_2_5) {
+    mesh_numeral_2_5.position.copy(endpoint_numeral_2_5.midpoint);
+    mesh_numeral_2_5.quaternion.copy(endpoint_numeral_2_5.quaternion);
+  }
+  mesh_numeral_2_5.castShadow = options.castShadow ?? true;
+  mesh_numeral_2_5.receiveShadow = options.receiveShadow ?? true;
+  mesh_numeral_2_5.userData.sculptComponent = {"id": "numeral-2", "name": "Superscript2", "level": "meso", "parent": "monogram-group", "primitive": "extrude", "role": "letterform", "topologyClass": "surface-relief", "topologyRationale": "Superscript2 is a monogram relief part reconstructed as extrude", "actionProfile": {"role": "static", "animatable": false, "destructible": false}, "transform": {"position": [0.78, 0.72, 0.02], "rotation": [0, 0, 0], "scale": [1, 1, 1]}, "localFeatures": ["raised-numeral"], "materialRef": "polished-gold", "dimensions": {"width": 0.28, "height": 0.36, "depth": 0.1}, "colorMaterialRecipe": {"dominantAlbedo": "rgba(212, 175, 55, 1)", "secondaryAlbedo": "rgba(240, 215, 140, 1)", "materialClass": "metal", "materialClassConfidence": 0.95, "metalness": 0.92, "roughness": 0.28}};
+  node_numeral_2_5.add(mesh_numeral_2_5);
+  meshes["numeral-2"] = mesh_numeral_2_5;
+  colliders["numeral-2"] = {};
 
   root.userData.sculptRuntime = { nodes, meshes, sockets, colliders, destructionGroups } satisfies ProceduralModelRuntime;
-  root.userData.lookDevTargets = {"qualityPriority": "reference-fidelity", "materialPass": {"albedoPaletteRequired": true, "roughnessVariationRequired": true, "normalOrBumpRequired": true, "localOverridesRequired": true, "minimumTextureResolution": 1024, "preferredTextureResolution": 2048, "independentMapChannels": ["albedo", "roughness", "height", "normal", "ambient-occlusion"], "requiredSurfaceFrequencyBands": ["macro", "meso", "micro"], "geometryReliefRequiredWhenSilhouetteAffected": true, "referencePbrExtraction": {"requiredWhenSourceImagePresent": true, "targetThreshold": 0.7, "stopOnLowConfidence": true, "script": "forge/stage1_intake/extract_pbr_evidence.py", "acceptedLimitation": "single-image extraction is reference-derived inference, not exact photogrammetry"}, "mustAvoid": ["single flat albedo per material", "uniform roughness", "albedo texture reused as roughness/height/normal/AO", "single-frequency random noise", "plastic-looking smooth bark, stone, cloth, foliage, or aged material", "local color/detail described only in prose without material masks", "claiming exact PBR recovery when confidence is below the target threshold"]}, "lightingPass": {"requiredTerms": ["key light", "fill light", "rim or environment light", "exposure", "tone mapping", "background", "contact shadow"], "mustAvoid": ["ambient-only lighting", "flat value range", "missing contact shadow", "reference lighting copied without separating material readability"]}, "screenshotReview": ["Compare albedo palette and local color zones.", "Compare roughness/normal/bump response under light.", "Compare cavity dirt, edge wear, stains, moss, scratches, or other local masks.", "Compare key/fill/rim structure, exposure, tone mapping, background, and contact shadows.", "Capture a neutral-light render to verify material readability without reference lighting.", "Capture a grazing-light close-up to expose flat normals, uniform roughness, tiling, and plastic highlights.", "Capture a reference-matched render from the same camera framing as the source."], "reviewViewpoints": [{"name": "hero-front", "position": [0, 0.1, 3.2], "target": [0, 0, 0]}, {"name": "three-quarter", "position": [1.6, 0.6, 2.6], "target": [0, 0, 0]}, {"name": "top-glint", "position": [0.3, 2.2, 1.8], "target": [0, 0, 0]}, {"name": "side-relief", "position": [2.4, 0.2, 1.2], "target": [0, 0, 0]}]};
+  root.userData.lookDevTargets = {"primaryCamera": {"position": [0, 0.1, 3.2], "target": [0, 0.05, 0], "fov": 35}, "reviewViewpoints": [{"name": "hero-front", "position": [0, 0.1, 3.2]}, {"name": "three-quarter", "position": [1.6, 0.6, 2.6]}, {"name": "top-glint", "position": [0.3, 2.2, 1.8]}, {"name": "side-relief", "position": [2.4, 0.2, 1.2]}]};
   root.userData.actionReadiness = {
     note: 'Use root.userData.sculptRuntime.nodes for transforms, sockets for attachments, colliders for physics proxies, and destructionGroups for breakable sets.',
   };
@@ -681,7 +822,7 @@ export function createCA2MonogramLogoLookDevLights(
   mode: 'neutral' | 'grazing' | 'reference' = 'neutral',
 ): THREE.Group {
   const lights = new THREE.Group();
-  lights.name = "CA2MonogramLogo look-dev lights";
+  lights.name = "CA2 Monogram Logo look-dev lights";
   const hemi = new THREE.HemisphereLight(
     mode === 'reference' ? 0xfff0d6 : 0xf2f4ff,
     0x363b42,
@@ -699,6 +840,15 @@ export function createCA2MonogramLogoLookDevLights(
   key.shadow.mapSize.set(4096, 4096);
   key.shadow.bias = -0.00025;
   key.shadow.normalBias = 0.018;
+  key.shadow.radius = 7;
+  key.shadow.blurSamples = 24;
+  key.shadow.camera.near = 0.5;
+  key.shadow.camera.far = 30;
+  key.shadow.camera.left = -2.6;
+  key.shadow.camera.right = 2.6;
+  key.shadow.camera.top = 2.6;
+  key.shadow.camera.bottom = -2.6;
+  key.shadow.camera.updateProjectionMatrix();
   lights.add(key);
   const fill = new THREE.DirectionalLight(0xa8c4ff, mode === 'grazing' ? 0.12 : 0.42);
   fill.position.set(4.0, 3.0, 3.5);
@@ -707,7 +857,79 @@ export function createCA2MonogramLogoLookDevLights(
   rim.position.set(0.5, 4.5, -6.0);
   lights.add(rim);
   lights.userData.reviewMode = mode;
-  lights.userData.lightingFromPhoto = [{"id": "key", "type": "directional", "role": "key", "direction": [0.55, 0.75, 0.9], "intensity": 2.2, "color": "#fff2d6"}, {"id": "fill", "type": "directional", "role": "fill", "direction": [-0.7, 0.2, 0.5], "intensity": 0.55, "color": "#9bb4ff"}, {"id": "rim", "type": "directional", "role": "rim", "direction": [-0.4, 0.3, -0.8], "intensity": 1.1, "color": "#ffd27a"}, {"id": "ambient", "type": "ambient", "role": "ambient", "intensity": 0.35, "color": "#1a2744"}];
-  lights.userData.lookDevTargets = {"qualityPriority": "reference-fidelity", "materialPass": {"albedoPaletteRequired": true, "roughnessVariationRequired": true, "normalOrBumpRequired": true, "localOverridesRequired": true, "minimumTextureResolution": 1024, "preferredTextureResolution": 2048, "independentMapChannels": ["albedo", "roughness", "height", "normal", "ambient-occlusion"], "requiredSurfaceFrequencyBands": ["macro", "meso", "micro"], "geometryReliefRequiredWhenSilhouetteAffected": true, "referencePbrExtraction": {"requiredWhenSourceImagePresent": true, "targetThreshold": 0.7, "stopOnLowConfidence": true, "script": "forge/stage1_intake/extract_pbr_evidence.py", "acceptedLimitation": "single-image extraction is reference-derived inference, not exact photogrammetry"}, "mustAvoid": ["single flat albedo per material", "uniform roughness", "albedo texture reused as roughness/height/normal/AO", "single-frequency random noise", "plastic-looking smooth bark, stone, cloth, foliage, or aged material", "local color/detail described only in prose without material masks", "claiming exact PBR recovery when confidence is below the target threshold"]}, "lightingPass": {"requiredTerms": ["key light", "fill light", "rim or environment light", "exposure", "tone mapping", "background", "contact shadow"], "mustAvoid": ["ambient-only lighting", "flat value range", "missing contact shadow", "reference lighting copied without separating material readability"]}, "screenshotReview": ["Compare albedo palette and local color zones.", "Compare roughness/normal/bump response under light.", "Compare cavity dirt, edge wear, stains, moss, scratches, or other local masks.", "Compare key/fill/rim structure, exposure, tone mapping, background, and contact shadows.", "Capture a neutral-light render to verify material readability without reference lighting.", "Capture a grazing-light close-up to expose flat normals, uniform roughness, tiling, and plastic highlights.", "Capture a reference-matched render from the same camera framing as the source."], "reviewViewpoints": [{"name": "hero-front", "position": [0, 0.1, 3.2], "target": [0, 0, 0]}, {"name": "three-quarter", "position": [1.6, 0.6, 2.6], "target": [0, 0, 0]}, {"name": "top-glint", "position": [0.3, 2.2, 1.8], "target": [0, 0, 0]}, {"name": "side-relief", "position": [2.4, 0.2, 1.2], "target": [0, 0, 0]}]};
+  lights.userData.lightingFromPhoto = [{"id": "key", "type": "directional", "direction": [0.55, 0.75, 0.9], "intensity": 2.2, "color": "#fff2d6"}, {"id": "fill", "type": "directional", "direction": [-0.7, 0.2, 0.5], "intensity": 0.55, "color": "#9bb4ff"}, {"id": "rim", "type": "directional", "direction": [-0.4, 0.3, -0.8], "intensity": 1.1, "color": "#ffd27a"}, {"id": "ambient", "type": "ambient", "intensity": 0.35, "color": "#1a2744"}];
+  lights.userData.lookDevTargets = {"primaryCamera": {"position": [0, 0.1, 3.2], "target": [0, 0.05, 0], "fov": 35}, "reviewViewpoints": [{"name": "hero-front", "position": [0, 0.1, 3.2]}, {"name": "three-quarter", "position": [1.6, 0.6, 2.6]}, {"name": "top-glint", "position": [0.3, 2.2, 1.8]}, {"name": "side-relief", "position": [2.4, 0.2, 1.2]}]};
   return lights;
+}
+
+// PBR materials (clearcoat/iridescence/transmission/anisotropy) need an environment
+// map to visually behave as intended — call this once per renderer and assign the
+// result to scene.environment before rendering. No external HDR asset required.
+export function createCA2MonogramLogoEnvironment(renderer: THREE.WebGLRenderer): THREE.Texture {
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  const texture = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  pmrem.dispose();
+  return texture;
+}
+
+// Plan 1.3 §3.2 — auto-framing by bounding box. The Divine Eye can only compare a
+// render to the reference if the object is FRAMED consistently (an object framed
+// differently scores as wrong even when its shape is right). This positions the camera
+// deterministically from the object's bounding box so it fills the frame at a stable
+// margin, and sets near/far to the object scale. Call after adding the model to the
+// scene, and again on resize (after updating camera.aspect).
+export function frameCA2MonogramLogoCamera(
+  camera: THREE.PerspectiveCamera,
+  object: THREE.Object3D,
+  options: { margin?: number; azimuthDeg?: number; elevationDeg?: number } = {},
+): void {
+  const box = new THREE.Box3().setFromObject(object);
+  if (box.isEmpty()) return;
+  const size = box.getSize(new THREE.Vector3());
+  const center = box.getCenter(new THREE.Vector3());
+  const margin = options.margin ?? 1.15;
+  const maxDim = Math.max(size.x, size.y, size.z) * margin;
+  const fov = (camera.fov * Math.PI) / 180;
+  // distance so the largest object dimension fits vertically in the frame
+  const distance = (maxDim / 2) / Math.tan(fov / 2);
+  const az = ((options.azimuthDeg ?? 0) * Math.PI) / 180;
+  const el = ((options.elevationDeg ?? 0) * Math.PI) / 180;
+  const dir = new THREE.Vector3(
+    Math.sin(az) * Math.cos(el),
+    Math.sin(el),
+    Math.cos(az) * Math.cos(el),
+  );
+  camera.position.copy(center).addScaledVector(dir, distance);
+  camera.near = Math.max(0.01, distance - maxDim);
+  camera.far = distance + maxDim * 2;
+  camera.lookAt(center);
+  camera.updateProjectionMatrix();
+}
+
+// Plan 1.3 §3.2c — PRESENTATION composer (DOF + bloom). CRITICAL (R-POSTFX): this is
+// for the showcase/hero render ONLY. The Divine Eye's EVALUATION render MUST use a
+// plain renderer with NO composer — bloom blows highlights and DOF blurs edges, which
+// would corrupt the deterministic IoU/DCD/edge/blowout signals. Enable dof/bloom ONLY
+// when the reference photo actually exhibits them (detect_reference_effects.py authorizes).
+export function createCA2MonogramLogoPresentationComposer(
+  renderer: THREE.WebGLRenderer,
+  scene: THREE.Scene,
+  camera: THREE.Camera,
+  options: { dof?: boolean; bloom?: boolean; bloomStrength?: number; dofFocus?: number; dofAperture?: number } = {},
+): EffectComposer {
+  const composer = new EffectComposer(renderer);
+  composer.addPass(new RenderPass(scene, camera));
+  if (options.dof) {
+    composer.addPass(new BokehPass(scene, camera, {
+      focus: options.dofFocus ?? 10.0,
+      aperture: options.dofAperture ?? 0.0002,
+      maxblur: 0.01,
+    }));
+  }
+  if (options.bloom) {
+    const size = new THREE.Vector2();
+    renderer.getSize(size);
+    composer.addPass(new UnrealBloomPass(size, options.bloomStrength ?? 0.4, 0.4, 0.85));
+  }
+  return composer;
 }

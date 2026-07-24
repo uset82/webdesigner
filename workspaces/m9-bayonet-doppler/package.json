@@ -1,0 +1,20 @@
+{
+  "name": "m9-bayonet-doppler",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host --port 5179",
+    "dev:free": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/free-port.ps1 -Port 5179 && vite --host --port 5179",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host --port 5179"
+  },
+  "dependencies": {
+    "three": "^0.172.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.172.0",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.7"
+  }
+}

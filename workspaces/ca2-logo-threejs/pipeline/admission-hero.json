@@ -1,0 +1,16 @@
+{
+  "admitted": false,
+  "reasons": [
+    "foreground coverage 0.999 > 0.97 (no background to segment against ù silhouette not isolable)"
+  ],
+  "provenance": {
+    "viewpoint": "reference",
+    "sourcePath": "E:\\PROYECTOS\\webdesigner\\workspaces\\ca2-logo-threejs\\ref\\hero-monogram.png",
+    "width": 927,
+    "height": 652,
+    "foregroundCoverage": 0.999,
+    "largestComponentFraction": 1.0,
+    "pHash": 14944135861062035084,
+    "duplicateOfHash": null
+  }
+}

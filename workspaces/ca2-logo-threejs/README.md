@@ -1,30 +1,26 @@
-# CA² Monogram → Three.js (img2threejs)
+# CA² Monogram — solid 3D (img2threejs style)
 
-Procedural reconstruction of the **Carlos Alfredo Carpio Meza** gold monogram logo using the WebDesigner `img2threejs` skill path.
-
-## What’s in here
-
-| Path | Purpose |
-|------|---------|
-| `ref/logo-reference.png` | Source logo |
-| `pipeline/` | Probe, assessment, detail inventory, `object-sculpt-spec.json`, forge artifacts |
-| `src/createCA2MonogramLogoModel.ts` | **Hand-refined** procedural factory (primary deliverable) |
-| `src/createCA2MonogramLogoModel.generated.ts` | Forge skeleton from sculpt spec (blockout) |
-| `src/main.ts` | Vite viewer with studio lighting + orbit |
+**Real extruded geometry** (crescent C, serif A, nested M, Taurus, superscript 2, extruded wordmark) — not a flat emboss plane.
 
 ## Run
 
-```bash
-cd workspaces/ca2-logo-threejs
-npm install
+```powershell
+cd E:\PROYECTOS\webdesigner\workspaces\ca2-logo-threejs
 npm run dev
+# http://localhost:5180/
 ```
 
-Open the printed local URL (default `http://localhost:5177`). Drag to orbit.
+If port busy: `npm run dev:free`
 
-## Reconstruction notes
+## Parts
 
-- **Primary method (fixed):** reference-faithful **emboss stack** — logo PNG cropped to hero monogram + lockup, navy keyed out, multi-layer gold metal planes (rim / body / face) for depth and specular.
-- **Fallback:** pure geometric primitives if the image fails to load.
-- **Identity features preserved from art:** crescent C, serif A, nested M, Taurus glyph, superscript 2, gold-on-navy, bottom lockup with name.
-- **Pipeline:** forge artifacts remain under `pipeline/`; the runtime factory is the hand-refined TypeScript path expected after img2threejs codegen.
+| Mesh | Construction |
+|------|----------------|
+| crescent-c | Beveled extrude (open crescent) |
+| letter-a | Beveled extrude + counters for M / Taurus |
+| letter-m | Nested extrude |
+| taurus | Torus + horn shapes + stem |
+| numeral-2 | Beveled extrude |
+| wordmark | TextGeometry gold |
+
+Compare to the bayonet quality bar at `workspaces/m9-bayonet-doppler` (port 5179).
